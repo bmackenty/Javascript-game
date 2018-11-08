@@ -48,10 +48,26 @@ while ( counter <= 1000 ) {
   counter += 1;
 }
 
-console.log(grid);
+function draw_map(grid) {
 
-document.getElementById("main_map").innerHTML = grid;
+var arrayLength = grid.length;
+for (var i = 0; i < arrayLength; i++) {
+  if (grid[i] === 1 || grid[i] === 2 || grid[i] === 3){
+    // this is plain, open terrain
+    grid[i] = "...";
+  } else if (grid[i] === 4) {
+    // this is a tree
+    grid[i] = "*";
+  } else if (grid[i] === 5) {
+    // this is a mountain or hill
+    grid[i] = "^";
+  }
 
+}
+grid = grid.join('');
+return grid;
+}
+document.getElementById("main_map").innerHTML = draw_map(grid);
 
 // for (key in player) {
 //   console.log(key, ' : ', player[key])
