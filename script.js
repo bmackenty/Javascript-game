@@ -33,6 +33,9 @@ var player = {
   region: "newbie"
 }
 
+// initialize other variables
+
+const main_map = document.getElementById('main_map');
 var d20 = Math.floor(Math.random() * 20)+1;
 var grid = [];
 var terrain;
@@ -47,6 +50,9 @@ while ( counter <= 1000 ) {
 
 console.log(grid);
 
-for (key in player) {
-  console.log(key, ' : ', player[key])
-}
+document.getElementById("main_map").innerHTML = grid;
+
+
+// for (key in player) {
+//   console.log(key, ' : ', player[key])
+// }
