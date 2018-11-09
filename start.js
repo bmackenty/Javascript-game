@@ -6,6 +6,9 @@ TODO: smart terrain generation
 TODO: player object
 TODO: inventory
 TODO: skills
+TODO: moving around
+TODO: edge of the world : how to deal with it? 
+
 
 */
 
@@ -36,9 +39,11 @@ var player = {
 // initialize other variables
 
 const main_map = document.getElementById('main_map');
-var d20 = Math.floor(Math.random() * 20)+1;
 var grid = [];
 var terrain;
+// the variable below tracks the terrain type the player moved from. When they move again, we replace the old terrain stored in this variable.
+// the reason we have empty terrain is for the very first move of the game.
+var destination_terrain = '...';
 
 var counter = 1;
 while ( counter <= 695 ) {
@@ -89,24 +94,71 @@ return grid;
 function move(direction) {
 
   if (direction === 'r'){
-      // let's start by getting ther current location of the player
-      var current_location = grid.indexOf('[P]');
-      console.log(current_location);
-      // now the destination. This ASSUMES A 24 LENGTH array
-      var destination = current_location + 1;
-      // now let's get the terrain the place they wanrt to go. we need this so we can replace it when they move. 
-      var destination_terrain = current_location + 1;
-      // now let's move the player icon. 
-      grid[destination] = '[P]';
-      // now lets erase the old player icon
-      grid[destination-1] = '...';
-      return
+    // let's start by getting ther current location of the player
+    var current_location = grid.indexOf('[P]');
+    // the line below is for debugging
+    console.log(current_location);
+    // now the destination. This ASSUMES A 24 LENGTH array
+    var destination = current_location + 1;
+    // now lets replace the terrain that was in the old place.
+    grid[destination-1] = destination_terrain;
+    // now let's get the terrain the place they want to go. we need this so we can replace it when they move later on. 
+    destination_terrain = grid[current_location + 1];
+    // now let's move the player icon. 
+    grid[destination] = '[P]';
+
+
+  } else if (direction === 'l'){
+        // let's start by getting ther current location of the player
+        var current_location = grid.indexOf('[P]');
+        // the line below is for debugging
+        console.log(current_location);
+        // now the destination. This ASSUMES A 24 LENGTH array
+        var destination = current_location - 1;
+        // now lets replace the terrain that was in the old place.
+        grid[destination+1] = destination_terrain;
+        // now let's get the terrain the place they want to go. we need this so we can replace it when they move later on. 
+        destination_terrain = grid[current_location - 1];
+        // now let's move the player icon. 
+        grid[destination] = '[P]';
+
+
+    } else if (direction === 'u'){
+        // let's start by getting ther current location of the player
+        var current_location = grid.indexOf('[P]');
+        // the line below is for debugging
+        console.log(current_location);
+        // now the destination. This ASSUMES A 24 LENGTH array
+        var destination = current_location - 24;
+        // now lets replace the terrain that was in the old place.
+        grid[destination+24] = destination_terrain;
+        // now let's get the terrain the place they want to go. we need this so we can replace it when they move later on. 
+        destination_terrain = grid[current_location - 24];
+        // now let's move the player icon. 
+        grid[destination] = '[P]';
+
+    } else if (direction === 'd'){
+        // let's start by getting ther current location of the player
+        var current_location = grid.indexOf('[P]');
+        // the line below is for debugging
+        console.log(current_location);
+        // now the destination. This ASSUMES A 24 LENGTH array
+        var destination = current_location + 24;
+        // now lets replace the terrain that was in the old place.
+        grid[destination-24] = destination_terrain;
+        // now let's get the terrain the place they want to go. we need this so we can replace it when they move later on. 
+        destination_terrain = grid[current_location + 24];
+        // now let's move the player icon. 
+        grid[destination] = '[P]';
+
+    return
   }
 
 }
 
 // the code below is used from https://medium.com/@uistephen/keyboardevent-key-for-cross-browser-key-press-check-61dbad0a067a
 // I also used this site for keycodes: https://keycode.info/
+// the code below listens for keys being released, and then trigger a function which "does something". 
 
 document.addEventListener('keyup', function (event) {
   if (event.defaultPrevented) {
@@ -118,15 +170,46 @@ document.addEventListener('keyup', function (event) {
   if (key === 'Escape' || key === 'Esc' || key === 27) {
     document.getElementById("messages").innerHTML = key;
     } else if (key === 'ArrowRight' || key === 39) {
+        // the line below is a debug message which shows the keypress
         document.getElementById("messages").innerHTML = key;
+        // then we call the move function and pass 'r' for right.
         move('r')
-        document.getElementById("main_map").innerHTML = draw_map(grid);  
+        // finally, we update the map after the move has been completed (but this might no belong here).
+        document.getElementById("main_map").innerHTML = draw_map(grid); 
+        
+        
     } else if (key === 'ArrowLeft' || key === 39) {
-        document.getElementById("messages").innerHTML = key;  
+        // the line below is a debug message which shows the keypress
+        document.getElementById("messages").innerHTML = key;
+        // then we call the move function and pass 'r' for right.
+        move('l')
+        // finally, we update the map after the move has been completed (but this might no belong here).
+        document.getElementById("main_map").innerHTML = draw_map(grid);   
+
+
+
     } else if (key === 'ArrowUp' || key === 39) {
-        document.getElementById("messages").innerHTML = key;  
+        // the line below is a debug message which shows the keypress
+        document.getElementById("messages").innerHTML = key;
+        // then we call the move function and pass 'r' for right.
+        move('u')
+        // finally, we update the map after the move has been completed (but this might no belong here).
+        document.getElementById("main_map").innerHTML = draw_map(grid); 
+        
+
+
+
+
+
     } else if (key === 'ArrowDown' || key === 39) {
-        document.getElementById("messages").innerHTML = key;  
+        // the line below is a debug message which shows the keypress
+        document.getElementById("messages").innerHTML = key;
+        // then we call the move function and pass 'r' for right.
+        move('d')
+        // finally, we update the map after the move has been completed (but this might no belong here).
+        document.getElementById("main_map").innerHTML = draw_map(grid); 
+        
+        
     } else if (key === '?' || key === 191) {
         document.getElementById("messages").innerHTML = key;  
     } else if (key === 'i' || key === 73 || key === 'I') {
