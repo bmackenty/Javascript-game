@@ -48,12 +48,14 @@ while ( counter <= 695 ) {
   counter += 1;
 }
 
-// make player starting location
+// make player starting location. It's 100 just TOTALLY for testing. Also, we should track the current player location for
+// reasons. 
 grid.splice(100, 0, 6);
+
+
 
 function draw_map(grid) {
 
-var row_length = 10;
 var counter = 0;
 var arrayLength = grid.length;
 for (var i = 0; i < arrayLength; i++) {
@@ -82,18 +84,29 @@ for (var i = 0; i < arrayLength; i++) {
 grid = grid.join('');
 return grid;
 }
-document.getElementById("main_map").innerHTML = draw_map(grid);
 
-document.getElementById("footer").innerHTML = "Health: " + player.health + " | Magic: " + player.magic;
 
-function move() {
+function move(direction) {
 
-  alert('hello');
+  if (direction === 'r'){
+      // let's start by getting ther current location of the player
+      var current_location = grid.indexOf('[P]');
+      console.log(current_location);
+      // now the destination. This ASSUMES A 24 LENGTH array
+      var destination = current_location + 1;
+      // now let's get the terrain the place they wanrt to go. we need this so we can replace it when they move. 
+      var destination_terrain = current_location + 1;
+      // now let's move the player icon. 
+      grid[destination] = '[P]';
+      // now lets erase the old player icon
+      grid[destination-1] = '...';
+      return
+  }
 
 }
 
-
 // the code below is used from https://medium.com/@uistephen/keyboardevent-key-for-cross-browser-key-press-check-61dbad0a067a
+// I also used this site for keycodes: https://keycode.info/
 
 document.addEventListener('keyup', function (event) {
   if (event.defaultPrevented) {
@@ -103,8 +116,25 @@ document.addEventListener('keyup', function (event) {
   var key = event.key || event.keyCode;
 
   if (key === 'Escape' || key === 'Esc' || key === 27) {
-    document.getElementById("messages").innerHTML = draw_map(grid);
+    document.getElementById("messages").innerHTML = key;
+    } else if (key === 'ArrowRight' || key === 39) {
+        document.getElementById("messages").innerHTML = key;
+        move('r')
+        document.getElementById("main_map").innerHTML = draw_map(grid);  
+    } else if (key === 'ArrowLeft' || key === 39) {
+        document.getElementById("messages").innerHTML = key;  
+    } else if (key === 'ArrowUp' || key === 39) {
+        document.getElementById("messages").innerHTML = key;  
+    } else if (key === 'ArrowDown' || key === 39) {
+        document.getElementById("messages").innerHTML = key;  
+    } else if (key === '?' || key === 191) {
+        document.getElementById("messages").innerHTML = key;  
+    } else if (key === 'i' || key === 73 || key === 'I') {
+        document.getElementById("messages").innerHTML = key;  
 
   }
 });
 
+
+document.getElementById("main_map").innerHTML = draw_map(grid);
+document.getElementById("footer").innerHTML = "Health: " + player.health + " | Magic: " + player.magic;
