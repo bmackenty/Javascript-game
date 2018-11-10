@@ -39,11 +39,13 @@ var player = {
 // initialize other variables
 
 const main_map = document.getElementById('main_map');
+// a turn is a player action in the game. if they check their inventory, look ata character sheet, etc, it shouldn't count.
+var turn = 0;
 var grid = [];
 var terrain;
 // the variable below tracks the terrain type the player moved from. When they move again, we replace the old terrain stored in this variable.
 // the reason we have empty terrain is for the very first move of the game.
-var destination_terrain = '<i class=\"fas fa-ellipsis-h fa-fw\"></i>';
+var destination_terrain = '<i class=\"fas fa-ellipsis-h fa-fw\" style=\"color:#D2B48C\"></i>';
 // the line below is because I was testing row length and got annoyed having to continually adjust 
 
 var counter = 1;
@@ -69,7 +71,7 @@ for (var i = 0; i < arrayLength; i++) {
 
   if (grid[i] === 1 || grid[i] === 2 || grid[i] === 3){
     // this is plain, open terrain
-    grid[i] = "<i class=\"fas fa-ellipsis-h fa-fw\"></i>";
+    grid[i] = "<i class=\"fas fa-ellipsis-h fa-fw\" style=\"color:#D2B48C\"></i>";
   } else if (grid[i] === 4) {
     // this is a tree
     grid[i] = "<i class=\"fas fa-tree fa-fw\" style=\"color:green\"></i>";
@@ -88,7 +90,7 @@ return grid;
 
 
 function move(direction) {
-
+// issue with not counting until the first move.
   if (direction === 'r'){
     // let's start by getting the current location of the player
     var current_location = grid.indexOf('<i class=\"fas fa-child fa-fw\" style=\"color:red\"></i>');
@@ -102,6 +104,8 @@ function move(direction) {
     destination_terrain = grid[current_location + 1];
     // now let's move the player icon. 
     grid[destination] = '<i class=\"fas fa-child fa-fw\" style=\"color:red\"></i>';
+
+
     document.getElementById("messages").innerHTML = current_location;
 
 
@@ -154,6 +158,12 @@ function move(direction) {
     return
   }
 
+} // end move function
+
+function update_footer(){
+
+    document.getElementById("footer").innerHTML = "Health: " + player.health + " | Magic: " + player.magic + " | Turn: " + turn;
+
 }
 
 // the code below is used from https://medium.com/@uistephen/keyboardevent-key-for-cross-browser-key-press-check-61dbad0a067a
@@ -172,15 +182,22 @@ document.addEventListener('keyup', function (event) {
     } else if (key === 'ArrowRight' || key === 39) {
         // then we call the move function and pass 'r' for right.
         move('r')
-        // finally, we update the map after the move has been completed (but this might no belong here).
+        // we update the three parts of the UI after the move has been completed (but this might no belong here).
         document.getElementById("main_map").innerHTML = draw_map(grid); 
+        // increment the turn counter 
+        turn = turn + 1;
+        update_footer()
         
+
         
     } else if (key === 'ArrowLeft' || key === 39) {
         // then we call the move function and pass 'r' for right.
         move('l')
         // finally, we update the map after the move has been completed (but this might no belong here).
-        document.getElementById("main_map").innerHTML = draw_map(grid);   
+        document.getElementById("main_map").innerHTML = draw_map(grid); 
+        // increment the turn counter 
+        turn = turn + 1;
+        update_footer()  
 
 
 
@@ -189,6 +206,9 @@ document.addEventListener('keyup', function (event) {
         move('u')
         // finally, we update the map after the move has been completed (but this might no belong here).
         document.getElementById("main_map").innerHTML = draw_map(grid); 
+        // increment the turn counter 
+        turn = turn + 1;
+        update_footer()  
         
 
 
@@ -200,16 +220,22 @@ document.addEventListener('keyup', function (event) {
         move('d')
         // finally, we update the map after the move has been completed (but this might no belong here).
         document.getElementById("main_map").innerHTML = draw_map(grid); 
+        // increment the turn counter 
+        turn = turn + 1;
+        update_footer()  
         
+
+
         
     } else if (key === '?' || key === 191) {
         document.getElementById("messages").innerHTML = key;  
     } else if (key === 'i' || key === 73 || key === 'I') {
-        document.getElementById("messages").innerHTML = key;  
+        document.getElementById("messages").innerHTML = key;
+
 
   }
 });
 
 
 document.getElementById("main_map").innerHTML = draw_map(grid);
-document.getElementById("footer").innerHTML = "Health: " + player.health + " | Magic: " + player.magic;
+document.getElementById("footer").innerHTML = "Health: " + player.health + " | Magic: " + player.magic + " | Turn: " + turn;
