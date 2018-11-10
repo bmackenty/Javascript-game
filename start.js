@@ -20,7 +20,7 @@ var player = {
   rank: "ready to be eaten",
   kingdom: "None",
   reputation: "huh?",
-  skills: ["not dying", "running away"],
+  skills: [["not dying",1], ["running away",10]],
   location_X: 0,
   location_Y: 0,
   location_Z: 0,
@@ -33,13 +33,75 @@ var player = {
   constitution: 10,
   charisma: 10,
   luck: 10,
-  region: "newbie"
+  region: "newbie",
+  inventory: {
+                weapon_1: {
+                    name: 'The feeble axe of butterfly death!',
+                    category: 'weapon',
+                    damage: 20,
+                    cursed: 0,
+                    material: 'wood',
+                    plus_to_hit: 0,
+                    plus_to_damage: 0,
+                    level: 1,
+                    type: 'axe',
+                    cost: 5,
+                    equipped: 'no' 
+                },
+
+                weapon_2: {
+                    name: 'The feeble axe of mosquito death!',
+                    category: 'weapon',
+                    damage: 20,
+                    cursed: 0,
+                    material: 'wood',
+                    plus_to_hit: 0,
+                    plus_to_damage: 0,
+                    level: 1,
+                    type: 'axe',
+                    cost: 5,
+                    equipped: 'no'
+                },
+                weapon_3: {
+                    name: 'The strong axe of killing small things!',
+                    category: 'weapon',
+                    damage: 20,
+                    cursed: 0,
+                    material: 'wood',
+                    plus_to_hit: 0,
+                    plus_to_damage: 0,
+                    level: 1,
+                    type: 'axe',
+                    cost: 5,
+                    equipped: 'no'
+                },
+                thing_1: {
+                    name: 'Incredible potion of doing nothing',
+                    category: 'potion',
+                    damage: 0,
+                    cursed: 0,
+                    material: 'glass',
+                    plus_to_hit: 0,
+                    plus_to_damage: 0,
+                    level: 1,
+                    type: 'potion',
+                    cost: 2,
+                    equipped: 'no'
+                }
+
+            }
+
 }
+
+const entries = Object.entries(player)
+console.log(entries)
+
+
 
 // initialize other variables
 
 const main_map = document.getElementById('main_map');
-// a turn is a player action in the game. if they check their inventory, look ata character sheet, etc, it shouldn't count.
+// a turn is a player action in the game. if they check their inventory, look at a character sheet, etc, it shouldn't count.
 var turn = 0;
 var grid = [];
 var terrain;
@@ -58,7 +120,7 @@ while ( counter <= 1189 ) {
 
 // make player starting location. It's 1 just TOTALLY for testing. Also, we should track the current player location for
 // reasons. 
-grid.splice(10, 0, 6);
+grid.splice(9, 0, 6);
 
 
 
@@ -88,7 +150,6 @@ grid = grid.join('');
 return grid;
 }
 
-
 function move(direction) {
 // issue with not counting until the first move.
   if (direction === 'r'){
@@ -104,9 +165,11 @@ function move(direction) {
     destination_terrain = grid[current_location + 1];
     // now let's move the player icon. 
     grid[destination] = '<i class=\"fas fa-child fa-fw\" style=\"color:red\"></i>';
+    // now lets update the player_X position
+    player.location_X = player.location_X + 1
 
 
-    document.getElementById("messages").innerHTML = current_location;
+    
 
 
   } else if (direction === 'l'){
@@ -122,7 +185,9 @@ function move(direction) {
         destination_terrain = grid[current_location - 1];
         // now let's move the player icon. 
         grid[destination] = '<i class=\"fas fa-child fa-fw\" style=\"color:red\"></i>';
-        document.getElementById("messages").innerHTML = current_location;
+       // now lets update the player_X position
+        player.location_X = player.location_X - 1
+        
 
 
     } else if (direction === 'u'){
@@ -138,7 +203,9 @@ function move(direction) {
         destination_terrain = grid[current_location - 34];
         // now let's move the player icon. 
         grid[destination] = '<i class=\"fas fa-child fa-fw\" style=\"color:red\"></i>';
-        document.getElementById("messages").innerHTML = current_location;
+        // now lets update the player_Y position
+        player.location_Y = player.location_Y - 34
+        
 
     } else if (direction === 'd'){
         // let's start by getting the current location of the player
@@ -153,7 +220,9 @@ function move(direction) {
         destination_terrain = grid[current_location + 34];
         // now let's move the player icon. 
         grid[destination] = '<i class=\"fas fa-child fa-fw\" style=\"color:red\"></i>';
-        document.getElementById("messages").innerHTML = current_location;
+        // now lets update the player_Y position
+        player.location_Y = player.location_Y + 34
+        
 
     return
   }
@@ -161,9 +230,54 @@ function move(direction) {
 } // end move function
 
 function update_footer(){
-
     document.getElementById("footer").innerHTML = "Health: " + player.health + " | Magic: " + player.magic + " | Turn: " + turn;
+}
 
+function update_messages(){
+    document.getElementById("messages").innerHTML = 
+    "Location X: " + player.location_X + "<br />" + 
+    "Location Y: " + player.location_Y + "<br />" + 
+    "Location Z: " + player.location_Z + "<br />";
+}
+
+function inventory() {
+
+    console.log(Object.keys(player.inventory).length);
+    modal_body.innerHTML = "";
+    modal_body.innerHTML += "You are currently carrying an impossibly large number of items. <br /><br />";
+    var print_weapons_header = false;
+    var print_potion_header = false;
+    for (var i in player.inventory) {
+        
+        if (player.inventory[i].category === 'weapon') {
+            if (!print_weapons_header) {
+                modal_body.innerHTML += "<strong>Things to poke your enemies with and prevent your inevitable death:</strong><ul>";
+                print_weapons_header = true;
+            }
+            modal_body.innerHTML += "<li>" + player.inventory[i].name + "</li>";
+            }
+            modal_body.innerHTML += "</ul>";
+
+            if (player.inventory[i].category === 'potion') {
+                if (!print_potion_header) {
+                    modal_body.innerHTML += "<br /><strong>Strange liquid in a glass jars:</strong><ul>";
+                    print_potion_header = true;
+                }
+                modal_body.innerHTML += "<li>" + player.inventory[i].name + "</li>";
+                }
+                modal_body.innerHTML += "</ul>";
+
+
+
+
+
+        }
+    
+
+
+    $(document).ready(function() {
+        $('#exampleModal').modal('show');
+    });
 }
 
 // the code below is used from https://medium.com/@uistephen/keyboardevent-key-for-cross-browser-key-press-check-61dbad0a067a
@@ -186,7 +300,8 @@ document.addEventListener('keyup', function (event) {
         document.getElementById("main_map").innerHTML = draw_map(grid); 
         // increment the turn counter 
         turn = turn + 1;
-        update_footer()
+        update_footer();
+        update_messages();
         
 
         
@@ -197,7 +312,8 @@ document.addEventListener('keyup', function (event) {
         document.getElementById("main_map").innerHTML = draw_map(grid); 
         // increment the turn counter 
         turn = turn + 1;
-        update_footer()  
+        update_footer();
+        update_messages();  
 
 
 
@@ -208,7 +324,8 @@ document.addEventListener('keyup', function (event) {
         document.getElementById("main_map").innerHTML = draw_map(grid); 
         // increment the turn counter 
         turn = turn + 1;
-        update_footer()  
+        update_footer();
+        update_messages();
         
 
 
@@ -222,7 +339,8 @@ document.addEventListener('keyup', function (event) {
         document.getElementById("main_map").innerHTML = draw_map(grid); 
         // increment the turn counter 
         turn = turn + 1;
-        update_footer()  
+        update_footer();
+        update_messages();  
         
 
 
@@ -230,9 +348,8 @@ document.addEventListener('keyup', function (event) {
     } else if (key === '?' || key === 191) {
         document.getElementById("messages").innerHTML = key;  
     } else if (key === 'i' || key === 73 || key === 'I') {
-        document.getElementById("messages").innerHTML = key;
-
-
+        inventory();
+    
   }
 });
 
