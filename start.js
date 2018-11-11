@@ -108,8 +108,9 @@ var terrain;
 // the variable below tracks the terrain type the player moved from. When they move again, we replace the old terrain stored in this variable.
 // the reason we have empty terrain is for the very first move of the game.
 var destination_terrain = '<i class=\"fas fa-ellipsis-h fa-fw\" style=\"color:#D2B48C\"></i>';
-// the line below is because I was testing row length and got annoyed having to continually adjust 
 
+
+// the stuff below generates an array which is then translated into terrain
 var counter = 1;
 while ( counter <= 1189 ) {
   // the line below creates some random terrain. totally random, TODO: this needs to be smart.
@@ -118,9 +119,23 @@ while ( counter <= 1189 ) {
   counter += 1;
 }
 
+// our first try at drawing terrain: 
+grid.splice(0, 0, 7);
+grid.splice(1, 0, 7);
+grid.splice(2, 0, 7);
+grid.splice(3, 0, 7);
+grid.splice(4, 0, 7);
+grid.splice(34, 0, 7);
+grid.splice(67, 0, 7);
+grid.splice(101, 0, 7);
+grid.splice(135, 0, 7);
+
+
+
+
 // make player starting location. It's 1 just TOTALLY for testing. Also, we should track the current player location for
 // reasons. 
-grid.splice(9, 0, 6);
+grid.splice(60, 0, 6);
 
 
 
@@ -141,9 +156,12 @@ for (var i = 0; i < arrayLength; i++) {
     // this is a mountain or hill
     grid[i] = "<i class=\"fas fa-mountain fa-fw\" style=\"color:grey\"></i>";
   } else if (grid[i] === 6) {
-  // this is a mountain or hill
-  grid[i] = "<i class=\"fas fa-child fa-fw\" style=\"color:red\"></i>";
-}
+  // this is the player object
+    grid[i] = "<i class=\"fas fa-child fa-fw\" style=\"color:red\"></i>";
+  } else if (grid[i] === 7) {
+    // impassible mountains of Thogar
+    grid[i] = "<i class=\"fas fa-mountain fa-fw\" style=\"color:black\"></i>";
+ }
 
 }
 grid = grid.join('');
