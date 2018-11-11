@@ -8,7 +8,7 @@ TODO: inventory
 TODO: skills
 TODO: moving around
 TODO: edge of the world : how to deal with it? 
-
+TODO: item name generator
 
 */
 
@@ -241,10 +241,11 @@ function update_messages(){
 }
 
 function inventory() {
-
+// this function displays inventory. Eventually it will do more inventory stuff. 
     console.log(Object.keys(player.inventory).length);
+    inventory_length = Object.keys(player.inventory).length;
     modal_body.innerHTML = "";
-    modal_body.innerHTML += "You are currently carrying an impossibly large number of items. <br /><br />";
+    modal_body.innerHTML += "You are currently carrying " + inventory_length + " items. <br /><br />";
     var print_weapons_header = false;
     var print_potion_header = false;
     for (var i in player.inventory) {
