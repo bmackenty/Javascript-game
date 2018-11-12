@@ -191,16 +191,16 @@ function draw_map(array_for_map) {
         array_for_map[i] = "<i class=\"fas fa-ellipsis-h fa-fw\" style=\"color:#D2B48C\"></i>";
     } else if (array_for_map[i] === 4) {
         // this is a tree
-        array_for_map[i] = "<i class=\"fas fa-tree fa-fw\" style=\"color:green\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"A tree.\"></i>";
+        array_for_map[i] = "<i class=\"fas fa-tree fa-fw\" style=\"color:green\" title=\"A tree.\"></i>";
     } else if (array_for_map[i] === 5) {
         // this is a mountain or hill
-        array_for_map[i] = "<i class=\"fas fa-mountain fa-fw\" style=\"color:grey\"  data-toggle=\"tooltip\" data-placement=\"top\" title=\"A mountain\"></i>";
+        array_for_map[i] = "<i class=\"fas fa-mountain fa-fw\" style=\"color:grey\"  title=\"A mountain\"></i>";
     } else if (array_for_map[i] === 6) {
         // this is the player object
-        array_for_map[i] = "<i class=\"fas fa-child fa-fw\" style=\"color:red\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"You.\"></i>";
+        array_for_map[i] = "<i class=\"fas fa-child fa-fw\" style=\"color:red\" title=\"You.\"></i>";
     } else if (array_for_map[i] === 7) {
         // impossible, impassible mountains of Thogar (aka Thogars Teeth)
-        array_for_map[i] = "<i class=\"fas fa-mountain fa-fw\" style=\"color:black\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Impossible impassible mountains of Thogar (aka Thogars Teeth)\"></i>";
+        array_for_map[i] = "<i class=\"fas fa-mountain fa-fw\" style=\"color:black\" title=\"Impossible impassible mountains of Thogar (aka Thogars Teeth)\"></i>";
     }
 
 }
