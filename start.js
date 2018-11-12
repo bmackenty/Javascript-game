@@ -118,6 +118,7 @@ console.log('function initialize start');
         }
         update_footer(player);
         update_messages(player);
+        document.getElementById('messages').innerHTML = "Welcome.";
         console.log('function initialize end');
         return player;
 } 
@@ -138,11 +139,11 @@ function make_random_terrain() {
 
 function starting_map() {
     console.log('function starting map start');
-    grid.splice(0, 0, 7);
-    grid.splice(1, 0, 7);
-    grid.splice(2, 0, 7);
-    grid.splice(3, 0, 7);
-    grid.splice(4, 0, 7);
+    grid.splice(0, 30, 7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7);
+    // grid.splice(1, 0, 7);
+    // grid.splice(2, 0, 7);
+    // grid.splice(3, 0, 7);
+    // grid.splice(4, 0, 7);
     grid.splice(34, 0, 7);
     grid.splice(67, 0, 7);
     grid.splice(101, 0, 7);
@@ -165,16 +166,16 @@ function draw_map(array_for_map) {
         array_for_map[i] = "<i class=\"fas fa-ellipsis-h fa-fw\" style=\"color:#D2B48C\"></i>";
     } else if (array_for_map[i] === 4) {
         // this is a tree
-        array_for_map[i] = "<i class=\"fas fa-tree fa-fw\" style=\"color:green\"></i>";
+        array_for_map[i] = "<i class=\"fas fa-tree fa-fw\" style=\"color:green\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"A tree.\"></i>";
     } else if (array_for_map[i] === 5) {
         // this is a mountain or hill
-        array_for_map[i] = "<i class=\"fas fa-mountain fa-fw\" style=\"color:grey\"></i>";
+        array_for_map[i] = "<i class=\"fas fa-mountain fa-fw\" style=\"color:grey\"  data-toggle=\"tooltip\" data-placement=\"top\" title=\"A mountain\"></i>";
     } else if (array_for_map[i] === 6) {
         // this is the player object
-        array_for_map[i] = "<i class=\"fas fa-child fa-fw\" style=\"color:red\"></i>";
+        array_for_map[i] = "<i class=\"fas fa-child fa-fw\" style=\"color:red\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"You.\"></i>";
     } else if (array_for_map[i] === 7) {
         // impossible, impassible mountains of Thogar (aka Thogars Teeth)
-        array_for_map[i] = "<i class=\"fas fa-mountain fa-fw\" style=\"color:black\"></i>";
+        array_for_map[i] = "<i class=\"fas fa-mountain fa-fw\" style=\"color:black\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Impossible, impassible mountains of Thogar (aka Thogars Teeth)\"></i>";
     }
 
 }
@@ -275,14 +276,13 @@ function move(direction) {
             grid[destination] = 6;
             // now lets update the map
             draw_map(grid);
+
         } else {
     
                 document.getElementById("messages").innerHTML += "No. Nie. Nein. Nyet, Nu, Uimh... Something blocks your path...";
         
             }
-        
-    update_footer();
-    update_messages();
+
     return
   }
 
@@ -293,10 +293,7 @@ function update_footer() {
 }
 
 function update_messages() {
-    document.getElementById("messages").innerHTML = 
-    "Location X: " + player.location_X + "<br />" + 
-    "Location Y: " + player.location_Y + "<br />" + 
-    "Location Z: " + player.location_Z + "<br />";
+// if messages are a certain length, do a "more messages" or something.
 }
 
 function inventory() {
