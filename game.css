@@ -1,0 +1,58 @@
+/*
+This CSS initially used from: 
+https://www.electrictoolbox.com/basic-3-column-fixed-width-css-layout/
+
+But it's been pretty hacked through :-) 
+*/
+.fa-fw{
+    padding: 1px;
+  }
+
+#container {
+    width: 1200px;
+    border: 1px;
+    border-style: solid;
+
+}
+
+#left {
+    float: left;
+    width: 210px;
+    height: 725px;
+    border-right-style: solid;
+    border-right-width: 1px;
+    padding:5px;
+    margin-right: 5px;
+}
+
+
+#main_map {
+   padding: 0 210px 0 160px;
+}
+
+#right {
+    float: right;
+    width: 200px;
+    height: 725px;
+    border-left-style: solid;
+    border-left-width: 1px;
+    padding:5px;
+}
+
+#header {
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    padding:5px;
+}    
+
+
+
+.clear {
+    clear: both;
+}
+
+#footer {
+    border-top-width: 1px;
+    border-top-style: solid;
+    padding:5px;
+}
