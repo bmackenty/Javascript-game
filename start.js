@@ -3,12 +3,12 @@
 This is a javascript implementation of a simple ascii art RPG game
 
 TODO: smart terrain generation
-TODO: player object
 TODO: inventory
 TODO: skills
 TODO: moving around
 TODO: edge of the world : how to deal with it? 
 TODO: item name generator
+TODO: building screen
 TODO: a wilderness zone
 TODO: a town zone
 TODO: a space zone (really  - I have big plans for interplanetary travel)
@@ -20,9 +20,17 @@ TODO: maybe a crafting zone to craft stuff
 TODO: an event zone, so after X number of turns we can trigger events
 TODO: animals 
 TODO: NPC's
-TODO: put listener into a function claled main_game_loop. 
+TODO: changelog
+TODO: add credits
+TODO: help screen, ditch tooltips
 HINT: throw new Error("Something went badly wrong!");
 LEARNED: about shallow copies. Thanks stackoverflow
+
+DONE STUFF: 
+
+TODO: player object
+TODO: put listener into a function claled main_game_loop. 
+
 
 */
 
@@ -36,6 +44,8 @@ var foo = [];
 var array_for_map = [];
 
 function initialize() {
+
+
 console.log('function initialize start');
   player = {
     score: 0,
@@ -123,11 +133,26 @@ console.log('function initialize start');
         return player;
 } 
 
+function game_messages(message){
+
+    if (message === "cant_go_there") {
+
+        document.getElementById("messages").innerHTML += "<div class=\"alert alert-danger alert-dismissible fade show\" role=\"alert\">" +
+        "You cant go that way!" +
+        " <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"> " +
+        " <span aria-hidden=\"true\">&times;</span> " +
+        " </button> </div> ";
+
+    }
+
+
+}
+
 function make_random_terrain() {
     console.log('function make random terrain start');
     // the stuff below generates an array which is then eventually translated into terrain
     var counter = 1;
-    while ( counter <= 1189 ) {
+    while ( counter <= 1215 ) {
     // the line below creates some random terrain. totally random, TODO: this needs to be smart.
     terrain = Math.floor(Math.random() * 5)+1;
     grid.push(terrain);
@@ -175,7 +200,7 @@ function draw_map(array_for_map) {
         array_for_map[i] = "<i class=\"fas fa-child fa-fw\" style=\"color:red\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"You.\"></i>";
     } else if (array_for_map[i] === 7) {
         // impossible, impassible mountains of Thogar (aka Thogars Teeth)
-        array_for_map[i] = "<i class=\"fas fa-mountain fa-fw\" style=\"color:black\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Impossible, impassible mountains of Thogar (aka Thogars Teeth)\"></i>";
+        array_for_map[i] = "<i class=\"fas fa-mountain fa-fw\" style=\"color:black\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Impossible impassible mountains of Thogar (aka Thogars Teeth)\"></i>";
     }
 
 }
@@ -206,12 +231,13 @@ function move(direction) {
         destination_terrain = grid[current_location + 1];
         // now let's move the player icon. 
         grid[destination] = 6;
-        // now lets update the map
-        draw_map(grid);
+            // increment the turn counter 
+            turn = turn + 1;
+            // now lets update the map
+            draw_map(grid);
+            update_footer();
     } else {
-
-        document.getElementById("messages").innerHTML += "No. Nie. Nein. Nyet, Nu, Uimh... Something blocks your path...";
-
+        game_messages("cant_go_there");
     }
 
 
@@ -229,12 +255,13 @@ function move(direction) {
         destination_terrain = grid[current_location - 1];
         // now let's move the player icon. 
         grid[destination] = 6;
-        // now lets update the map
-        draw_map(grid);
+            // increment the turn counter 
+            turn = turn + 1;
+            // now lets update the map
+            draw_map(grid);
+            update_footer();
     } else {
-
-        document.getElementById("messages").innerHTML += "No. Nie. Nein. Nyet, Nu, Uimh... Something blocks your path...";
-
+        game_messages("cant_go_there");
     }
 
 
@@ -252,13 +279,14 @@ function move(direction) {
         destination_terrain = grid[current_location - 34];
         // now let's move the player icon. 
         grid[destination] = 6;
-        // now lets update the map
-        draw_map(grid);
+            // increment the turn counter 
+            turn = turn + 1;
+            // now lets update the map
+            draw_map(grid);
+            update_footer();
     } else {
-
-            document.getElementById("messages").innerHTML += "No. Nie. Nein. Nyet, Nu, Uimh... Something blocks your path...";
-    
-        }
+        game_messages("cant_go_there");
+    }
 
     } else if (direction === 'd'){
 
@@ -274,14 +302,14 @@ function move(direction) {
             destination_terrain = grid[current_location + 34];
             // now let's move the player icon. 
             grid[destination] = 6;
+            // increment the turn counter 
+            turn = turn + 1;
             // now lets update the map
             draw_map(grid);
-
+            update_footer();
         } else {
-    
-                document.getElementById("messages").innerHTML += "No. Nie. Nein. Nyet, Nu, Uimh... Something blocks your path...";
-        
-            }
+            game_messages("cant_go_there");
+        }
 
     return
   }
@@ -352,8 +380,7 @@ function main_listener() {
         } else if (key === 'ArrowRight' || key === 39) {
             // then we call the move function and pass 'r' for right.
             move('r');
-            // increment the turn counter 
-            turn = turn + 1;
+            
 
 
         } else if (key === 'ArrowLeft' || key === 39) {
