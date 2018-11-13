@@ -4,6 +4,7 @@ This is a javascript implementation of a simple ascii art RPG game
 
 TODO: smart terrain generation
 TODO: inventory
+TODO: achievement / badges / honors (all should be funny)
 TODO: skills
 TODO: moving around
 TODO: edge of the world : how to deal with it? 
@@ -142,6 +143,12 @@ function game_messages(message){
         "Your path is blocked </div>";
     }
 
+    else if (message === "bear_trap") {
+
+        document.getElementById("messages").innerHTML += "<div class=\"alert\">" + 
+        "<span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span> " + 
+        "You have walked into a bear trap and suffered horribly. How did you not see that?! </div>";
+    }
 
 }
 
@@ -171,16 +178,16 @@ function starting_map() {
     grid.splice(101, 0, 7);
     grid.splice(135, 0, 7);
     // the lines below are for bear traps. Because BEAR TRAPS!!!!
-    grid.splice(109, 0, 8);
-    grid.splice(100, 0, 8);
-    grid.splice(523, 0, 8);
-    grid.splice(58, 0, 8);
-    grid.splice(999, 0, 8);
-    grid.splice(241, 0, 8);
-    grid.splice(387, 0, 8);
-    grid.splice(366, 0, 8);
-    grid.splice(42, 0, 8);
-    grid.splice(49, 0, 8);
+    grid.splice(109, 1, 8);
+    grid.splice(100, 1, 8);
+    grid.splice(523, 1, 8);
+    grid.splice(58, 1, 8);
+    grid.splice(999, 1, 8);
+    grid.splice(241, 1, 8);
+    grid.splice(387, 1, 8);
+    grid.splice(366, 1, 8);
+    grid.splice(42, 1, 8);
+    grid.splice(49, 1, 8);
 
 
 
@@ -211,7 +218,6 @@ function draw_map(array_for_map) {
     } else if (array_for_map[i] === 7) {
         // impossible, impassible mountains of Thogar (aka Thogars Teeth)
         array_for_map[i] = "<i class=\"fas fa-mountain fa-fw\" style=\"color:black\" title=\"Impossible impassible mountains of Thogar (aka Thogars Teeth)\"></i>";
-
     } else if (array_for_map[i] === 8) {
         // bear trap. Heh. 
         array_for_map[i] = "<i class=\"fab fa-codepen fa-fw\" style=\"color:black\" title=\"Bear Attractors\"></i>";
@@ -250,6 +256,12 @@ function move(direction) {
             // now lets update the map
             draw_map(grid);
             update_footer();
+    } else if (grid[destination] === 8) {
+        // bear trap code. 
+        player.health = (player.health - 60);
+        game_messages("bear_trap");
+        update_footer();
+
     } else {
         game_messages("cant_go_there");
     }
