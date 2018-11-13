@@ -55,7 +55,7 @@ console.log('function initialize start');
     rank: "ready to be eaten",
     kingdom: "None",
     reputation: "huh?",
-    skills: [["not dying",1], ["running away",10]],
+    skills: [["Not dying",1], ["Running away",10]],
     location_X: 0,
     location_Y: 0,
     location_Z: 0,
@@ -69,6 +69,13 @@ console.log('function initialize start');
     charisma: 10,
     luck: 10,
     region: "newbie",
+    achievements: {
+                    achievement_1: {
+                        name: 'test',
+                        awarded: 'date'
+                    }
+
+    },
     inventory: {
                     weapon_1: {
                         name: 'The feeble axe of butterfly death!',
@@ -98,7 +105,7 @@ console.log('function initialize start');
                         equipped: 'no'
                     },
                     weapon_3: {
-                        name: 'The strong axe of killing small things!',
+                        name: 'The axe of killing small things!',
                         category: 'weapon',
                         damage: 20,
                         cursed: 0,
@@ -129,6 +136,7 @@ console.log('function initialize start');
         }
         update_footer(player);
         update_messages(player);
+        update_stats(player);
         document.getElementById('messages').innerHTML = "Welcome.";
         console.log('function initialize end');
         return player;
@@ -349,6 +357,62 @@ function update_footer() {
 function update_messages() {
 // if messages are a certain length, do a "more messages" or something.
 }
+
+function update_stats(player) {
+    document.getElementById("stats_and_inventory_block").innerHTML = "<div class=\"category\">Skills</div><ul>";
+    for(var i in player.skills) {
+        document.getElementById("stats_and_inventory_block").innerHTML += "<li>" + player.skills[i][0] + " : " + player.skills[i][1] + "</li>";
+    }
+    document.getElementById("stats_and_inventory_block").innerHTML += "</ul><br />";
+    document.getElementById("stats_and_inventory_block").innerHTML += "<div class=\"category\">Inventory</div><ul>";
+    
+    var print_header = false;
+    for(var j in player.inventory) {
+        if (player.inventory[j].category === 'weapon') {
+            if (!print_header) {
+                document.getElementById("stats_and_inventory_block").innerHTML += "<strong>Sharp pokey things:</strong><ul>";
+                print_header = true;
+            }
+                document.getElementById("stats_and_inventory_block").innerHTML += "<li>" + player.inventory[j].name + "</li>";
+
+
+        } else if (player.inventory[j].category === 'armor') {
+            print_header = false;
+            if (!print_header) {
+                document.getElementById("stats_and_inventory_block").innerHTML += "<br /><strong>Protection! Sort of...</strong><ul>";
+                print_header = true;
+            }
+            document.getElementById("stats_and_inventory_block").innerHTML += "<li>" + player.inventory[j].name + "</li>";
+        }
+
+        else if (player.inventory[j].category === 'magic_items') {
+            print_header = false;
+            if (!print_header) {
+                document.getElementById("stats_and_inventory_block").innerHTML += "<br /><strong>Glowing Uselessness:</strong><ul>";
+                print_header = true;
+            }
+            document.getElementById("stats_and_inventory_block").innerHTML += "<li>" + player.inventory[j].name + "</li>";
+        }
+
+         else if (player.inventory[j].category === 'potion') {
+            print_header = false;
+            if (!print_header) {
+                document.getElementById("stats_and_inventory_block").innerHTML += "<br /><strong>Drinky things:</strong><ul>";
+                print_header = true;
+            }
+            document.getElementById("stats_and_inventory_block").innerHTML += "<li>" + player.inventory[j].name + "</li>";
+        }
+    }
+
+    document.getElementById("stats_and_inventory_block").innerHTML += "</ul>";
+
+
+    document.getElementById("stats_and_inventory_block").innerHTML += "<br /> <div class=\"category\">Achievements</div><ul>";
+    for(var k in player.achievements) {
+        document.getElementById("stats_and_inventory_block").innerHTML += "<li>" + player.achievements[k].name +  "</li>";
+    }
+}
+
 
 function inventory() {
 // this function displays inventory. Eventually it will do more inventory stuff. 
