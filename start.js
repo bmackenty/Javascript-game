@@ -32,7 +32,6 @@ DONE STUFF:
 TODO: player object
 TODO: put listener into a function. 
 
-
 */
 
 const main_map = document.getElementById('main_map');
@@ -171,6 +170,19 @@ function starting_map() {
     grid.splice(67, 0, 7);
     grid.splice(101, 0, 7);
     grid.splice(135, 0, 7);
+    // the lines below are for bear traps. Because BEAR TRAPS!!!!
+    grid.splice(109, 0, 8);
+    grid.splice(100, 0, 8);
+    grid.splice(523, 0, 8);
+    grid.splice(58, 0, 8);
+    grid.splice(999, 0, 8);
+    grid.splice(241, 0, 8);
+    grid.splice(387, 0, 8);
+    grid.splice(366, 0, 8);
+    grid.splice(42, 0, 8);
+    grid.splice(49, 0, 8);
+
+
 
     // make player starting location. It's just TOTALLY for testing. Also, we should track the current player location for
     // reasons. 
@@ -199,6 +211,10 @@ function draw_map(array_for_map) {
     } else if (array_for_map[i] === 7) {
         // impossible, impassible mountains of Thogar (aka Thogars Teeth)
         array_for_map[i] = "<i class=\"fas fa-mountain fa-fw\" style=\"color:black\" title=\"Impossible impassible mountains of Thogar (aka Thogars Teeth)\"></i>";
+
+    } else if (array_for_map[i] === 8) {
+        // bear trap. Heh. 
+        array_for_map[i] = "<i class=\"fab fa-codepen fa-fw\" style=\"color:black\" title=\"Bear Attractors\"></i>";
     }
 
 }
