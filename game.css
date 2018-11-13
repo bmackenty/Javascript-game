@@ -57,3 +57,34 @@ But it's been pretty hacked through :-)
     border-top-style: solid;
     padding:5px;
 }
+/* the alert box was taken from: 
+https://www.w3schools.com/howto/howto_js_alert.asp
+I have modified it. 
+*/
+
+/* The alert message box */
+.alert {
+    border-radius: 25px;
+    padding: 6px;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    color: #721c24;
+    margin-bottom: 15px;
+}
+
+/* The close button */
+.closebtn {
+    margin-left: 15px;
+    color: #721c24;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+/* When moving the mouse over the close button */
+.closebtn:hover {
+    color: black;
+}
