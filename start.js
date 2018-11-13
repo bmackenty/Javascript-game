@@ -25,11 +25,12 @@ TODO: add credits
 TODO: help screen, ditch tooltips
 HINT: throw new Error("Something went badly wrong!");
 LEARNED: about shallow copies. Thanks stackoverflow
+TODO: make alert messages more random, funny and meaningfulß
 
 DONE STUFF: 
 
 TODO: player object
-TODO: put listener into a function claled main_game_loop. 
+TODO: put listener into a function. 
 
 
 */
@@ -137,12 +138,9 @@ function game_messages(message){
 
     if (message === "cant_go_there") {
 
-        document.getElementById("messages").innerHTML += "<div class=\"alert alert-danger alert-dismissible fade show\" role=\"alert\">" +
-        "You cant go that way!" +
-        " <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"> " +
-        " <span aria-hidden=\"true\">&times;</span> " +
-        " </button> </div> ";
-
+        document.getElementById("messages").innerHTML += "<div class=\"alert\">" + 
+        "<span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span> " + 
+        "Your path is blocked </div>";
     }
 
 
