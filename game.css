@@ -31,14 +31,25 @@ But it's been pretty hacked through :-)
    padding: 0 210px 0 160px;
 }
 
-#right {
+#stats_and_inventory_block {
     float: right;
     width: 200px;
     height: 650px;
     border-left-style: solid;
     border-left-width: 1px;
     padding:5px;
+    font-size: small;
 }
+
+#stats_and_inventory_block strong {
+    text-decoration: underline;
+}
+
+.category {
+    border-width: 1px;
+    border-style: solid;
+    padding:2px;
+}  
 
 #header {
     border-bottom-width: 1px;
