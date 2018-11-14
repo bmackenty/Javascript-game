@@ -83,6 +83,16 @@ I have modified it.
     margin-bottom: 15px;
 }
 
+.information {
+    border-radius: 25px;
+    padding: 9px;
+    background-color: #cce5ff;
+    border-color: #b8daff;
+    color: #004085;
+    margin-bottom: 15px;
+}
+
+
 /* The close button */
 .closebtn {
     margin-left: 15px;
