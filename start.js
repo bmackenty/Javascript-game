@@ -26,7 +26,9 @@ TODO: add credits
 TODO: help screen, ditch tooltips
 HINT: throw new Error("Something went badly wrong!");
 LEARNED: about shallow copies. Thanks stackoverflow
-TODO: make alert messages more random, funny and meaningfulß
+TODO: make alert messages more random, funny and meaningful
+TODO: death
+TODO: remove bear trap after its been triggered
 
 DONE STUFF: 
 
@@ -243,6 +245,21 @@ grid = temp_grid.slice(0);
 return array_for_map;
 }
 
+function map_interaction_item(map_object){    
+    console.log("hi. I'm map_interaction_item function, and you've just passed me: " + map_object);
+    if (map_object === 1 || map_object === 2 || map_object === 3 ) {
+        return ("allow_move")
+    }   else if (map_object === 8) {
+        // bear trap code: 
+        player.health = (player.health - 60);
+        game_messages("bear_trap");
+        return ("allow_move")
+    } else {
+        return("prohibit_move")
+
+    }
+}
+
 function move(direction) {
 // issue with not counting until the first move.
   if (direction === 'r'){
@@ -252,7 +269,11 @@ function move(direction) {
     // now the destination. This ASSUMES A 34 LENGTH array
     var destination = current_location + 1;
     // now we check if terrain is passable
-    if (grid[destination] === 1 || grid[destination] === 2 || grid[destination] === 3 ) {
+    var result_of_move = map_interaction_item(grid[destination]);
+
+
+
+    if (result_of_move === "allow_move") {
         // now lets replace the terrain that was in the old place.
         grid[destination - 1] = destination_terrain;
         // now let's get the terrain the place they want to go. we need this so we can replace it when they move later on. 
@@ -264,18 +285,12 @@ function move(direction) {
             // now lets update the map
             draw_map(grid);
             update_footer();
-    } else if (grid[destination] === 8) {
-        // bear trap code. 
-        player.health = (player.health - 60);
-        game_messages("bear_trap");
-        update_footer();
 
     } else {
         game_messages("cant_go_there");
-    }
-
-
-  } else if (direction === 'l'){
+    } 
+}
+     else if (direction === 'l'){
 
     // let's start by getting the current location of the player
     var current_location = grid.indexOf(6);
@@ -412,7 +427,6 @@ function update_stats(player) {
         document.getElementById("stats_and_inventory_block").innerHTML += "<li>" + player.achievements[k].name +  "</li>";
     }
 }
-
 
 function inventory() {
 // this function displays inventory. Eventually it will do more inventory stuff. 
