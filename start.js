@@ -157,7 +157,14 @@ function game_messages(message){
 
         document.getElementById("messages").innerHTML += "<div class=\"alert\">" + 
         "<span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span> " + 
-        "You have walked into a bear trap and suffered horribly. How did you not see that?! </div>";
+        "You have walked into a bear trap and suffered horribly. The bears thank you. </div>";
+    }
+
+    else if (message === "triggered_bear_trap") {
+
+        document.getElementById("messages").innerHTML += "<div class=\"information\">" + 
+        "<span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span> " + 
+        "You pass over a triggered bear trap. You wonder who was silly enough to actually step on a bear trap. <br /><br />...and then you look down at your leg.... </div>";
     }
 
 }
@@ -203,7 +210,7 @@ function starting_map() {
 
     // make player starting location. It's just TOTALLY for testing. Also, we should track the current player location for
     // reasons. 
-    grid.splice(60, 0, 6);
+    grid.splice(57, 0, 6);
     console.log('function starting map end');
 }
 
@@ -229,8 +236,11 @@ function draw_map(array_for_map) {
         // impossible, impassible mountains of Thogar (aka Thogars Teeth)
         array_for_map[i] = "<i class=\"fas fa-mountain fa-fw\" style=\"color:black\" title=\"Impossible impassible mountains of Thogar (aka Thogars Teeth)\"></i>";
     } else if (array_for_map[i] === 8) {
-        // bear trap. Heh. 
-        array_for_map[i] = "<i class=\"fab fa-codepen fa-fw\" style=\"color:black\" title=\"Bear Attractors\"></i>";
+        // ACTIVE bear trap. Heh. 
+        array_for_map[i] = "<i class=\"fab fa-codepen fa-fw\" style=\"color:black\" title=\"Bear Attractor\"></i>";
+    } else if (array_for_map[i] === 9) {
+        // TRIGGERED bear trap. Heh. 
+        array_for_map[i] = "<i class=\"fab fa-codepen fa-fw\" style=\"color:grey\" title=\"Triggered Bear Attractor\"></i>";
     }
 
 }
@@ -245,15 +255,25 @@ grid = temp_grid.slice(0);
 return array_for_map;
 }
 
-function map_interaction_item(map_object){    
+function map_interaction_item(map_object,destination){    
     console.log("hi. I'm map_interaction_item function, and you've just passed me: " + map_object);
+
     if (map_object === 1 || map_object === 2 || map_object === 3 ) {
         return ("allow_move")
+
     }   else if (map_object === 8) {
         // bear trap code: 
         player.health = (player.health - 60);
+        player.skills.push(['Friend of the bear',1]);
         game_messages("bear_trap");
+        grid[destination] = 9;
         return ("allow_move")
+
+    } else if (map_object === 9) {
+            game_messages("triggered_bear_trap");
+            return ("allow_move")
+
+
     } else {
         return("prohibit_move")
 
@@ -269,7 +289,7 @@ function move(direction) {
     // now the destination. This ASSUMES A 34 LENGTH array
     var destination = current_location + 1;
     // now we check if terrain is passable
-    var result_of_move = map_interaction_item(grid[destination]);
+    var result_of_move = map_interaction_item(grid[destination],destination);
 
 
 
@@ -285,6 +305,7 @@ function move(direction) {
             // now lets update the map
             draw_map(grid);
             update_footer();
+            update_stats(player);
 
     } else {
         game_messages("cant_go_there");
