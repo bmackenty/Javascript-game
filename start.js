@@ -291,8 +291,6 @@ function move(direction) {
     // now we check if terrain is passable
     var result_of_move = map_interaction_item(grid[destination],destination);
 
-
-
     if (result_of_move === "allow_move") {
         // now lets replace the terrain that was in the old place.
         grid[destination - 1] = destination_terrain;
@@ -311,28 +309,34 @@ function move(direction) {
         game_messages("cant_go_there");
     } 
 }
+
      else if (direction === 'l'){
 
-    // let's start by getting the current location of the player
-    var current_location = grid.indexOf(6);
-    // now the destination. This ASSUMES A 34 LENGTH array
-    var destination = current_location - 1;
-    // now we check if terrain is passable
-    if (grid[destination] === 1 || grid[destination] === 2 || grid[destination] === 3 ) {
-        // now lets replace the terrain that was in the old place.
-        grid[destination + 1] = destination_terrain;
-        // now let's get the terrain the place they want to go. we need this so we can replace it when they move later on. 
-        destination_terrain = grid[current_location - 1];
-        // now let's move the player icon. 
-        grid[destination] = 6;
-            // increment the turn counter 
-            turn = turn + 1;
-            // now lets update the map
-            draw_map(grid);
-            update_footer();
-    } else {
-        game_messages("cant_go_there");
-    }
+        // let's start by getting the current location of the player
+        var current_location = grid.indexOf(6);
+        // now the destination. This ASSUMES A 34 LENGTH array
+        var destination = current_location - 1;
+        // now we check if terrain is passable
+        var result_of_move = map_interaction_item(grid[destination],destination);
+    
+        if (result_of_move === "allow_move") {
+            // now lets replace the terrain that was in the old place.
+            grid[destination + 1] = destination_terrain;
+            // now let's get the terrain the place they want to go. we need this so we can replace it when they move later on. 
+            destination_terrain = grid[current_location - 1];
+            // now let's move the player icon. 
+            grid[destination] = 6;
+                // increment the turn counter 
+                turn = turn + 1;
+                // now lets update the map
+                draw_map(grid);
+                update_footer();
+                update_stats(player);
+    
+        } else {
+            game_messages("cant_go_there");
+        } 
+    
 
 
   } else if (direction === 'u'){
@@ -342,7 +346,9 @@ function move(direction) {
     // now the destination. This ASSUMES A 34 LENGTH array
     var destination = current_location - 34;
     // now we check if terrain is passable
-    if (grid[destination] === 1 || grid[destination] === 2 || grid[destination] === 3 ) {
+    var result_of_move = map_interaction_item(grid[destination],destination);
+
+    if (result_of_move === "allow_move") {
         // now lets replace the terrain that was in the old place.
         grid[destination + 34] = destination_terrain;
         // now let's get the terrain the place they want to go. we need this so we can replace it when they move later on. 
@@ -354,9 +360,11 @@ function move(direction) {
             // now lets update the map
             draw_map(grid);
             update_footer();
+            update_stats(player);
+
     } else {
         game_messages("cant_go_there");
-    }
+    } 
 
     } else if (direction === 'd'){
 
@@ -365,21 +373,25 @@ function move(direction) {
         // now the destination. This ASSUMES A 34 LENGTH array
         var destination = current_location + 34;
         // now we check if terrain is passable
-        if (grid[destination] === 1 || grid[destination] === 2 || grid[destination] === 3 ) {
+        var result_of_move = map_interaction_item(grid[destination],destination);
+    
+        if (result_of_move === "allow_move") {
             // now lets replace the terrain that was in the old place.
             grid[destination - 34] = destination_terrain;
             // now let's get the terrain the place they want to go. we need this so we can replace it when they move later on. 
             destination_terrain = grid[current_location + 34];
             // now let's move the player icon. 
             grid[destination] = 6;
-            // increment the turn counter 
-            turn = turn + 1;
-            // now lets update the map
-            draw_map(grid);
-            update_footer();
+                // increment the turn counter 
+                turn = turn + 1;
+                // now lets update the map
+                draw_map(grid);
+                update_footer();
+                update_stats(player);
+    
         } else {
             game_messages("cant_go_there");
-        }
+        } 
 
     return
   }
@@ -449,41 +461,7 @@ function update_stats(player) {
     }
 }
 
-function inventory() {
-// this function displays inventory. Eventually it will do more inventory stuff. 
-    console.log(Object.keys(player.inventory).length);
-    inventory_length = Object.keys(player.inventory).length;
-    modal_body.innerHTML = "";
-    modal_body.innerHTML += "You are currently carrying " + inventory_length + " items. <br /><br />";
-    var print_weapons_header = false;
-    var print_potion_header = false;
-    for (var i in player.inventory) {
-        
-        if (player.inventory[i].category === 'weapon') {
-            if (!print_weapons_header) {
-                modal_body.innerHTML += "<strong>Things to poke your enemies with and prevent your inevitable death:</strong><ul>";
-                print_weapons_header = true;
-            }
-            modal_body.innerHTML += "<li>" + player.inventory[i].name + "</li>";
-            }
-            modal_body.innerHTML += "</ul>";
 
-            if (player.inventory[i].category === 'potion') {
-                if (!print_potion_header) {
-                    modal_body.innerHTML += "<br /><strong>Strange liquid in a glass jars:</strong><ul>";
-                    print_potion_header = true;
-                }
-                modal_body.innerHTML += "<li>" + player.inventory[i].name + "</li>";
-                }
-                modal_body.innerHTML += "</ul>";
-        }
-    
-
-
-    $(document).ready(function() {
-        $('#exampleModal').modal('show');
-    });
-}
 
 function main_listener() {
     // the code below is used from https://medium.com/@uistephen/keyboardevent-key-for-cross-browser-key-press-check-61dbad0a067a
@@ -533,16 +511,12 @@ function main_listener() {
             document.getElementById("main_map").innerHTML = draw_map(grid); 
             // increment the turn counter 
             turn = turn + 1;
-
-            
             
         } else if (key === '?' || key === 191) {
             document.getElementById("messages").innerHTML = key; 
             
             
-        } else if (key === 'i' || key === 73 || key === 'I') {
-            inventory(); 
-    }
+        } 
     });
 }
 
