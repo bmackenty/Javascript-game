@@ -399,11 +399,46 @@ function move(direction) {
 } 
 
 function update_footer() {
-    document.getElementById("footer").innerHTML = "Health: " + player.health + " | Magic: " + player.magic + " | Turn: " + turn;
+    document.getElementById("footer").innerHTML = "Health: " + health_number_to_text(player.health) + " | Magic: " + player.magic + " | Turn: " + turn;
 }
 
 function update_messages() {
 // if messages are a certain length, do a "more messages" or something.
+}
+
+function health_number_to_text(value){
+    var condition;
+    if (value < 0){
+        condition = "<font color=\"black\"><strong>DEAD!(" + value + ")</strong></font>";
+        return condition
+    } else if (value < 10){
+        condition = "<font color=\"#FF001F\"><strong>Basically about dead.(" + value + ")</strong></font>";
+        return condition
+    } else if (value < 20) {
+        condition = "<font color=\"#FF001F\"><strong>Falling off the edge of death. (" + value + ")</strong></font>";
+        return condition
+    } else if (value < 30) {
+        condition = "<font color=\"#FF001F\"><strong>Edge of death(" + value + ")</strong></font>";
+        return condition
+    } else if (value < 40) {
+        condition = "<font color=\"#FF001F\"><strong>Mildly decapitated (" + value + ")</strong></font>";
+        return condition
+    } else if (value < 50) {
+        condition = "<font color=\"#FF001F\"><strong>Damaged liver(" + value + ")</strong></font>";
+        return condition
+    } else if (value < 60) {
+        condition = "<font color=\"#FBB004\"><strong>Missing part of leg(" + value + ")</strong></font>";
+        return condition
+    } else if (value < 70) {
+        condition = "<font color=\"green\"><strong>Unhealthy (" + value + ")</strong></font>";
+        return condition
+    } else if (value < 80) {
+        condition = "<font color=\"green\"><strong>Less healthy (" + value + ")</strong></font>";
+        return condition
+    } else if (value < 101) {
+        condition =  "<font color=\"green\"><strong>Healthy (" + value + ")</strong></font>";
+        return condition
+    }
 }
 
 function update_stats(player) {
@@ -478,6 +513,9 @@ function main_listener() {
     if (key === 'Escape' || key === 'Esc' || key === 27) {
         document.getElementById("messages").innerHTML = key;
 
+    } else if (key === 'w' || key === 'W') {
+        player.health -= 10;
+        update_footer(player);
 
 
         } else if (key === 'ArrowRight' || key === 39) {
