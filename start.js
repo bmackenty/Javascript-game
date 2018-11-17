@@ -186,10 +186,6 @@ function make_random_terrain() {
 function starting_map() {
     console.log('function starting map start');
     grid.splice(0, 30, 7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7);
-    // grid.splice(1, 0, 7);
-    // grid.splice(2, 0, 7);
-    // grid.splice(3, 0, 7);
-    // grid.splice(4, 0, 7);
     grid.splice(34, 0, 7);
     grid.splice(67, 0, 7);
     grid.splice(101, 0, 7);
@@ -205,9 +201,24 @@ function starting_map() {
     grid.splice(366, 1, 8);
     grid.splice(42, 1, 8);
     grid.splice(49, 1, 8);
-
-
-
+    // this is our very very first try at procedural generation. it works. but it's basic.
+    var test_start = 470;
+    var test_counter = 0;
+    var row_size = 6;
+    var i = 0;
+    while (i < 50) {
+    	if (test_counter < 10) {
+    		grid[(test_start+row_size)] = 4;
+    		i++;
+    		test_counter++;
+    		row_size++;
+    	} else {
+    		console.log(test_start);
+    		test_start = test_start + 34;
+    		test_counter = 1;
+    		row_size = 6;
+    	}
+    }
     // make player starting location. It's just TOTALLY for testing. Also, we should track the current player location for
     // reasons. 
     grid.splice(57, 0, 6);
