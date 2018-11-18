@@ -28,6 +28,7 @@ HINT: throw new Error("Something went badly wrong!");
 LEARNED: about shallow copies. Thanks stackoverflow
 TODO: make alert messages more random, funny and meaningful
 TODO: death
+TODO: different trees
 TODO: remove bear trap after its been triggered
 
 DONE STUFF: 
@@ -185,11 +186,8 @@ function make_random_terrain() {
 
 function starting_map() {
     console.log('function starting map start');
-    grid.splice(0, 30, 7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7);
-    grid.splice(34, 0, 7);
-    grid.splice(67, 0, 7);
-    grid.splice(101, 0, 7);
-    grid.splice(135, 0, 7);
+
+
     // the lines below are for bear traps. Because BEAR TRAPS!!!!
     grid.splice(109, 1, 8);
     grid.splice(100, 1, 8);
@@ -202,26 +200,40 @@ function starting_map() {
     grid.splice(42, 1, 8);
     grid.splice(49, 1, 8);
     // this is our very very first try at procedural generation. it works. but it's basic.
+
     var test_start = 470;
     var test_counter = 0;
     var row_size = 6;
+    var variance = Math.floor(Math.random() * 4) - 2;
     var i = 0;
-    while (i < 50) {
-    	if (test_counter < 10) {
-    		grid[(test_start+row_size)] = 4;
-    		i++;
-    		test_counter++;
-    		row_size++;
-    	} else {
-    		console.log(test_start);
-    		test_start = test_start + 34;
-    		test_counter = 1;
-    		row_size = 6;
-    	}
-    }
+    // while (i < 55) {
+    // 	if (test_counter < 10) {
+    // 		grid[(test_start+row_size)] = 10;
+    // 		i++;
+    // 		test_counter++;
+    // 		row_size++;
+    // 	} else {
+    // 		test_start = test_start + (34+variance);
+    // 		test_counter = 1;
+    // 		row_size = 6;
+    // 	}
+    // }
     // make player starting location. It's just TOTALLY for testing. Also, we should track the current player location for
     // reasons. 
-    grid.splice(57, 0, 6);
+    grid.splice(57, 1, 6);
+
+        // the side mountain range along the left side of the map
+        grid.splice(0, 1, 7);
+        grid.splice(34, 1, 7);
+        grid.splice(68, 1, 7);
+        for (var i=102;i <1224;i=i+34){
+            grid.splice(i, 0, 7);
+        }
+    
+        // the top mountain range
+        for (var j=1;j <35;j++){
+            grid.splice(j, 1, 7);
+        }
     console.log('function starting map end');
 }
 
@@ -234,9 +246,15 @@ function draw_map(array_for_map) {
     if (array_for_map[i] === 1 || array_for_map[i] === 2 || array_for_map[i] === 3){
         // this is plain, open terrain
         array_for_map[i] = "<i class=\"fas fa-ellipsis-h fa-fw\" style=\"color:#D2B48C\"></i>";
+    
+    } else if (array_for_map[i] === 10) {
+        // this is a tree
+        array_for_map[i] = "<i class=\"fas fa-tree fa-fw\" style=\"color:#229954\" title=\"A tree.\"></i>";
+
     } else if (array_for_map[i] === 4) {
         // this is a tree
         array_for_map[i] = "<i class=\"fas fa-tree fa-fw\" style=\"color:green\" title=\"A tree.\"></i>";
+
     } else if (array_for_map[i] === 5) {
         // this is a mountain or hill
         array_for_map[i] = "<i class=\"fas fa-mountain fa-fw\" style=\"color:grey\"  title=\"A mountain\"></i>";
@@ -506,8 +524,6 @@ function update_stats(player) {
         document.getElementById("stats_and_inventory_block").innerHTML += "<li>" + player.achievements[k].name +  "</li>";
     }
 }
-
-
 
 function main_listener() {
     // the code below is used from https://medium.com/@uistephen/keyboardevent-key-for-cross-browser-key-press-check-61dbad0a067a
