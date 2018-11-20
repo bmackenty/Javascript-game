@@ -30,6 +30,7 @@ But it's been pretty hacked through :-)
 #main_map {
     margin-top: 2px;
    padding: 0 210px 0 160px;
+   text-align: center;
 }
 
 #stats_and_inventory_block {
