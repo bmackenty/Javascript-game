@@ -132,6 +132,11 @@ console.log('function initialize start');
                         type: 'potion',
                         cost: 2,
                         equipped: 'no'
+                    },
+                    craft_1: {
+                        name: 'wood',
+                        category: 'craft',
+                        quantity: 0
                     }
 
                 }
@@ -167,6 +172,15 @@ function game_messages(message){
         "<span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span> " + 
         "You pass over a triggered bear trap. You wonder who was silly enough to actually step on a bear trap. <br /><br />...and then you look down at your leg.... </div>";
     }
+
+    else if (message === "gather_wood") {
+
+        document.getElementById("messages").innerHTML += "<div class=\"information\">" + 
+        "<span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span> " + 
+        "You gather some wood. Tree killer. </div>";
+    }
+
+
 
 }
 
@@ -206,18 +220,18 @@ function starting_map() {
     var row_size = 6;
     var variance = Math.floor(Math.random() * 4) - 2;
     var i = 0;
-    // while (i < 55) {
-    // 	if (test_counter < 10) {
-    // 		grid[(test_start+row_size)] = 10;
-    // 		i++;
-    // 		test_counter++;
-    // 		row_size++;
-    // 	} else {
-    // 		test_start = test_start + (34+variance);
-    // 		test_counter = 1;
-    // 		row_size = 6;
-    // 	}
-    // }
+    while (i < 55) {
+    	if (test_counter < 10) {
+    		grid[(test_start+row_size)] = 10;
+    		i++;
+    		test_counter++;
+    		row_size++;
+    	} else {
+    		test_start = test_start + (34+variance);
+    		test_counter = 1;
+    		row_size = 6;
+    	}
+    }
     // make player starting location. It's just TOTALLY for testing. Also, we should track the current player location for
     // reasons. 
     grid.splice(57, 1, 6);
@@ -292,7 +306,7 @@ function map_interaction_item(map_object,destination){
 
     }   else if (map_object === 8) {
         // bear trap code: 
-        player.health = (player.health - 60);
+        player.health = (player.health - 21);
         player.skills.push(['Friend of the bear',1]);
         game_messages("bear_trap");
         grid[destination] = 9;
@@ -302,6 +316,11 @@ function map_interaction_item(map_object,destination){
             game_messages("triggered_bear_trap");
             return ("allow_move")
 
+    } else if (map_object === 4 || map_object == 10) {
+            game_messages("gather_wood");
+            player.inventory["craft_1"].quantity += 10;
+            grid[destination] = 1;
+            return ("allow_move")
 
     } else {
         return("prohibit_move")
@@ -513,6 +532,15 @@ function update_stats(player) {
                 print_header = true;
             }
             document.getElementById("stats_and_inventory_block").innerHTML += "<li>" + player.inventory[j].name + "</li>";
+        }
+
+        else if (player.inventory[j].category === 'craft') {
+            print_header = false;
+            if (!print_header) {
+                document.getElementById("stats_and_inventory_block").innerHTML += "<br /><strong>Building Materials:</strong><ul>";
+                print_header = true;
+            }
+            document.getElementById("stats_and_inventory_block").innerHTML += "<li>" + player.inventory[j].name + " (" + player.inventory[j].quantity +    ") </li>";
         }
     }
 
