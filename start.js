@@ -180,8 +180,11 @@ function game_messages(message){
         "You gather some wood. Tree killer. </div>";
     }
 
+    else if (message === "died") {
 
-
+        document.getElementById("main_map").innerHTML = "<br /> *** You have died *** <br /><br /> " + 
+        "<a href=\"#\" onclick=\"window.location.reload(true);\">Click to restart</a>";
+    }
 }
 
 function make_random_terrain() {
@@ -249,9 +252,23 @@ function starting_map() {
             grid.splice(j, 1, 7);
         }
     console.log('function starting map end');
+    count_trees();
+}
+
+function count_trees() {
+    var number_of_trees = 0;
+    size_of_array = grid.length;
+    for (var i=0;i < size_of_array; i++) {
+        if (grid[i] == 4 || grid[i] == 10) {
+            var number_of_trees = number_of_trees + 1;
+    }
+}
+console.log("there are: " + number_of_trees);
+return
 }
 
 function draw_map(array_for_map) {
+
    var temp_grid = array_for_map.slice(0);
     var counter = 0;
     var arrayLength = array_for_map.length;
@@ -446,7 +463,15 @@ function move(direction) {
 
 } 
 
+function death() {
+    game_messages("died");
+    return
+}
+
 function update_footer() {
+    if (player.health <= 0){
+        death();
+    }
     document.getElementById("footer").innerHTML = "Health: " + health_number_to_text(player.health) + " | Magic: " + player.magic + " | Turn: " + turn;
 }
 
