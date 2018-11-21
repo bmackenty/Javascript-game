@@ -46,6 +46,7 @@ var destination_terrain = 1;
 var player = {};
 var foo = [];
 var array_for_map = [];
+var clear_message_counter = 0;
 
 function initialize() {
 
@@ -151,12 +152,19 @@ console.log('function initialize start');
 } 
 
 function game_messages(message){
+    if (clear_message_counter > 6) {
+        document.getElementById("messages").innerHTML = "";
+        clear_message_counter = 0;
+    }
+    
 
     if (message === "cant_go_there") {
 
         document.getElementById("messages").innerHTML += "<div class=\"alert\">" + 
         "<span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span> " + 
         "Your path is blocked </div>";
+        clear_message_counter += 1;
+
     }
 
     else if (message === "bear_trap") {
@@ -164,6 +172,7 @@ function game_messages(message){
         document.getElementById("messages").innerHTML += "<div class=\"alert\">" + 
         "<span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span> " + 
         "You have walked into a bear trap and suffered horribly. The bears thank you. </div>";
+        clear_message_counter += 1;
     }
 
     else if (message === "triggered_bear_trap") {
@@ -171,6 +180,7 @@ function game_messages(message){
         document.getElementById("messages").innerHTML += "<div class=\"information\">" + 
         "<span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span> " + 
         "You pass over a triggered bear trap. You wonder who was silly enough to actually step on a bear trap. <br /><br />...and then you look down at your leg.... </div>";
+        clear_message_counter += 2;
     }
 
     else if (message === "gather_wood") {
@@ -178,6 +188,7 @@ function game_messages(message){
         document.getElementById("messages").innerHTML += "<div class=\"information\">" + 
         "<span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span> " + 
         "You gather some wood. Tree killer. </div>";
+        clear_message_counter += 1;
     }
 
     else if (message === "died") {
