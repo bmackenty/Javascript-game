@@ -3,4 +3,4 @@ As I embark on my journey to learn javascript, I have a clear idea of what I wan
 
 I don't what depth of dwarven fortress. I want the comedy and a fun game to play.
 
-There is an online version of this, https://moderncommand.com.
+There is an online version of this, https://yeoldequiveringcommunistzombies.com/
