@@ -48,6 +48,12 @@ var foo = [];
 var array_for_map = [];
 var clear_message_counter = 0;
 
+function exists(arr, search) {
+    // used with gratitude from:
+    // https://stackoverflow.com/questions/48538162/how-to-check-if-a-two-dimensional-array-includes-a-string
+    return arr.some(row => row.includes(search));
+}
+
 function initialize() {
 
 
@@ -335,7 +341,13 @@ function map_interaction_item(map_object,destination){
     }   else if (map_object === 8) {
         // bear trap code: 
         player.health = (player.health - 21);
-        player.skills.push(['Friend of the bear',1]);
+        if (!exists(player.skills,"Friend of the bear")) {
+            player.skills.push(["Friend of the bear",1]);
+        } else {
+            // TODO: increment a value in a 2d array
+            console.log('foo');
+
+        }
         game_messages("bear_trap");
         grid[destination] = 9;
         return ("allow_move")
