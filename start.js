@@ -376,8 +376,7 @@ return array_for_map;
 
 function map_interaction_item(map_object,destination){    
     console.log("hi. I'm map_interaction_item function, and you've just passed me: " + map_object);
-
-    if (map_object === 1 || map_object === 2 || map_object === 3 ) {
+    if (map_object <= 3 || (map_object >= 19 && map_object <= 25) || map_object ===5 || map_object ===7) {
         return ("allow_move")
 
     } else if (map_object === 100  || map_object === 101){
