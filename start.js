@@ -27,7 +27,7 @@ TODO: help screen, ditch tooltips
 HINT: throw new Error("Something went badly wrong!");
 LEARNED: about shallow copies. Thanks stackoverflow
 TODO: make alert messages more random, funny and meaningful
-TODO: different trees
+
 TODO: remove bear trap after its been triggered
 
 DONE STUFF: 
@@ -35,6 +35,7 @@ DONE STUFF:
 TODO: player object
 TODO: put listener into a function. 
 TODO: death
+TODO: different trees
 
 */
 
@@ -210,9 +211,9 @@ function make_random_terrain() {
     console.log('function make random terrain start');
     // the stuff below generates an array which is then eventually translated into terrain
     var counter = 1;
-    while ( counter <= 1215 ) {
+    while ( counter <= 1191 ) {
     // the line below creates some random terrain. totally random, TODO: this needs to be smart.
-    terrain = Math.floor(Math.random() * 5)+1;
+    terrain = Math.floor(Math.random() * 25)+1;
     grid.push(terrain);
     counter += 1;
     }
@@ -225,16 +226,16 @@ function starting_map() {
 
 
     // the lines below are for bear traps. Because BEAR TRAPS!!!!
-    grid.splice(109, 1, 8);
-    grid.splice(100, 1, 8);
-    grid.splice(523, 1, 8);
-    grid.splice(58, 1, 8);
-    grid.splice(999, 1, 8);
-    grid.splice(241, 1, 8);
-    grid.splice(387, 1, 8);
-    grid.splice(366, 1, 8);
-    grid.splice(42, 1, 8);
-    grid.splice(49, 1, 8);
+    grid.splice(109, 1, 98);
+    grid.splice(100, 1, 98);
+    grid.splice(523, 1, 98);
+    grid.splice(58, 1, 98);
+    grid.splice(999, 1, 98);
+    grid.splice(241, 1, 98);
+    grid.splice(387, 1, 98);
+    grid.splice(366, 1, 98);
+    grid.splice(42, 1, 98);
+    grid.splice(49, 1, 98);
     // this is our very very first try at procedural generation. it works. but it's basic.
 
     var test_start = 470;
@@ -256,19 +257,19 @@ function starting_map() {
     }
     // make player starting location. It's just TOTALLY for testing. Also, we should track the current player location for
     // reasons. 
-    grid.splice(57, 1, 6);
+    grid.splice(57, 1, 99);
 
         // the side mountain range along the left side of the map
-        grid.splice(0, 1, 7);
-        grid.splice(34, 1, 7);
-        grid.splice(68, 1, 7);
-        for (var i=102;i <1224;i=i+34){
-            grid.splice(i, 0, 7);
+        grid.splice(0, 1, 100);
+        grid.splice(34, 1, 100);
+        grid.splice(68, 1, 100);
+        for (var i=102;i <1191;i=i+34){
+            grid.splice(i, 0, 100);
         }
     
         // the top mountain range
         for (var j=1;j <35;j++){
-            grid.splice(j, 1, 7);
+            grid.splice(j, 1, 100);
         }
     console.log('function starting map end');
     count_trees();
@@ -278,7 +279,7 @@ function count_trees() {
     var number_of_trees = 0;
     size_of_array = grid.length;
     for (var i=0;i < size_of_array; i++) {
-        if (grid[i] == 4 || grid[i] == 10) {
+        if (grid[i] == 4 || (grid[i] >= 10 || grid[i] <=18)) {
             var number_of_trees = number_of_trees + 1;
     }
 }
@@ -287,40 +288,79 @@ return
 }
 
 function draw_map(array_for_map) {
+    // TODO: put these in sensible order (parsing order == beter optimization??)
 
    var temp_grid = array_for_map.slice(0);
     var counter = 0;
     var arrayLength = array_for_map.length;
     for (var i = 0; i < arrayLength; i++) {
 
-    if (array_for_map[i] === 1 || array_for_map[i] === 2 || array_for_map[i] === 3){
+    if (array_for_map[i] <= 3 || (array_for_map[i] >=19 && array_for_map[i] <=25) || array_for_map[i] === 5 || array_for_map[i] === 7){
         // this is plain, open terrain
         array_for_map[i] = "<i class=\"fas fa-ellipsis-h fa-fw\" style=\"color:#D2B48C\"></i>";
     
     } else if (array_for_map[i] === 10) {
         // this is a tree
-        array_for_map[i] = "<i class=\"fas fa-tree fa-fw\" style=\"color:#229954\" title=\"A tree.\"></i>";
+        array_for_map[i] = "<i class=\"fas fa-tree fa-fw\" style=\"color:#229954\" title=\"A grue tree.\"></i>";
 
     } else if (array_for_map[i] === 4) {
         // this is a tree
-        array_for_map[i] = "<i class=\"fas fa-tree fa-fw\" style=\"color:green\" title=\"A tree.\"></i>";
+        array_for_map[i] = "<i class=\"fas fa-tree fa-fw\" style=\"color:green\" title=\"A tall tree.\"></i>";
 
-    } else if (array_for_map[i] === 5) {
-        // this is a mountain or hill
-        array_for_map[i] = "<i class=\"fas fa-mountain fa-fw\" style=\"color:grey\"  title=\"A mountain\"></i>";
-    } else if (array_for_map[i] === 6) {
-        // this is the player object
-        array_for_map[i] = "<i class=\"fas fa-child fa-fw\" style=\"color:red\" title=\"You.\"></i>";
-    } else if (array_for_map[i] === 7) {
-        // impossible, impassible mountains of Thogar (aka Thogars Teeth)
-        array_for_map[i] = "<i class=\"fas fa-mountain fa-fw\" style=\"color:black\" title=\"Impossible impassible mountains of Thogar (aka Thogars Teeth)\"></i>";
-    } else if (array_for_map[i] === 8) {
+
+    } else if (array_for_map[i] === 11) {
+        // this is a tree
+        array_for_map[i] = "<i class=\"fas fa-tree fa-fw\" style=\"color:#387A19\" title=\"An oak tree.\"></i>";
+
+    } else if (array_for_map[i] === 12 || array_for_map[i] === 8) {
+        // this is a tree
+        array_for_map[i] = "<i class=\"fas fa-tree fa-fw\" style=\"color:#176F43\" title=\"A spruce tree.\"></i>";
+    } else if (array_for_map[i] === 13 || array_for_map[i] === 6) {
+        // this is a tree
+        array_for_map[i] = "<i class=\"fas fa-tree fa-fw\" style=\"color:#06B701\" title=\"A palm tree.\"></i>";
+
+    } else if (array_for_map[i] === 14 || array_for_map[i] === 9) {
+        // this is a tree
+        array_for_map[i] = "<i class=\"fas fa-tree fa-fw\" style=\"color:#50CE0D\" title=\"A willow tree.\"></i>";
+
+    } else if (array_for_map[i] === 15) {
+        // this is a tree
+        array_for_map[i] = "<i class=\"fas fa-tree fa-fw\" style=\"color:#285A0D\" title=\"An ash tree.\"></i>";
+
+    } else if (array_for_map[i] === 16) {
+        // this is a tree
+        array_for_map[i] = "<i class=\"fas fa-tree fa-fw\" style=\"color:#3A572A\" title=\"A fir tree.\"></i>";
+
+    } else if (array_for_map[i] === 17) {
+        // this is a tree
+        array_for_map[i] = "<i class=\"fas fa-tree fa-fw\" style=\"color:#42B306\" title=\"A birch tree.\"></i>";
+
+    } else if (array_for_map[i] === 18) {
+        // this is a tree
+        array_for_map[i] = "<i class=\"fas fa-tree fa-fw\" style=\"color:#2E4720\" title=\"A yew tree.\"></i>";
+        }
+
+     else if (array_for_map[i] === 98) {
         // ACTIVE bear trap. Heh. 
         array_for_map[i] = "<i class=\"fab fa-codepen fa-fw\" style=\"color:black\" title=\"Bear Attractor\"></i>";
-    } else if (array_for_map[i] === 9) {
+    } else if (array_for_map[i] === 97) {
         // TRIGGERED bear trap. Heh. 
         array_for_map[i] = "<i class=\"fab fa-codepen fa-fw\" style=\"color:grey\" title=\"Triggered Bear Attractor\"></i>";
     }
+     else if (array_for_map[i] === 99) {
+        // this is the player object
+        array_for_map[i] = "<i class=\"fas fa-child fa-fw\" style=\"color:red\" title=\"You.\"></i>";
+
+    } else if (array_for_map[i] === 101) {
+        // this is a mountain or hill
+        array_for_map[i] = "<i class=\"fas fa-mountain fa-fw\" style=\"color:grey\"  title=\"A mountain\"></i>";
+    
+    } else if (array_for_map[i] === 100) {
+        // impossible, impassible mountains of Thogar (aka Thogars Teeth)
+        array_for_map[i] = "<i class=\"fas fa-mountain fa-fw\" style=\"color:black\" title=\"Impossible impassible mountains of Thogar (aka Thogars Teeth)\"></i>";
+    }
+
+    
 
 }
  
@@ -340,7 +380,11 @@ function map_interaction_item(map_object,destination){
     if (map_object === 1 || map_object === 2 || map_object === 3 ) {
         return ("allow_move")
 
-    }   else if (map_object === 8) {
+    } else if (map_object === 100  || map_object === 101){
+        return ("prohibit_move")
+    
+
+    }   else if (map_object === 98) {
         // bear trap code: 
         // randomize damage
         player.health = (player.health - 21);
@@ -351,14 +395,14 @@ function map_interaction_item(map_object,destination){
             } else {
                 player.skills["Friend of the Bear"] = 1;
                 game_messages("bear_trap");
-                grid[destination] = 9;
+                grid[destination] = 97;
                 return ("allow_move")
             }
-        } else if (map_object === 9) {
+        } else if (map_object === 97) {
             game_messages("triggered_bear_trap");
             return ("allow_move")
 
-    } else if (map_object === 4 || map_object == 10) {
+    } else if (map_object === 4 || (map_object >= 10 || map_object <=18)) {
             game_messages("gather_wood");
             player.inventory["craft_1"].quantity += 10;
             grid[destination] = 1;
@@ -375,7 +419,7 @@ function move(direction) {
   if (direction === 'r'){
 
     // let's start by getting the current location of the player
-    var current_location = grid.indexOf(6);
+    var current_location = grid.indexOf(99);
     // now the destination. This ASSUMES A 34 LENGTH array
     var destination = current_location + 1;
     // now we check if terrain is passable
@@ -387,7 +431,7 @@ function move(direction) {
         // now let's get the terrain the place they want to go. we need this so we can replace it when they move later on. 
         destination_terrain = grid[current_location + 1];
         // now let's move the player icon. 
-        grid[destination] = 6;
+        grid[destination] = 99;
             // increment the turn counter 
             turn = turn + 1;
             // now lets update the map
@@ -403,7 +447,7 @@ function move(direction) {
      else if (direction === 'l'){
 
         // let's start by getting the current location of the player
-        var current_location = grid.indexOf(6);
+        var current_location = grid.indexOf(99);
         // now the destination. This ASSUMES A 34 LENGTH array
         var destination = current_location - 1;
         // now we check if terrain is passable
@@ -415,7 +459,7 @@ function move(direction) {
             // now let's get the terrain the place they want to go. we need this so we can replace it when they move later on. 
             destination_terrain = grid[current_location - 1];
             // now let's move the player icon. 
-            grid[destination] = 6;
+            grid[destination] = 99;
                 // increment the turn counter 
                 turn = turn + 1;
                 // now lets update the map
@@ -432,7 +476,7 @@ function move(direction) {
   } else if (direction === 'u'){
 
     // let's start by getting the current location of the player
-    var current_location = grid.indexOf(6);
+    var current_location = grid.indexOf(99);
     // now the destination. This ASSUMES A 34 LENGTH array
     var destination = current_location - 34;
     // now we check if terrain is passable
@@ -444,7 +488,7 @@ function move(direction) {
         // now let's get the terrain the place they want to go. we need this so we can replace it when they move later on. 
         destination_terrain = grid[current_location - 34];
         // now let's move the player icon. 
-        grid[destination] = 6;
+        grid[destination] = 99;
             // increment the turn counter 
             turn = turn + 1;
             // now lets update the map
@@ -459,7 +503,7 @@ function move(direction) {
     } else if (direction === 'd'){
 
         // let's start by getting the current location of the player
-        var current_location = grid.indexOf(6);
+        var current_location = grid.indexOf(99);
         // now the destination. This ASSUMES A 34 LENGTH array
         var destination = current_location + 34;
         // now we check if terrain is passable
@@ -471,7 +515,7 @@ function move(direction) {
             // now let's get the terrain the place they want to go. we need this so we can replace it when they move later on. 
             destination_terrain = grid[current_location + 34];
             // now let's move the player icon. 
-            grid[destination] = 6;
+            grid[destination] = 99;
                 // increment the turn counter 
                 turn = turn + 1;
                 // now lets update the map
