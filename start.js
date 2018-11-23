@@ -390,6 +390,8 @@ function map_interaction_item(map_object,destination){
         
         if ('Friend of the Bear' in player.skills) {
                 player.skills["Friend of the Bear"] += 1;
+                game_messages("bear_trap");
+                grid[destination] = 97;
                 return ("allow_move")
             } else {
                 player.skills["Friend of the Bear"] = 1;
