@@ -27,7 +27,6 @@ TODO: help screen, ditch tooltips
 HINT: throw new Error("Something went badly wrong!");
 LEARNED: about shallow copies. Thanks stackoverflow
 TODO: make alert messages more random, funny and meaningful
-TODO: death
 TODO: different trees
 TODO: remove bear trap after its been triggered
 
@@ -35,6 +34,7 @@ DONE STUFF:
 
 TODO: player object
 TODO: put listener into a function. 
+TODO: death
 
 */
 
@@ -65,7 +65,10 @@ console.log('function initialize start');
     rank: "ready to be eaten",
     kingdom: "None",
     reputation: "huh?",
-    skills: [["Not dying",1], ["Running away",10]],
+    skills: {
+            'Not dying':1,
+            'Running away':10
+            }, 
     location_X: 0,
     location_Y: 0,
     location_Z: 0,
@@ -84,7 +87,6 @@ console.log('function initialize start');
                         name: 'test',
                         awarded: 'date'
                     }
-
     },
     inventory: {
                     weapon_1: {
@@ -340,19 +342,19 @@ function map_interaction_item(map_object,destination){
 
     }   else if (map_object === 8) {
         // bear trap code: 
+        // randomize damage
         player.health = (player.health - 21);
-        if (!exists(player.skills,"Friend of the bear")) {
-            player.skills.push(["Friend of the bear",1]);
-        } else {
-            // TODO: increment a value in a 2d array
-            console.log('foo');
-
-        }
-        game_messages("bear_trap");
-        grid[destination] = 9;
-        return ("allow_move")
-
-    } else if (map_object === 9) {
+        
+        if ('Friend of the Bear' in player.skills) {
+                player.skills["Friend of the Bear"] += 1;
+                return ("allow_move")
+            } else {
+                player.skills["Friend of the Bear"] = 1;
+                game_messages("bear_trap");
+                grid[destination] = 9;
+                return ("allow_move")
+            }
+        } else if (map_object === 9) {
             game_messages("triggered_bear_trap");
             return ("allow_move")
 
@@ -540,7 +542,8 @@ function health_number_to_text(value){
 function update_stats(player) {
     document.getElementById("stats_and_inventory_block").innerHTML = "<div class=\"category\">Skills</div><ul>";
     for(var i in player.skills) {
-        document.getElementById("stats_and_inventory_block").innerHTML += "<li>" + player.skills[i][0] + " : " + player.skills[i][1] + "</li>";
+
+        document.getElementById("stats_and_inventory_block").innerHTML += "<li>" + i + " : " + player.skills[i] + "</li>";
     }
     document.getElementById("stats_and_inventory_block").innerHTML += "</ul><br />";
     document.getElementById("stats_and_inventory_block").innerHTML += "<div class=\"category\">Inventory</div><ul>";
