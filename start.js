@@ -192,6 +192,14 @@ function game_messages(message){
         clear_message_counter += 2;
     }
 
+    else if (message === "monster") {
+
+        document.getElementById("messages").innerHTML += "<div class=\"alert\">" + 
+        "<span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span> " + 
+        "You have stumbled upon a rather hungry spider. </div>";
+        clear_message_counter += 1;
+    }
+
     else if (message === "gather_wood") {
 
         document.getElementById("messages").innerHTML += "<div class=\"information\">" + 
@@ -258,6 +266,9 @@ function starting_map() {
     // make player starting location. It's just TOTALLY for testing. Also, we should track the current player location for
     // reasons. 
     grid.splice(57, 1, 99);
+
+    // and, again, just for debugging, a spider. 
+    grid.splice(652,1,300);
 
         // the side mountain range along the left side of the map
         grid.splice(0, 1, 100);
@@ -360,6 +371,11 @@ function draw_map(array_for_map) {
         array_for_map[i] = "<i class=\"fas fa-mountain fa-fw\" style=\"color:black\" title=\"Impossible impassible mountains of Thogar (aka Thogars Teeth)\"></i>";
     }
 
+    else if (array_for_map[i] === 300) {
+    // spider 
+    array_for_map[i] = "<i class=\"fas fa-spider fa-fw\" style=\"color:green\" title=\"You know those little cute spiders? This isn't one of those.\"></i>";
+}
+
     
 
 }
@@ -374,9 +390,13 @@ grid = temp_grid.slice(0);
 return array_for_map;
 }
 
+function draw_combat_screen(){
+    
+}
+
 function map_interaction_item(map_object,destination){    
     console.log("hi. I'm map_interaction_item function, and you've just passed me: " + map_object);
-    if (map_object <= 3 || (map_object >= 19 && map_object <= 25) || map_object ===5 || map_object ===7) {
+    if (map_object <= 3 || (map_object >= 19 && map_object <= 25) || map_object === 5 || map_object === 7) {
         return ("allow_move")
 
     } else if (map_object === 100  || map_object === 101){
@@ -403,16 +423,27 @@ function map_interaction_item(map_object,destination){
             game_messages("triggered_bear_trap");
             return ("allow_move")
 
+        } else if (map_object === 300) {
+            game_messages("monster");
+            combat(map_object,destination);
+            return
+
     } else if (map_object === 4 || (map_object >= 10 || map_object <=18)) {
             game_messages("gather_wood");
             player.inventory["craft_1"].quantity += 10;
             grid[destination] = 1;
             return ("allow_move")
 
+
     } else {
         return("prohibit_move")
 
     }
+}
+
+function combat(map_object,destination){
+    document.getElementById('main_map').innerHTML = "foo";
+    return
 }
 
 function move(direction) {
