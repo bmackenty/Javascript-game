@@ -678,28 +678,19 @@ function main_listener() {
         } else if (key === 'ArrowLeft' || key === 39) {
             // then we call the move function and pass 'r' for right.
             move('l')
-            // finally, we update the map after the move has been completed (but this might no belong here).
-            document.getElementById("main_map").innerHTML = draw_map(grid); 
-            // increment the turn counter 
-            turn = turn + 1;
+
 
         } else if (key === 'ArrowUp' || key === 39) {
             // then we call the move function and pass 'r' for right.
             move('u')
-            // finally, we update the map after the move has been completed (but this might no belong here).
-            document.getElementById("main_map").innerHTML = draw_map(grid); 
-            // increment the turn counter 
-            turn = turn + 1;
+
 
             
 
         } else if (key === 'ArrowDown' || key === 39) {
             // then we call the move function and pass 'r' for right.
             move('d')
-            // finally, we update the map after the move has been completed (but this might no belong here).
-            document.getElementById("main_map").innerHTML = draw_map(grid); 
-            // increment the turn counter 
-            turn = turn + 1;
+
             
         } else if (key === '?' || key === 191) {
             document.getElementById("messages").innerHTML = key; 
