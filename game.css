@@ -53,6 +53,16 @@ But it's been pretty hacked through :-)
     padding:2px;
 }  
 
+.combat_header {
+    border-width: 1px;
+    border-style: solid;
+    padding:2px;
+    position: absolute;
+    right: 850px;
+    width: 575px;
+}  
+
+
 #header {
     border-bottom-width: 1px;
     border-bottom-style: solid;
@@ -93,6 +103,7 @@ I have modified it.
     color: #004085;
     margin-bottom: 15px;
 }
+
 
 
 /* The close button */
