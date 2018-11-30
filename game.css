@@ -57,9 +57,9 @@ But it's been pretty hacked through :-)
     border-width: 1px;
     border-style: solid;
     padding:2px;
-    position: absolute;
-    right: 850px;
-    width: 575px;
+    /* position: absolute;
+    /* right: 850px;
+    width: 575px; */
 }  
 
 
