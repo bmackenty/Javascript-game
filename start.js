@@ -394,7 +394,7 @@ return array_for_map;
 
 function draw_combat_screen(){
     document.getElementById('main_map').innerHTML = "<h2>An altercation!</h2>" +
-    "<div class=\"combat_header\"><strong>A</strong> - Attack! | <strong>B</strong> - Block! | <strong>R</strong> - Run away! | <strong>U</strong> - Use Item | <strong>T</strong> - talk things out </div>";
+    "<p><strong>A</strong> - Attack! | <strong>B</strong> - Block! | <strong>R</strong> - Run away! | <strong>U</strong> - Use Item | <strong>T</strong> - talk things out </p>";
 
     
 }
