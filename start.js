@@ -48,6 +48,8 @@ var player = {};
 var foo = [];
 var array_for_map = [];
 var clear_message_counter = 0;
+// There are certain keyboard events we only listen for when we are in combat
+var combat_mode = false;
 
 function exists(arr, search) {
     // used with gratitude from:
@@ -391,6 +393,9 @@ return array_for_map;
 }
 
 function draw_combat_screen(){
+    document.getElementById('main_map').innerHTML = "<h2>An altercation!</h2>" +
+    "<div class=\"combat_header\"><strong>A</strong> - Attack! | <strong>B</strong> - Block! | <strong>R</strong> - Run away! | <strong>U</strong> - Use Item | <strong>T</strong> - talk things out </div>";
+
     
 }
 
@@ -442,8 +447,25 @@ function map_interaction_item(map_object,destination){
 }
 
 function combat(map_object,destination){
-    document.getElementById('main_map').innerHTML = "foo";
+    combat_mode = true;
+    draw_combat_screen()
     return
+}
+
+function combat_choice(action){
+    // this function should only process the choice the player makes
+    // not determine the outcome....
+    if (action == 'a'){
+        console.log('attack');
+    } else if (action == 'b') {
+        console.log('block');
+    } else if (action == 'u') {
+        console.log('use');
+    } else if (action == 'r') {
+        console.log('run away');
+    } else if (action == 't') {
+        console.log('talk about it');
+    }
 }
 
 function move(direction) {
@@ -705,29 +727,46 @@ function main_listener() {
             move('r');
             
 
-
         } else if (key === 'ArrowLeft' || key === 39) {
-            // then we call the move function and pass 'r' for right.
+            // then we call the move function and pass 'l' for left.
             move('l')
 
 
         } else if (key === 'ArrowUp' || key === 39) {
-            // then we call the move function and pass 'r' for right.
-            move('u')
-
-
-            
+            // then we call the move function and pass 'u' for up.
+            move('u')   
 
         } else if (key === 'ArrowDown' || key === 39) {
-            // then we call the move function and pass 'r' for right.
+            // then we call the move function and pass 'd' for down.
             move('d')
 
+        } else if (combat_mode && (key === 'a' || key === 'A')) {
+            // then we call the combat function and pass 'a' for attack.
+            combat_choice('a')
             
+        } else if (combat_mode && (key === 'b' || key === 'B')) {
+            // then we call the combat function and pass 'b' for block.
+            combat_choice('b')
+
+        } else if (combat_mode && (key === 'r' || key === 'R')) {
+            // then we call the combat function and pass 'r' for run away.
+            combat_choice('r')
+
+        } else if (combat_mode && (key === 'u' || key === 'U')) {
+            // then we call the combat function and pass 'u' for use item.
+            combat_choice('u')
+
+        } else if (combat_mode && (key === 't' || key === 'T')) {
+            // then we call the combat function and pass 't' to talk things out.
+            combat_choice('t')
+
+
         } else if (key === '?' || key === 191) {
-            document.getElementById("messages").innerHTML = key; 
-            
-            
+            document.getElementById("messages").innerHTML = key;         
         } 
+
+
+
     });
 }
 
