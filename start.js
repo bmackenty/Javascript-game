@@ -48,6 +48,7 @@ var player = {};
 var foo = [];
 var array_for_map = [];
 var clear_message_counter = 0;
+var number_of_magic_heals = 0;
 // There are certain keyboard events we only listen for when we are in combat
 var combat_mode = false;
 
@@ -209,6 +210,25 @@ function game_messages(message){
         "You gather some wood. Tree killer. </div>";
         clear_message_counter += 1;
     }
+
+
+    else if (message === "magic_heal") {
+
+        document.getElementById("messages").innerHTML += "<div class=\"information\">" + 
+        "<span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span> " + 
+        "Smriti heals you!</div>";
+        clear_message_counter += 1;
+    }
+
+    else if (message === "no_more_heal") {
+
+        document.getElementById("messages").innerHTML += "<div class=\"alert\">" + 
+        "<span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span> " + 
+        "Smriti smacks you with a huge fish and says \"No more heals for you!\"</div>";
+        clear_message_counter += 1;
+    }
+
+
 
     else if (message === "died") {
 
@@ -724,7 +744,13 @@ function main_listener() {
         update_footer(player);
 
     } else if (key === 's' || key === 'S') {
-        player.health += 10;
+        number_of_magic_heals += 1;
+        if (number_of_magic_heals < 10){
+            player.health += 10;
+            game_messages("magic_heal")
+        } else {
+            game_messages("no_more_heal")
+        }
         update_footer(player);
 
 
