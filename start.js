@@ -630,10 +630,10 @@ function health_number_to_text(value){
     } else if (value < 70) {
         condition = "<font color=\"green\"><strong>Unhealthy (" + value + ")</strong></font>";
         return condition
-    } else if (value < 80) {
+    } else if (value <= 80) {
         condition = "<font color=\"green\"><strong>Less healthy (" + value + ")</strong></font>";
         return condition
-    } else if (value < 101) {
+    } else if (value >= 90) {
         condition =  "<font color=\"green\"><strong>Healthy (" + value + ")</strong></font>";
         return condition
     }
