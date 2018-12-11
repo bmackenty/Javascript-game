@@ -396,7 +396,7 @@ function draw_combat_screen(){
     document.getElementById('main_map').innerHTML = "<h2>An altercation!</h2>" +
     "<p><strong>A</strong> - Attack! | <strong>B</strong> - Block! | <strong>R</strong> - Run away! | <strong>U</strong> - Use Item | <strong>T</strong> - talk things out </p>";
 
-    
+
 }
 
 function map_interaction_item(map_object,destination){    
@@ -449,6 +449,8 @@ function map_interaction_item(map_object,destination){
 function combat(map_object,destination){
     combat_mode = true;
     draw_combat_screen()
+    
+    
     return
 }
 
@@ -719,6 +721,10 @@ function main_listener() {
 
     } else if (key === 'w' || key === 'W') {
         player.health -= 10;
+        update_footer(player);
+
+    } else if (key === 's' || key === 'S') {
+        player.health += 10;
         update_footer(player);
 
 
