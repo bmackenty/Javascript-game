@@ -629,28 +629,28 @@ function health_number_to_text(value){
     if (value < 0){
         condition = "<font color=\"black\"><strong>DEAD!(" + value + ")</strong></font>";
         return condition
-    } else if (value < 10){
+    } else if (value <= 10){
         condition = "<font color=\"#FF001F\"><strong>Basically about dead.(" + value + ")</strong></font>";
         return condition
-    } else if (value < 20) {
+    } else if (value <= 20) {
         condition = "<font color=\"#FF001F\"><strong>Falling off the edge of death. (" + value + ")</strong></font>";
         return condition
-    } else if (value < 30) {
+    } else if (value <= 30) {
         condition = "<font color=\"#FF001F\"><strong>Edge of death(" + value + ")</strong></font>";
         return condition
-    } else if (value < 40) {
+    } else if (value <= 40) {
         condition = "<font color=\"#FF001F\"><strong>Mildly decapitated (" + value + ")</strong></font>";
         return condition
-    } else if (value < 50) {
+    } else if (value <= 50) {
         condition = "<font color=\"#FF001F\"><strong>Damaged liver(" + value + ")</strong></font>";
         return condition
-    } else if (value < 60) {
+    } else if (value <= 60) {
         condition = "<font color=\"#FBB004\"><strong>Missing part of leg(" + value + ")</strong></font>";
         return condition
-    } else if (value < 70) {
+    } else if (value <= 70) {
         condition = "<font color=\"green\"><strong>Unhealthy (" + value + ")</strong></font>";
         return condition
-    } else if (value <= 80) {
+    } else if (value <= 89) {
         condition = "<font color=\"green\"><strong>Less healthy (" + value + ")</strong></font>";
         return condition
     } else if (value >= 90) {
@@ -727,7 +727,7 @@ function update_stats(player) {
 function main_listener() {
     // the code below is used from https://medium.com/@uistephen/keyboardevent-key-for-cross-browser-key-press-check-61dbad0a067a
     // I also used this site for keycodes: https://keycode.info/
-    // the code below listens for keys being released, and then triggers a function which "does something". 
+    // the code below listens for keys being released, and then calls a function. 
 
     document.addEventListener('keyup', function (event) {
     if (event.defaultPrevented) {
@@ -803,8 +803,6 @@ function main_listener() {
 }
 
 initialize();
-// must I have the line below? 
-const entries = Object.entries(player)
 make_random_terrain();
 starting_map();
 draw_map(grid);
