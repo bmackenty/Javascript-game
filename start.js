@@ -466,11 +466,18 @@ function map_interaction_item(map_object,destination){
     }
 }
 
+function combat_determine_outcome(action,map_object){
+    console.log('map object is', map_object);
+    console.log('action is', action);
+    // change map_object to global combat_current_enemy
+    
+    return
+}
+
+
 function combat(map_object,destination){
     combat_mode = true;
     draw_combat_screen()
-    
-    
     return
 }
 
