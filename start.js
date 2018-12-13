@@ -45,6 +45,7 @@ var grid = [];
 var terrain;
 var destination_terrain = 1;
 var player = {};
+var monster = {};
 var foo = [];
 var array_for_map = [];
 var clear_message_counter = 0;
@@ -179,6 +180,23 @@ function game_messages(message){
 
     }
 
+    else if (message === "combat_hit") {
+
+        document.getElementById("messages").innerHTML += "<div class=\"information\">" + 
+        "<span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span> " + 
+        "You hit!!!!</div>";
+        clear_message_counter += 1;
+    }
+
+    else if (message === "combat_miss") {
+
+        document.getElementById("messages").innerHTML += "<div class=\"alert\">" + 
+        "<span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span> " + 
+        "You miss. And everyone is watching. Heh. </div>";
+        clear_message_counter += 1;
+    }
+
+
     else if (message === "bear_trap") {
 
         document.getElementById("messages").innerHTML += "<div class=\"alert\">" + 
@@ -234,6 +252,14 @@ function game_messages(message){
 
         document.getElementById("main_map").innerHTML = "<br /> *** You have died *** <br /><br /> " + 
         "<a href=\"#\" onclick=\"window.location.reload(true);\">Click to restart</a>";
+    }
+}
+
+function any_monster() {
+
+    monster = {
+        health: 100,
+        name: "Monster"
     }
 }
 
@@ -466,18 +492,29 @@ function map_interaction_item(map_object,destination){
     }
 }
 
-function combat_determine_outcome(action,map_object){
-    console.log('map object is', map_object);
-    console.log('action is', action);
-    // change map_object to global combat_current_enemy
-    
+function combat_determine_outcome(combat_action){
+   if (combat_action == "attack") {
+    console.log("hi there");
+    // chance to hit should be based on player level 
+       var chance_to_hit = Math.floor(Math.random() * 100)+1;
+       if (chance_to_hit > 40) {
+           game_messages("combat_hit");
+           var damage = Math.floor(Math.random() * 10)+1;
+           monster.health = monster.health - damage;
+           if (monster.health < 1){
+               combat_over();
+           }
+       } else {
+           game_messages("combat_miss");
+       }
+   }
     return
 }
-
 
 function combat(map_object,destination){
     combat_mode = true;
     draw_combat_screen()
+    any_monster();
     return
 }
 
@@ -486,14 +523,19 @@ function combat_choice(action){
     // not determine the outcome....
     if (action == 'a'){
         console.log('attack');
+        combat_determine_outcome('attack');
     } else if (action == 'b') {
         console.log('block');
+        combat_determine_outcome('block');
     } else if (action == 'u') {
         console.log('use');
+        combat_determine_outcome('use');
     } else if (action == 'r') {
         console.log('run away');
+        combat_determine_outcome('run_away');
     } else if (action == 't') {
         console.log('talk about it');
+        combat_determine_outcome('talk');
     }
 }
 
