@@ -164,7 +164,7 @@ console.log('function initialize start');
         return player;
 } 
 
-function game_messages(message){
+function game_messages(message,extra){
     if (clear_message_counter > 6) {
         document.getElementById("messages").innerHTML = "";
         clear_message_counter = 0;
@@ -184,7 +184,7 @@ function game_messages(message){
 
         document.getElementById("messages").innerHTML += "<div class=\"information\">" + 
         "<span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span> " + 
-        "You hit!!!!</div>";
+        "You hit for " + extra + " points of damage. The monster has " + monster.health + " health left.</div>";
         clear_message_counter += 1;
     }
 
@@ -445,6 +445,10 @@ function draw_combat_screen(){
 
 }
 
+function combat_over(){
+
+}
+
 function map_interaction_item(map_object,destination){    
     console.log("hi. I'm map_interaction_item function, and you've just passed me: " + map_object);
     if (map_object <= 3 || (map_object >= 19 && map_object <= 25) || map_object === 5 || map_object === 7) {
@@ -494,15 +498,15 @@ function map_interaction_item(map_object,destination){
 
 function combat_determine_outcome(combat_action){
    if (combat_action == "attack") {
-    console.log("hi there");
-    // chance to hit should be based on player level 
-       var chance_to_hit = Math.floor(Math.random() * 100)+1;
-       if (chance_to_hit > 40) {
-           game_messages("combat_hit");
-           var damage = Math.floor(Math.random() * 10)+1;
-           monster.health = monster.health - damage;
-           if (monster.health < 1){
-               combat_over();
+       var plusses_to_hit = ((Math.pow(player.level,2)/2.5) + Math.round(player.strength/3))
+       var base_chance_to_hit = Math.floor(Math.random() * 100)+1;
+       var total_chance_to_hit = base_chance_to_hit + plusses_to_hit;
+       if (total_chance_to_hit > 50) {
+            var damage = Math.floor(Math.random() * 10)+1;
+            monster.health = monster.health - damage;
+            game_messages("combat_hit",damage);
+       if (monster.health < 1){
+            combat_over();
            }
        } else {
            game_messages("combat_miss");
