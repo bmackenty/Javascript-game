@@ -188,6 +188,16 @@ function game_messages(message,extra){
         clear_message_counter += 1;
     }
 
+    else if (message === "combat_hit_crit") {
+
+        document.getElementById("messages").innerHTML += "<div class=\"information\">" + 
+        "<span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span> " + 
+        "CRITICAL HIT!! You hit for " + extra + " points of damage. The monster has " + monster.health + " health left.</div>";
+        clear_message_counter += 1;
+    }
+
+
+
     else if (message === "combat_miss") {
 
         document.getElementById("messages").innerHTML += "<div class=\"alert\">" + 
@@ -501,7 +511,17 @@ function combat_determine_outcome(combat_action){
        var plusses_to_hit = ((Math.pow(player.level,2)/2.5) + Math.round(player.strength/3))
        var base_chance_to_hit = Math.floor(Math.random() * 100)+1;
        var total_chance_to_hit = base_chance_to_hit + plusses_to_hit;
+ 
        if (total_chance_to_hit > 50) {
+           var base_crit_chance = 10;
+           var crit_probability = Math.floor(Math.random()*100)+1;
+           console.log(base_crit_chance);
+           console.log(crit_probability);
+           if (base_crit_chance > crit_probability) {
+            var damage = Math.floor(Math.random() * 100)+1;
+            monster.health = monster.health - damage;
+            game_messages("combat_hit_crit",damage);
+           }
             var damage = Math.floor(Math.random() * 10)+1;
             monster.health = monster.health - damage;
             game_messages("combat_hit",damage);
