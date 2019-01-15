@@ -65,6 +65,7 @@ function initialize() {
 console.log('function initialize start');
   player = {
     score: 0,
+    xp: 0,
     name: "Player",
     level: 1,
     rank: "ready to be eaten",
@@ -227,7 +228,7 @@ function game_messages(message,extra){
 
         document.getElementById("messages").innerHTML += "<div class=\"alert\">" + 
         "<span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span> " + 
-        "You have stumbled upon a rather hungry spider. </div>";
+        "You have stumbled upon a monster! </div>";
         clear_message_counter += 1;
     }
 
@@ -255,6 +256,40 @@ function game_messages(message,extra){
         "Smriti smacks you with a huge fish and says \"No more heals for you!\"</div>";
         clear_message_counter += 1;
     }
+
+    else if (message === "combat_over") {
+
+        document.getElementById("messages").innerHTML += "<div class=\"information\">" + 
+        "<span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span> " + 
+        "The combat is over!</div>";
+        clear_message_counter += 1;
+    }
+
+    else if (message === "monster_attacks") {
+
+        document.getElementById("messages").innerHTML += "<div class=\"alert\">" + 
+        "<span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span> " + 
+        "The monster attacks!</div>";
+        clear_message_counter += 1;
+    }
+
+    else if (message === "monster_hits") {
+
+        document.getElementById("messages").innerHTML += "<div class=\"alert\">" + 
+        "<span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span> " + 
+        "The monster HITS YOU!</div>";
+        clear_message_counter += 1;
+    }
+
+
+    else if (message === "monster_misses") {
+
+        document.getElementById("messages").innerHTML += "<div class=\"alert\">" + 
+        "<span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span> " + 
+        "The monster MISSES YOU!!</div>";
+        clear_message_counter += 1;
+    }
+
 
 
 
@@ -327,6 +362,8 @@ function starting_map() {
 
     // and, again, just for debugging, a spider. 
     grid.splice(652,1,300);
+    // and, because Jake, a bear.
+    grid.splice(311,1,301);
 
         // the side mountain range along the left side of the map
         grid.splice(0, 1, 100);
@@ -431,10 +468,13 @@ function draw_map(array_for_map) {
 
     else if (array_for_map[i] === 300) {
     // spider 
-    array_for_map[i] = "<i class=\"fas fa-spider fa-fw\" style=\"color:green\" title=\"You know those little cute spiders? This isn't one of those.\"></i>";
+    array_for_map[i] = "<i class=\"fas fa-spider fa-fw\" style=\"color:orange\" title=\"You know those little cute spiders? This isn't one of those.\"></i>";
 }
 
-    
+else if (array_for_map[i] === 301) {
+    // bear
+    array_for_map[i] = "<i class=\"fas fa-paw fa-fw\" style=\"color:brown\" title=\"A bear. The kind that likes to eat adventurers.\"></i>";
+}   
 
 }
  
@@ -456,7 +496,9 @@ function draw_combat_screen(){
 }
 
 function combat_over(){
-
+    draw_map(grid);
+    game_messages("combat_over");
+    combat_mode = false;
 }
 
 function map_interaction_item(map_object,destination){    
@@ -492,6 +534,12 @@ function map_interaction_item(map_object,destination){
             game_messages("monster");
             combat(map_object,destination);
             return
+
+        } else if (map_object === 301) {
+            game_messages("monster");
+            combat(map_object,destination);
+            return
+
 
     } else if (map_object === 4 || (map_object >= 10 || map_object <=18)) {
             game_messages("gather_wood");
@@ -531,8 +579,22 @@ function combat_determine_outcome(combat_action){
        } else {
            game_messages("combat_miss");
        }
+       combat_monster_action();
    }
     return
+}
+
+function combat_monster_action() {
+    game_messages("monster_attacks");
+    var monster_chance_to_hit = 50;
+    var monster_roll_to_hit = Math.floor(Math.random() * 100)+1;
+    if (monster_roll_to_hit > monster_chance_to_hit){
+        // the monster hits the player
+        game_messages("monster_hits");
+    } else {
+        // monster misses the player
+        game_messages("monster_misses");
+    }
 }
 
 function combat(map_object,destination){
@@ -827,21 +889,21 @@ function main_listener() {
         update_footer(player);
 
 
-        } else if (key === 'ArrowRight' || key === 39) {
+        } else if (!combat_mode && (key === 'ArrowRight' || key === 39)) {
             // then we call the move function and pass 'r' for right.
             move('r');
             
 
-        } else if (key === 'ArrowLeft' || key === 39) {
+        } else if (!combat_mode && (key === 'ArrowLeft' || key === 39)) {
             // then we call the move function and pass 'l' for left.
             move('l')
 
 
-        } else if (key === 'ArrowUp' || key === 39) {
+        } else if (!combat_mode && (key === 'ArrowUp' || key === 39)) {
             // then we call the move function and pass 'u' for up.
             move('u')   
 
-        } else if (key === 'ArrowDown' || key === 39) {
+        } else if (!combat_mode && (key === 'ArrowDown' || key === 39)) {
             // then we call the move function and pass 'd' for down.
             move('d')
 
@@ -864,7 +926,6 @@ function main_listener() {
         } else if (combat_mode && (key === 't' || key === 'T')) {
             // then we call the combat function and pass 't' to talk things out.
             combat_choice('t')
-
 
         } else if (key === '?' || key === 191) {
             document.getElementById("messages").innerHTML = key;         
