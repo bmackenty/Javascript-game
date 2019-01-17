@@ -28,10 +28,10 @@ HINT: throw new Error("Something went badly wrong!");
 LEARNED: about shallow copies. Thanks stackoverflow
 TODO: make alert messages more random, funny and meaningful
 
-TODO: remove bear trap after its been triggered
 
 DONE STUFF: 
 
+TODO: remove bear trap after its been triggered
 TODO: player object
 TODO: put listener into a function. 
 TODO: death
@@ -300,12 +300,27 @@ function game_messages(message,extra){
     }
 }
 
-function any_monster() {
+function monsters(monsterid) {
+
+if (monsterid == 300) {
 
     monster = {
         health: 100,
-        name: "Monster"
+        name: "Spider",
+        base_chance_to_hit: 60,
+        base_damage: 20,
+        talkative: 10
     }
+} else if(monsterid == 301) {
+    monster = {
+        health: 100,
+        name: "Bear",
+        base_chance_to_hit: 40,
+        base_damage: 60,
+        talkative: 60
+    }
+}
+
 }
 
 function make_random_terrain() {
@@ -600,7 +615,7 @@ function combat_monster_action() {
 function combat(map_object,destination){
     combat_mode = true;
     draw_combat_screen()
-    any_monster();
+    monsters(map_object);
     return
 }
 
