@@ -27,6 +27,7 @@ TODO: help screen, ditch tooltips
 HINT: throw new Error("Something went badly wrong!");
 LEARNED: about shallow copies. Thanks stackoverflow
 TODO: make alert messages more random, funny and meaningful
+TODO: when dead after combat dont allow attacking to continue
 
 
 DONE STUFF: 
@@ -52,6 +53,8 @@ var clear_message_counter = 0;
 var number_of_magic_heals = 0;
 // There are certain keyboard events we only listen for when we are in combat
 var combat_mode = false;
+var destination =0;
+
 
 
 function exists(arr, search) {
@@ -276,7 +279,7 @@ function game_messages(message,extra){
 
     else if (message === "monster_hits") {
 
-        document.getElementById("messages").innerHTML += "<div class=\"alert\">" + 
+        document.getElementById("messages").innerHTML += "<div class=\"information\">" + 
         "<span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span> " + 
         "The monster HITS YOU!</div>";
         clear_message_counter += 1;
@@ -306,18 +309,18 @@ function monsters(monsterid) {
 if (monsterid == 300) {
 
     monster = {
-        health: 100,
+        health: 10,
         name: "Spider",
         base_chance_to_hit: 60,
-        base_damage: 20,
+        base_damage: 10,
         talkative: 10
     }
 } else if(monsterid == 301) {
     monster = {
-        health: 100,
+        health: 10,
         name: "Bear",
         base_chance_to_hit: 40,
-        base_damage: 60,
+        base_damage: 10,
         talkative: 60
     }
 }
@@ -512,6 +515,8 @@ function draw_combat_screen(){
 }
 
 function combat_over(){
+
+    grid[destination] = 20;
     draw_map(grid);
     game_messages("combat_over");
     combat_mode = false;
@@ -607,6 +612,10 @@ function combat_monster_action() {
     if (monster_roll_to_hit > monster_chance_to_hit){
         // the monster hits the player
         game_messages("monster_hits");
+
+        player.health = player.health - monster.base_damage;
+        update_footer();
+
     } else {
         // monster misses the player
         game_messages("monster_misses");
@@ -617,6 +626,7 @@ function combat(map_object,destination){
     combat_mode = true;
     draw_combat_screen()
     monsters(map_object);
+    destination = destination;
     return
 }
 
