@@ -53,6 +53,7 @@ var number_of_magic_heals = 0;
 // There are certain keyboard events we only listen for when we are in combat
 var combat_mode = false;
 
+
 function exists(arr, search) {
     // used with gratitude from:
     // https://stackoverflow.com/questions/48538162/how-to-check-if-a-two-dimensional-array-includes-a-string
