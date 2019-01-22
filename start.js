@@ -53,7 +53,8 @@ var clear_message_counter = 0;
 var number_of_magic_heals = 0;
 // There are certain keyboard events we only listen for when we are in combat
 var combat_mode = false;
-var destination =0;
+var current_destination;
+var combat_destination;
 
 
 
@@ -516,7 +517,7 @@ function draw_combat_screen(){
 
 function combat_over(){
 
-    grid[destination] = 20;
+    grid[current_destination] = 20;
     draw_map(grid);
     game_messages("combat_over");
     combat_mode = false;
@@ -669,6 +670,7 @@ function move(direction) {
         destination_terrain = grid[current_location + 1];
         // now let's move the player icon. 
         grid[destination] = 99;
+        current_destination = (destination+1);
             // increment the turn counter 
             turn = turn + 1;
             // now lets update the map
@@ -697,6 +699,7 @@ function move(direction) {
             destination_terrain = grid[current_location - 1];
             // now let's move the player icon. 
             grid[destination] = 99;
+            current_destination = (destination-1);
                 // increment the turn counter 
                 turn = turn + 1;
                 // now lets update the map
@@ -726,6 +729,7 @@ function move(direction) {
         destination_terrain = grid[current_location - 34];
         // now let's move the player icon. 
         grid[destination] = 99;
+        current_destination = (destination-34);
             // increment the turn counter 
             turn = turn + 1;
             // now lets update the map
@@ -753,6 +757,7 @@ function move(direction) {
             destination_terrain = grid[current_location + 34];
             // now let's move the player icon. 
             grid[destination] = 99;
+            current_destination = (destination+34);
                 // increment the turn counter 
                 turn = turn + 1;
                 // now lets update the map
