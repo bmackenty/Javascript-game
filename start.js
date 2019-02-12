@@ -28,6 +28,7 @@ HINT: throw new Error("Something went badly wrong!");
 LEARNED: about shallow copies. Thanks stackoverflow
 TODO: make alert messages more random, funny and meaningful
 TODO: when dead after combat dont allow attacking to continue
+TODO: after death, dont allow movement. 
 
 
 DONE STUFF: 
@@ -55,8 +56,6 @@ var number_of_magic_heals = 0;
 var combat_mode = false;
 var current_destination;
 var combat_destination;
-
-
 
 function exists(arr, search) {
     // used with gratitude from:
@@ -314,7 +313,8 @@ if (monsterid == 300) {
         name: "Spider",
         base_chance_to_hit: 60,
         base_damage: 10,
-        talkative: 10
+        talkative: 10,
+        image:'https://game-icons.net/lorc/originals/glass-heart.html'
     }
 } else if(monsterid == 301) {
     monster = {
@@ -510,7 +510,8 @@ return array_for_map;
 
 function draw_combat_screen(){
     document.getElementById('main_map').innerHTML = "<h2>An altercation!</h2>" +
-    "<p><strong>A</strong> - Attack! | <strong>B</strong> - Block! | <strong>R</strong> - Run away! | <strong>U</strong> - Use Item | <strong>T</strong> - talk things out </p>";
+    "<p><strong>A</strong> - Attack! | <strong>B</strong> - Block! | <strong>R</strong> - Run away! | <strong>U</strong> - Use Item | <strong>T</strong> - talk things out </p>" +
+    "<p><img src=\""+ monster.image + "\"/> </p>";
 
 
 }
@@ -613,7 +614,6 @@ function combat_monster_action() {
     if (monster_roll_to_hit > monster_chance_to_hit){
         // the monster hits the player
         game_messages("monster_hits");
-
         player.health = player.health - monster.base_damage;
         update_footer();
 
@@ -624,9 +624,9 @@ function combat_monster_action() {
 }
 
 function combat(map_object,destination){
-    combat_mode = true;
-    draw_combat_screen()
+    combat_mode = true; 
     monsters(map_object);
+    draw_combat_screen();
     destination = destination;
     return
 }
