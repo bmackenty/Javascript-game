@@ -1,3 +1,4 @@
+
 /*
 
 This is a javascript implementation of a simple ascii art RPG game
@@ -29,6 +30,7 @@ LEARNED: about shallow copies. Thanks stackoverflow
 TODO: make alert messages more random, funny and meaningful
 TODO: when dead after combat dont allow attacking to continue
 TODO: after death, dont allow movement. 
+TODO: rationally deal with images / icons / etc..
 
 
 DONE STUFF: 
@@ -56,6 +58,7 @@ var number_of_magic_heals = 0;
 var combat_mode = false;
 var current_destination;
 var combat_destination;
+
 
 function exists(arr, search) {
     // used with gratitude from:
