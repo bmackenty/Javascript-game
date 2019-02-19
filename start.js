@@ -28,20 +28,18 @@ TODO: help screen, ditch tooltips
 HINT: throw new Error("Something went badly wrong!");
 LEARNED: about shallow copies. Thanks stackoverflow
 TODO: make alert messages more random, funny and meaningful
-TODO: when dead after combat dont allow attacking to continue
 TODO: after death, dont allow movement. 
-TODO: rationally deal with images / icons / etc..
 TODO: add to credits https://game-icons.net/
 
-
-
-DONE STUFF: 
+== DONE STUFF == 
 
 TODO: remove bear trap after its been triggered
 TODO: player object
 TODO: put listener into a function. 
 TODO: death
 TODO: different trees
+TODO: when dead after combat dont allow attacking to continue
+TODO: rationally deal with images / icons / etc..
 
 */
 
@@ -608,7 +606,9 @@ function combat_determine_outcome(combat_action){
        } else {
            game_messages("combat_miss");
        }
-       combat_monster_action();
+       if (combat_mode == true){
+        combat_monster_action();
+       }
    }
     return
 }
