@@ -327,7 +327,8 @@ if (monsterid == 300) {
         name: "Bear",
         base_chance_to_hit: 40,
         base_damage: 10,
-        talkative: 60
+        talkative: 60,
+        image:'images/bear-face.png'
     }
 }
 
