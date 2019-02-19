@@ -22,17 +22,16 @@ TODO: maybe a crafting zone to craft stuff
 TODO: an event zone, so after X number of turns we can trigger events
 TODO: animals 
 TODO: NPC's
-TODO: changelog
 TODO: add credits
 TODO: help screen, ditch tooltips
 HINT: throw new Error("Something went badly wrong!");
 LEARNED: about shallow copies. Thanks stackoverflow
 TODO: make alert messages more random, funny and meaningful
-TODO: after death, dont allow movement. 
 TODO: add to credits https://game-icons.net/
 
 == DONE STUFF == 
 
+TODO: after death, dont allow movement. 
 TODO: remove bear trap after its been triggered
 TODO: player object
 TODO: put listener into a function. 
@@ -40,6 +39,7 @@ TODO: death
 TODO: different trees
 TODO: when dead after combat dont allow attacking to continue
 TODO: rationally deal with images / icons / etc..
+TODO: changelog (this is on github)
 
 */
 
@@ -58,6 +58,7 @@ var number_of_magic_heals = 0;
 var combat_mode = false;
 var current_destination;
 var combat_destination;
+var player_is_dead = false;
 
 
 function exists(arr, search) {
@@ -782,6 +783,7 @@ function move(direction) {
 
 function death() {
     game_messages("died");
+    player_is_dead = true;
     return
 }
 
@@ -925,22 +927,22 @@ function main_listener() {
         }
         update_footer(player);
 
-
-        } else if (!combat_mode && (key === 'ArrowRight' || key === 39)) {
+        // there is certainly a more succinct way to do this. 
+        } else if (!player_is_dead && !combat_mode && (key === 'ArrowRight' || key === 39)) {
             // then we call the move function and pass 'r' for right.
             move('r');
             
 
-        } else if (!combat_mode && (key === 'ArrowLeft' || key === 39)) {
+        } else if (!player_is_dead && !combat_mode && (key === 'ArrowLeft' || key === 39)) {
             // then we call the move function and pass 'l' for left.
             move('l')
 
 
-        } else if (!combat_mode && (key === 'ArrowUp' || key === 39)) {
+        } else if (!player_is_dead && !combat_mode && (key === 'ArrowUp' || key === 39)) {
             // then we call the move function and pass 'u' for up.
             move('u')   
 
-        } else if (!combat_mode && (key === 'ArrowDown' || key === 39)) {
+        } else if (!player_is_dead && !combat_mode && (key === 'ArrowDown' || key === 39)) {
             // then we call the move function and pass 'd' for down.
             move('d')
 
