@@ -28,6 +28,7 @@ HINT: throw new Error("Something went badly wrong!");
 LEARNED: about shallow copies. Thanks stackoverflow
 TODO: make alert messages more random, funny and meaningful
 TODO: add to credits https://game-icons.net/
+TODO: add image for death
 
 == DONE STUFF == 
 
