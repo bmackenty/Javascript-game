@@ -31,6 +31,8 @@ TODO: make alert messages more random, funny and meaningful
 TODO: when dead after combat dont allow attacking to continue
 TODO: after death, dont allow movement. 
 TODO: rationally deal with images / icons / etc..
+TODO: add to credits https://game-icons.net/
+
 
 
 DONE STUFF: 
@@ -317,7 +319,7 @@ if (monsterid == 300) {
         base_chance_to_hit: 60,
         base_damage: 10,
         talkative: 10,
-        image:'https://game-icons.net/lorc/originals/glass-heart.html'
+        image:'images/spider-alt.png'
     }
 } else if(monsterid == 301) {
     monster = {
