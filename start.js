@@ -29,6 +29,7 @@ LEARNED: about shallow copies. Thanks stackoverflow
 TODO: make alert messages more random, funny and meaningful
 TODO: add to credits https://game-icons.net/
 TODO: add image for death
+TODO: add skill and eqipment into chnace to block successfully 
 
 == DONE STUFF == 
 
@@ -206,6 +207,14 @@ function game_messages(message,extra){
         clear_message_counter += 1;
     }
 
+    else if (message === "combat_block") {
+
+        document.getElementById("messages").innerHTML += "<div class=\"information\">" + 
+        "<span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span> " + 
+        "You try to block the monster's attack!</div>";
+        clear_message_counter += 1;
+    }
+
 
 
     else if (message === "combat_miss") {
@@ -315,6 +324,7 @@ if (monsterid == 300) {
 
     monster = {
         health: 10,
+        intelligence: 5,
         name: "Spider",
         base_chance_to_hit: 60,
         base_damage: 10,
@@ -324,6 +334,7 @@ if (monsterid == 300) {
 } else if(monsterid == 301) {
     monster = {
         health: 10,
+        intelligence: 8,
         name: "Bear",
         base_chance_to_hit: 40,
         base_damage: 10,
@@ -522,12 +533,18 @@ function draw_combat_screen(){
 
 }
 
-function combat_over(){
+function combat_over(combat_result){
+    if (combat_result == "monster_dead") {
+        grid[current_destination] = 20;
+        draw_map(grid);
+        game_messages("combat_over");
+        combat_mode = false;
+    } else if (combat_result == "monster_alive"){
+        draw_map(grid);
+        game_messages("combat_over");
+        combat_mode = false;
+    }
 
-    grid[current_destination] = 20;
-    draw_map(grid);
-    game_messages("combat_over");
-    combat_mode = false;
 }
 
 function map_interaction_item(map_object,destination){    
@@ -603,7 +620,7 @@ function combat_determine_outcome(combat_action){
             monster.health = monster.health - damage;
             game_messages("combat_hit",damage);
        if (monster.health < 1){
-            combat_over();
+            combat_over("monster_dead");
            }
        } else {
            game_messages("combat_miss");
@@ -612,6 +629,17 @@ function combat_determine_outcome(combat_action){
         combat_monster_action();
        }
    }
+   if (combat_action == "block") {
+       monster.base_chance_to_hit = monster.base_chance_to_hit /2 + monster.intelligence;
+       game_messages("combat_block");
+       combat_monster_action();
+   }
+   if (combat_action == "run_away") {
+       game_messages("run_away");
+       combat_monster_action();
+       combat_over("monster_alive");
+   }
+
     return
 }
 
