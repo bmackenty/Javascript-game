@@ -234,6 +234,16 @@ function game_messages(message,extra){
         clear_message_counter += 1;
     }
 
+    else if (message === "run_away") {
+
+        document.getElementById("messages").innerHTML += "<div class=\"alert\">" + 
+        "<span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span> " + 
+        "You run away. The monster gets a free attack because of REASONS!!</div>";
+        clear_message_counter += 1;
+    }
+
+
+
     else if (message === "triggered_bear_trap") {
 
         document.getElementById("messages").innerHTML += "<div class=\"information\">" + 
