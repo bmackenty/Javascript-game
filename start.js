@@ -286,7 +286,7 @@ function game_messages(message,extra){
 
         document.getElementById("messages").innerHTML += "<div class=\"information\">" + 
         "<span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span> " + 
-        "The monster HITS YOU!</div>";
+        "The monster HITS YOU for " + extra + " points of damage!! </div>";
         clear_message_counter += 1;
     }
 
@@ -621,7 +621,7 @@ function combat_monster_action() {
     var monster_roll_to_hit = Math.floor(Math.random() * 100)+1;
     if (monster_roll_to_hit > monster_chance_to_hit){
         // the monster hits the player
-        game_messages("monster_hits");
+        game_messages("monster_hits",monster.base_damage);
         player.health = player.health - monster.base_damage;
         update_footer();
 
