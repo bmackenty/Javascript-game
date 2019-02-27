@@ -28,11 +28,10 @@ HINT: throw new Error("Something went badly wrong!");
 LEARNED: about shallow copies. Thanks stackoverflow
 TODO: make alert messages more random, funny and meaningful
 TODO: add to credits https://game-icons.net/
-TODO: add image for death
 TODO: add skill and eqipment into chnace to block successfully 
 
 == DONE STUFF == 
-
+TODO: add image for death
 TODO: after death, dont allow movement. 
 TODO: remove bear trap after its been triggered
 TODO: player object
@@ -324,6 +323,7 @@ function game_messages(message,extra){
     else if (message === "died") {
 
         document.getElementById("main_map").innerHTML = "<br /> *** You have died *** <br /><br /> " + 
+        "<img src=\"images/internal-injury.png\"> <br />" +
         "<a href=\"#\" onclick=\"window.location.reload(true);\">Click to restart</a>";
     }
 }
