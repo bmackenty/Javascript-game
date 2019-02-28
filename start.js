@@ -823,6 +823,7 @@ function move(direction) {
 function death() {
     game_messages("died");
     player_is_dead = true;
+    combat_mode = false;
     return
 }
 
