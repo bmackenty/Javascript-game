@@ -317,14 +317,23 @@ function game_messages(message,extra){
         clear_message_counter += 1;
     }
 
-
-
-
     else if (message === "died") {
 
         document.getElementById("main_map").innerHTML = "<br /> *** You have died *** <br /><br /> " + 
         "<img src=\"images/internal-injury.png\"> <br />" +
         "<a href=\"#\" onclick=\"window.location.reload(true);\">Click to restart</a>";
+    }
+
+    else if (message === "combat_monster_goes_away") {
+        document.getElementById("messages").innerHTML += "<div class=\"information\">" + 
+        "<span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span> " + 
+        "The monster decides not to eat you.</div>";
+    }
+
+    else if (message === "combat_talk_fails") {
+        document.getElementById("messages").innerHTML += "<div class=\"information\">" + 
+        "<span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span> " + 
+        "The monster doesn't understand you!!</div>";
     }
 }
 
@@ -537,7 +546,7 @@ return array_for_map;
 
 function draw_combat_screen(){
     document.getElementById('main_map').innerHTML = "<h2>An altercation!</h2>" +
-    "<p><strong>A</strong> - Attack! | <strong>B</strong> - Block! | <strong>R</strong> - Run away! | <strong>U</strong> - Use Item | <strong>T</strong> - talk things out </p>" +
+    "<p id=\"combat_choices\"><strong>A</strong> - Attack! | <strong>B</strong> - Block! | <strong>R</strong> - Run away! | <strong>U</strong> - Use Item | <strong>T</strong> - talk things out </p>" +
     "<p><img src=\""+ monster.image + "\"/> </p>";
 
 
@@ -650,6 +659,28 @@ function combat_determine_outcome(combat_action){
        combat_over("monster_alive");
    }
 
+   if (combat_action == "talk"){
+    
+    document.getElementById('combat_choices').innerHTML = 
+    "<div align=\"left\">" + 
+    "<p id=\"combat_talk_choice\"><br />Press 1 to tell the " + monster.name + " you are not delicious. " + 
+    "<br />Press 2 to tell the " + monster.name + " to sit down and take a nap. " + 
+    "<br />Press 3 to tell the " + monster.name + " there is an all-you-can-eat buffet down the street" +
+    "</div>";
+   }
+
+   if (combat_action == "talk_1") {
+       if (monster.intelligence < 10 && monster.talkative > 20) {
+           // this monster should be pretty easy to fool.
+           combat_over("monster_alive");
+           game_messages("combat_monster_goes_away");
+       } else {
+           game_messages("combat_talk_fails");
+           draw_combat_screen();
+           combat_monster_action();
+       }
+   }
+
     return
 }
 
@@ -695,6 +726,15 @@ function combat_choice(action){
     } else if (action == 't') {
         console.log('talk about it');
         combat_determine_outcome('talk');
+    } else if (action == '1') {
+        console.log('talk option 1');
+        combat_determine_outcome('talk_1');
+    } else if (action == '2') {
+        console.log('talk option 2');
+        combat_determine_outcome('talk_2');
+    } else if (action == '3') {
+        console.log('talk option 3');
+        combat_determine_outcome('talk_3');
     }
 }
 
@@ -1005,6 +1045,20 @@ function main_listener() {
         } else if (combat_mode && (key === 't' || key === 'T')) {
             // then we call the combat function and pass 't' to talk things out.
             combat_choice('t')
+
+        } else if (combat_mode && key === '1') {
+            // then we call the combat function and pass 't' to talk things out.
+            combat_choice('1')
+
+        } else if (combat_mode && key === '2') {
+            // then we call the combat function and pass 't' to talk things out.
+            combat_choice('2')
+
+        } else if (combat_mode && key === '3') {
+            // then we call the combat function and pass 't' to talk things out.
+            combat_choice('3')
+
+
 
         } else if (key === '?' || key === 191) {
             document.getElementById("messages").innerHTML = key;         
