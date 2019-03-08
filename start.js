@@ -29,6 +29,7 @@ LEARNED: about shallow copies. Thanks stackoverflow
 TODO: make alert messages more random, funny and meaningful
 TODO: add to credits https://game-icons.net/
 TODO: add skill and eqipment into chnace to block successfully 
+TODO: Ryan: add health bar for monsters during combat
 
 == DONE STUFF == 
 TODO: add image for death
@@ -347,7 +348,7 @@ if (monsterid == 300) {
         name: "Spider",
         base_chance_to_hit: 60,
         base_damage: 10,
-        talkative: 10,
+        talkative: 9,
         image:'images/spider-alt.png'
     }
 } else if(monsterid == 301) {
