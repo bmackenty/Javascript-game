@@ -361,6 +361,16 @@ if (monsterid == 300) {
         talkative: 60,
         image:'images/bear-face.png'
     }
+} else if(monsterid == 302) {
+    monster = {
+        health: 10,
+        intelligence: 6,
+        name: "Bear",
+        base_chance_to_hit: 50,
+        base_damage: 10,
+        talkative: 30,
+        image:'images/kiwi-bird.png'
+    }
 }
 
 }
@@ -421,6 +431,8 @@ function starting_map() {
     grid.splice(652,1,300);
     // and, because Jake, a bear.
     grid.splice(311,1,301);
+    // I wan't a kiwi bird - Andrew
+    grid.splice(315,1,302);
 
         // the side mountain range along the left side of the map
         grid.splice(0, 1, 100);
@@ -531,7 +543,13 @@ function draw_map(array_for_map) {
 else if (array_for_map[i] === 301) {
     // bear
     array_for_map[i] = "<i class=\"fas fa-paw fa-fw\" style=\"color:brown\" title=\"A bear. The kind that likes to eat adventurers.\"></i>";
-}   
+}
+
+else if (array_for_map[i] === 302) {
+    // bear
+    array_for_map[i] = "<i class=\"fas fa-kiwi-bird fa-fw\" style=\"color:purple\" title=\"Don't let it's small size fool you, this kiwi bird is as vicious as any enemy you'll find here.\"></i>";
+}
+
 
 }
  
@@ -602,6 +620,11 @@ function map_interaction_item(map_object,destination){
             return
 
         } else if (map_object === 301) {
+            game_messages("monster");
+            combat(map_object,destination);
+            return
+
+        } else if (map_object === 302) {
             game_messages("monster");
             combat(map_object,destination);
             return
