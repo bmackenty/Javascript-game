@@ -30,6 +30,8 @@ TODO: make alert messages more random, funny and meaningful
 TODO: add to credits https://game-icons.net/
 TODO: add skill and eqipment into chnace to block successfully 
 TODO: Ryan: add health bar for monsters during combat
+TODO: add Joe's all you can eat buffet
+
 
 == DONE STUFF == 
 TODO: add image for death
@@ -336,6 +338,32 @@ function game_messages(message,extra){
         "<span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span> " + 
         "The monster doesn't understand you!!</div>";
     }
+
+    else if (message === "combat_nap_fails") {
+        document.getElementById("messages").innerHTML += "<div class=\"information\">" + 
+        "<span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span> " + 
+        "The monster scowls. I'm not tired! I want to eat you. Slowly! Plus it's not my bedtime!</div>";
+    }
+
+    else if (message === "combat_monster_goes_to_sleep") {
+        document.getElementById("messages").innerHTML += "<div class=\"information\">" + 
+        "<span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span> " + 
+        "The monster drops to the ground, snoring softly...zzzzzzzzzzzzzzzz.....</div>";
+    }
+
+    else if (message === "combat_monster_goes_to_joes") {
+        document.getElementById("messages").innerHTML += "<div class=\"information\">" + 
+        "<span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span> " + 
+        "NO WAY! Seriously?! The monster leaps away to Joe's all you can eat buffet.</div>";
+    }
+
+    else if (message === "combat_no_buffet_for_you") {
+        document.getElementById("messages").innerHTML += "<div class=\"information\">" + 
+        "<span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span> " + 
+        "Why would I go to a buffet if I could just eat you?</div>";
+    }
+    
+
 }
 
 function monsters(monsterid) {
@@ -344,7 +372,7 @@ if (monsterid == 300) {
 
     monster = {
         health: 10,
-        intelligence: 5,
+        intelligence: 500,
         name: "Spider",
         base_chance_to_hit: 60,
         base_damage: 10,
@@ -543,7 +571,7 @@ function draw_map(array_for_map) {
 else if (array_for_map[i] === 301) {
     // bear
     array_for_map[i] = "<i class=\"fas fa-paw fa-fw\" style=\"color:brown\" title=\"A bear. The kind that likes to eat adventurers.\"></i>";
-}
+}   
 
 else if (array_for_map[i] === 302) {
     // bear
@@ -580,6 +608,11 @@ function combat_over(combat_result){
     } else if (combat_result == "monster_alive"){
         draw_map(grid);
         game_messages("combat_over");
+        combat_mode = false;
+    } else if (combat_result == "monster_alive_to_joes") {
+        // this is where we should add the monster to joe's. 
+        grid[current_destination] = 20;
+        draw_map(grid);
         combat_mode = false;
     }
 
@@ -705,7 +738,36 @@ function combat_determine_outcome(combat_action){
        }
    }
 
-    return
+   if (combat_action == "talk_2") {
+       var base_chance_for_nap_success = ((100-monster.intelligence) + player.luck);
+       var roll_for_nap_success = Math.floor(Math.random() * 100)+1;
+       if (roll_for_nap_success < base_chance_for_nap_success){
+        combat_over("monster_alive");
+        game_messages("combat_monster_goes_to_sleep");
+       } else {
+        game_messages("combat_nap_fails");
+        draw_combat_screen();
+        combat_monster_action();
+       }
+  
+}
+
+if (combat_action == "talk_3") {
+    var base_chance_for_buffet_success = ((100-monster.intelligence) + player.luck + player.charisma);
+    var roll_for_buffet_success = Math.floor(Math.random() * 100)+1;
+    if (roll_for_buffet_success < base_chance_for_buffet_success){
+     combat_over("monster_alive_to_joes");
+     game_messages("combat_monster_goes_to_joes");
+    } else {
+     game_messages("combat_no_buffet_for_you");
+     draw_combat_screen();
+     combat_monster_action();
+    }
+
+}
+
+
+return
 }
 
 function combat_monster_action() {
