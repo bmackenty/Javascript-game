@@ -324,7 +324,7 @@ function game_messages(message,extra){
 
         document.getElementById("main_map").innerHTML = "<br /> *** You have died *** <br /><br /> " + 
         "<img src=\"images/internal-injury.png\"> <br />" +
-        "<a href=\"#\" onclick=\"window.location.reload(true);\">Click to restart</a>";
+        "<a href=\"#\" onclick=\"window.location.reload(true);\">Press 'R' or here to restart</a>";
     }
 
     else if (message === "combat_monster_goes_away") {
