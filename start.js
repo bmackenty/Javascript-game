@@ -996,6 +996,11 @@ function death() {
     return
 }
 
+function restart(){
+    window.location.reload(true);
+    return
+}
+
 function update_footer() {
     if (player.health <= 0){
         death();
@@ -1155,6 +1160,10 @@ function main_listener() {
             // then we call the move function and pass 'd' for down.
             move('d')
 
+        } else if (player_is_dead && (key === 'r' || key === 'R')) {
+            // this is to make restarting easier
+            restart('restart')
+
         } else if (combat_mode && (key === 'a' || key === 'A')) {
             // then we call the combat function and pass 'a' for attack.
             combat_choice('a')
@@ -1186,7 +1195,6 @@ function main_listener() {
         } else if (combat_mode && key === '3') {
             // then we call the combat function and pass 't' to talk things out.
             combat_choice('3')
-
 
 
         } else if (key === '?' || key === 191) {
