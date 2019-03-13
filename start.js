@@ -402,15 +402,24 @@ if (monsterid == 300) {
 } else if(monsterid == 303) {
     monster = {
         health: 10,
-        intelligence: 6,
+        intelligence: 9,
         name: "Android",
         base_chance_to_hit: 50,
         base_damage: 10,
-        talkative: 30,
+        talkative: 10,
         image:'images/android.png'
     }
+}  else if(monsterid == 304) {
+    monster = {
+        health: 40,
+        intelligence: 6,
+        name: "Dragon",
+        base_chance_to_hit: 70,
+        base_damage: 10,
+        talkative: 40,
+        image:'images/dragon.png'
+    }
 }
-
 }
 
 function make_random_terrain() {
@@ -473,6 +482,8 @@ function starting_map() {
     grid.splice(315,1,302);
     // robots are cool - Andrew
     grid.splice(500,1,303);
+    // it's a dragon, and I hope we do other stuff with it other than just fight it in the future - Andrew
+    grid.splice(545,1,304);
 
         // the side mountain range along the left side of the map
         grid.splice(0, 1, 100);
@@ -592,7 +603,12 @@ else if (array_for_map[i] === 302) {
 
 else if (array_for_map[i] === 303) {
     // android
-    array_for_map[i] = "<i class=\"fab fa-android fa-fw\" style=\"color:blue\" title=\"Don't let it's small size fool you, this kiwi bird is as vicious as any enemy you'll find here.\"></i>";
+    array_for_map[i] = "<i class=\"fab fa-android fa-fw\" style=\"color:blue\" title=\"It's a hyper-intelligent android.\"></i>";
+}
+
+else if (array_for_map[i] === 304) {
+    // dragon
+    array_for_map[i] = "<i class=\"fas fa-dragon fa-fw\" style=\"color:red\" title=\"A dragon which unsurprisingly eats people\"></i>";
 }
 
 
@@ -680,6 +696,11 @@ function map_interaction_item(map_object,destination){
             return
 
         } else if (map_object === 303) {
+            game_messages("monster");
+            combat(map_object,destination);
+            return
+
+        } else if (map_object === 304) {
             game_messages("monster");
             combat(map_object,destination);
             return
