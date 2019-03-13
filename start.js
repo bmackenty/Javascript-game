@@ -1162,7 +1162,7 @@ function main_listener() {
 
         } else if (player_is_dead && (key === 'r' || key === 'R')) {
             // this is to make restarting easier
-            restart('restart')
+            restart()
 
         } else if (combat_mode && (key === 'a' || key === 'A')) {
             // then we call the combat function and pass 'a' for attack.
