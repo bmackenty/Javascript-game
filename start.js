@@ -586,12 +586,12 @@ else if (array_for_map[i] === 301) {
 }   
 
 else if (array_for_map[i] === 302) {
-    // bear
+    // kiwi bird
     array_for_map[i] = "<i class=\"fas fa-kiwi-bird fa-fw\" style=\"color:purple\" title=\"Don't let it's small size fool you, this kiwi bird is as vicious as any enemy you'll find here.\"></i>";
 }
 
 else if (array_for_map[i] === 303) {
-    // bear
+    // android
     array_for_map[i] = "<i class=\"fab fa-android fa-fw\" style=\"color:blue\" title=\"Don't let it's small size fool you, this kiwi bird is as vicious as any enemy you'll find here.\"></i>";
 }
 
