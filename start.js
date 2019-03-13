@@ -324,7 +324,7 @@ function game_messages(message,extra){
 
         document.getElementById("main_map").innerHTML = "<br /> *** You have died *** <br /><br /> " + 
         "<img src=\"images/internal-injury.png\"> <br />" +
-        "<a href=\"#\" onclick=\"window.location.reload(true);\">Click to restart</a>";
+        "<a href=\"#\" onclick=\"window.location.reload(true);\">Press 'R' or here to restart</a>";
     }
 
     else if (message === "combat_monster_goes_away") {
@@ -393,14 +393,33 @@ if (monsterid == 300) {
     monster = {
         health: 10,
         intelligence: 6,
-        name: "Bear",
+        name: "Kiwi Bird",
         base_chance_to_hit: 50,
         base_damage: 10,
         talkative: 30,
         image:'images/kiwi-bird.png'
     }
+} else if(monsterid == 303) {
+    monster = {
+        health: 10,
+        intelligence: 9,
+        name: "Android",
+        base_chance_to_hit: 50,
+        base_damage: 10,
+        talkative: 10,
+        image:'images/android.png'
+    }
+}  else if(monsterid == 304) {
+    monster = {
+        health: 40,
+        intelligence: 6,
+        name: "Dragon",
+        base_chance_to_hit: 70,
+        base_damage: 10,
+        talkative: 40,
+        image:'images/dragon.png'
+    }
 }
-
 }
 
 function make_random_terrain() {
@@ -461,6 +480,10 @@ function starting_map() {
     grid.splice(311,1,301);
     // I wan't a kiwi bird - Andrew
     grid.splice(315,1,302);
+    // robots are cool - Andrew
+    grid.splice(500,1,303);
+    // it's a dragon, and I hope we do other stuff with it other than just fight it in the future - Andrew
+    grid.splice(545,1,304);
 
         // the side mountain range along the left side of the map
         grid.splice(0, 1, 100);
@@ -574,8 +597,18 @@ else if (array_for_map[i] === 301) {
 }   
 
 else if (array_for_map[i] === 302) {
-    // bear
+    // kiwi bird
     array_for_map[i] = "<i class=\"fas fa-kiwi-bird fa-fw\" style=\"color:purple\" title=\"Don't let it's small size fool you, this kiwi bird is as vicious as any enemy you'll find here.\"></i>";
+}
+
+else if (array_for_map[i] === 303) {
+    // android
+    array_for_map[i] = "<i class=\"fab fa-android fa-fw\" style=\"color:blue\" title=\"It's a hyper-intelligent android.\"></i>";
+}
+
+else if (array_for_map[i] === 304) {
+    // dragon
+    array_for_map[i] = "<i class=\"fas fa-dragon fa-fw\" style=\"color:red\" title=\"A dragon which unsurprisingly eats people\"></i>";
 }
 
 
@@ -658,6 +691,16 @@ function map_interaction_item(map_object,destination){
             return
 
         } else if (map_object === 302) {
+            game_messages("monster");
+            combat(map_object,destination);
+            return
+
+        } else if (map_object === 303) {
+            game_messages("monster");
+            combat(map_object,destination);
+            return
+
+        } else if (map_object === 304) {
             game_messages("monster");
             combat(map_object,destination);
             return
@@ -953,6 +996,11 @@ function death() {
     return
 }
 
+function restart(){
+    window.location.reload(true);
+    return
+}
+
 function update_footer() {
     if (player.health <= 0){
         death();
@@ -1112,6 +1160,10 @@ function main_listener() {
             // then we call the move function and pass 'd' for down.
             move('d')
 
+        } else if (player_is_dead && (key === 'r' || key === 'R')) {
+            // this is to make restarting easier
+            restart()
+
         } else if (combat_mode && (key === 'a' || key === 'A')) {
             // then we call the combat function and pass 'a' for attack.
             combat_choice('a')
@@ -1143,7 +1195,6 @@ function main_listener() {
         } else if (combat_mode && key === '3') {
             // then we call the combat function and pass 't' to talk things out.
             combat_choice('3')
-
 
 
         } else if (key === '?' || key === 191) {
