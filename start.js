@@ -31,6 +31,7 @@ TODO: add to credits https://game-icons.net/
 TODO: add skill and eqipment into chnace to block successfully 
 TODO: Ryan: add health bar for monsters during combat
 TODO: add Joe's all you can eat buffet
+TODO: foo
 
 
 == DONE STUFF == 
