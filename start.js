@@ -65,6 +65,32 @@ var combat_destination;
 var player_is_dead = false;
 
 
+function check_for_achievement(action) {
+    if (turn == 10) {
+        player.achievements["Survived 10 turns!"] = 1;
+    }
+
+    if (player.inventory.craft_1.quantity == 100) {
+        player.achievements["Killer of perfectly fine trees"] = 1;
+    }
+
+    if (player.inventory.craft_1.quantity == 1000) {
+        player.achievements["Seriously, why are you killing all these trees?"] = 1;
+    }
+
+    if (action == "talk") {
+        player.achievements["Tried to talk your way out of trouble!"] = 1;
+
+    }
+
+    if (action == "run_away") {
+        player.achievements["Has run away...heh."] = 1;
+
+    }
+
+return;
+}
+
 function exists(arr, search) {
     // used with gratitude from:
     // https://stackoverflow.com/questions/48538162/how-to-check-if-a-two-dimensional-array-includes-a-string
@@ -1143,20 +1169,28 @@ function main_listener() {
         } else if (!player_is_dead && !combat_mode && (key === 'ArrowRight' || key === 39)) {
             // then we call the move function and pass 'r' for right.
             move('r');
+            check_for_achievement();
+
             
 
         } else if (!player_is_dead && !combat_mode && (key === 'ArrowLeft' || key === 39)) {
             // then we call the move function and pass 'l' for left.
-            move('l')
+            move('l');
+            check_for_achievement();
+
 
 
         } else if (!player_is_dead && !combat_mode && (key === 'ArrowUp' || key === 39)) {
             // then we call the move function and pass 'u' for up.
-            move('u')   
+            move('u');
+            check_for_achievement();
+   
 
         } else if (!player_is_dead && !combat_mode && (key === 'ArrowDown' || key === 39)) {
             // then we call the move function and pass 'd' for down.
             move('d')
+            check_for_achievement();
+
 
         } else if (player_is_dead && (key === 'r' || key === 'R')) {
             // this is to make restarting easier
@@ -1164,35 +1198,51 @@ function main_listener() {
 
         } else if (combat_mode && (key === 'a' || key === 'A')) {
             // then we call the combat function and pass 'a' for attack.
-            combat_choice('a')
+            combat_choice('a');
+            check_for_achievement();
+
             
         } else if (combat_mode && (key === 'b' || key === 'B')) {
             // then we call the combat function and pass 'b' for block.
-            combat_choice('b')
+            combat_choice('b');
+            check_for_achievement();
+
 
         } else if (combat_mode && (key === 'r' || key === 'R')) {
             // then we call the combat function and pass 'r' for run away.
-            combat_choice('r')
+            combat_choice('r');
+            check_for_achievement("run_away");
+
 
         } else if (combat_mode && (key === 'u' || key === 'U')) {
             // then we call the combat function and pass 'u' for use item.
-            combat_choice('u')
+            combat_choice('u');
+            check_for_achievement();
+
 
         } else if (combat_mode && (key === 't' || key === 'T')) {
             // then we call the combat function and pass 't' to talk things out.
-            combat_choice('t')
+            combat_choice('t');
+            check_for_achievement("talk");
+
 
         } else if (combat_mode && key === '1') {
             // then we call the combat function and pass 't' to talk things out.
-            combat_choice('1')
+            combat_choice('1');
+            check_for_achievement();
+
 
         } else if (combat_mode && key === '2') {
             // then we call the combat function and pass 't' to talk things out.
-            combat_choice('2')
+            combat_choice('2');
+            check_for_achievement();
+
 
         } else if (combat_mode && key === '3') {
             // then we call the combat function and pass 't' to talk things out.
-            combat_choice('3')
+            combat_choice('3');
+            check_for_achievement();
+
 
 
         } else if (key === '?' || key === 191) {
