@@ -101,10 +101,8 @@ console.log('function initialize start');
     luck: 10,
     region: "newbie",
     achievements: {
-                    achievement_1: {
-                        name: 'test',
-                        awarded: 'date'
-                    }
+        'Playing this game instead of doing school work':0,
+        'test':0
     },
     inventory: {
                     weapon_1: {
@@ -402,7 +400,7 @@ if (monsterid == 300) {
 } else if(monsterid == 303) {
     monster = {
         health: 10,
-        intelligence: 9,
+        intelligence: 75,
         name: "Android",
         base_chance_to_hit: 50,
         base_damage: 10,
@@ -665,13 +663,13 @@ function map_interaction_item(map_object,destination){
         // randomize damage
         player.health = (player.health - 21);
         
-        if ('Friend of the Bear' in player.skills) {
-                player.skills["Friend of the Bear"] += 1;
+        if ('Friend of the Bear' in player.achievements) {
+                player.achievements["Friend of the Bear"] += 1;
                 game_messages("bear_trap");
                 grid[destination] = 97;
                 return ("allow_move")
             } else {
-                player.skills["Friend of the Bear"] = 1;
+                player.achievements["Friend of the Bear"] = 1;
                 game_messages("bear_trap");
                 grid[destination] = 97;
                 return ("allow_move")
@@ -1108,7 +1106,7 @@ function update_stats(player) {
 
     document.getElementById("stats_and_inventory_block").innerHTML += "<br /> <div class=\"category\">Achievements</div><ul>";
     for(var k in player.achievements) {
-        document.getElementById("stats_and_inventory_block").innerHTML += "<li>" + player.achievements[k].name +  "</li>";
+        document.getElementById("stats_and_inventory_block").innerHTML += "<li>" + k + "</li>";
     }
 }
 
