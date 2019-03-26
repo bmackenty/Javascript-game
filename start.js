@@ -92,8 +92,9 @@ function spread_fire(){
     console.log(fire_array);
 
     fire_array.forEach(i=> {
-
-        grid.splice(i,1,400);
+        if(grid[i]) {
+          grid.splice(i,1,400);
+        }
     });
 
     return
