@@ -98,6 +98,35 @@ function exists(arr, search) {
     return arr.some(row => row.includes(search));
 }
 
+function turn_checker(){
+    spread_fire();
+    turn += 1;
+    return
+}
+
+function spread_fire(){
+    var fire_index = grid.indexOf(305);
+    console.log(grid.indexOf(305));
+    console.log('There is a fire at', fire_index);
+    var fire_right = grid[fire_index+1]
+    change_terrain(fire_right)
+    var fire_left = grid[fire_index-1]
+    change_terrain(fire_left)
+    var fire_up = grid[fire_index-34]
+    change_terrain(fire_up)
+    var fire_down = grid[fire_index+34]
+    change_terrain(fire_down)
+    var fire_up_right = grid[fire_index-33]
+    change_terrain(fire_up_right)
+    var fire_up_left = grid[fire_index-35]
+    change_terrain(fire_up_left)
+    var fire_down_right = grid[fire_index+35]
+    change_terrain(fire_down_right)
+    var fire_down_left = grid[fire_index+33]
+    change_terrain(fire_down_left)
+    return
+}
+
 function initialize() {
 
 
@@ -912,7 +941,7 @@ function move(direction) {
         grid[destination] = 99;
         current_destination = (destination+1);
             // increment the turn counter 
-            turn = turn + 1;
+            turn_checker();
             // now lets update the map
             draw_map(grid);
             update_footer();
@@ -941,7 +970,7 @@ function move(direction) {
             grid[destination] = 99;
             current_destination = (destination-1);
                 // increment the turn counter 
-                turn = turn + 1;
+                turn_checker();
                 // now lets update the map
                 draw_map(grid);
                 update_footer();
@@ -971,7 +1000,7 @@ function move(direction) {
         grid[destination] = 99;
         current_destination = (destination-34);
             // increment the turn counter 
-            turn = turn + 1;
+            turn_checker();
             // now lets update the map
             draw_map(grid);
             update_footer();
@@ -999,7 +1028,7 @@ function move(direction) {
             grid[destination] = 99;
             current_destination = (destination+34);
                 // increment the turn counter 
-                turn = turn + 1;
+                turn_checker();
                 // now lets update the map
                 draw_map(grid);
                 update_footer();
