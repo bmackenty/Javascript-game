@@ -14,6 +14,7 @@ var combat_mode = false;
 var current_destination;
 var combat_destination;
 var player_is_dead = false;
+var fire;
 
 
 function check_for_achievement(action) {
@@ -49,8 +50,12 @@ function exists(arr, search) {
 }
 
 function turn_checker(){
-    spread_fire();
     turn += 1;
+    if (turn === 5) {
+        make_fire();
+    } else if (fire == true){
+        spread_fire();
+    }
     return
 }
 
