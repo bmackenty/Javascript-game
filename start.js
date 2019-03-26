@@ -96,7 +96,7 @@ function spread_fire(){
     fire_array.push(fire_down_left);
 
     fire_array.forEach(i=> {
-        if(grid[i] == 4 || (grid[i] >= 10 || grid[i] <=18)) {
+        if(grid[i] && (grid[i] == 4 || (grid[i] >= 10 || grid[i] <=18))) {
             grid.splice(i,1,400);
         }
     });
