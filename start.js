@@ -16,7 +16,7 @@ var combat_destination;
 var player_is_dead = false;
 var fire;
 var fire_array =[];
-
+var fire_row = 0;
 
 function check_for_achievement(action) {
     if (turn == 10) {
@@ -69,24 +69,25 @@ function make_fire(){
 
 
 function spread_fire(){
+    fire_row += 1;
     console.log("Hi. I'm spreading fire now");
     console.log(fire_array);
     fire_index = 999;
-    var fire_right = fire_index+1;
+    var fire_right = fire_index+(1 * fire_row);
     fire_array.push(fire_right);
-    var fire_left = fire_index-1;
+    var fire_left = fire_index-(1 * fire_row);
     fire_array.push(fire_left);
-    var fire_up = fire_index-34;
+    var fire_up = fire_index-(34 * fire_row);
     fire_array.push(fire_up);
-    var fire_down = fire_index+34;
+    var fire_down = fire_index+(34 * fire_row);
     fire_array.push(fire_down);
-    var fire_up_right = fire_index-33;
+    var fire_up_right = fire_index-(33 * fire_row);
     fire_array.push(fire_up_right);
-    var fire_up_left = fire_index-35;
+    var fire_up_left = fire_index-(35 * fire_row);
     fire_array.push(fire_up_left);
-    var fire_down_right = fire_index+35;
+    var fire_down_right = fire_index+(35 * fire_row);
     fire_array.push(fire_down_right);
-    var fire_down_left = fire_index+33;
+    var fire_down_left = fire_index+(33 * fire_row);
     fire_array.push(fire_down_left);
     console.log(fire_array);
 
