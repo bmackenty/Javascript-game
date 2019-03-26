@@ -71,8 +71,13 @@ function make_fire(){
 function spread_fire(){
     fire_row += 1;
     console.log("Hi. I'm spreading fire now");
-    console.log(fire_array);
-    fire_index = 999;
+    if(fire_row == 1) {
+        fire_index = 999;
+    } else {
+        let random = Math.floor(Math.random() * (2 -  (-2) + 2)) + (-2);
+        console.log(random)
+        fire_index = 999 + random;
+    }
     var fire_right = fire_index+(1 * fire_row);
     fire_array.push(fire_right);
     var fire_left = fire_index-(1 * fire_row);
@@ -89,11 +94,10 @@ function spread_fire(){
     fire_array.push(fire_down_right);
     var fire_down_left = fire_index+(33 * fire_row);
     fire_array.push(fire_down_left);
-    console.log(fire_array);
 
     fire_array.forEach(i=> {
-        if(grid[i]) {
-          grid.splice(i,1,400);
+        if(grid[i] == 4 || (grid[i] >= 10 || grid[i] <=18)) {
+            grid.splice(i,1,400);
         }
     });
 
