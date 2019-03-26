@@ -15,6 +15,7 @@ var current_destination;
 var combat_destination;
 var player_is_dead = false;
 var fire;
+var fire_array =[];
 
 
 function check_for_achievement(action) {
@@ -59,26 +60,41 @@ function turn_checker(){
     return
 }
 
+function make_fire(){
+    grid.splice(999, 1, 400);
+    fire_array =[999];
+    fire = true;
+    return
+}
+
+
 function spread_fire(){
-    var fire_index = grid.indexOf(305);
-    console.log(grid.indexOf(305));
-    console.log('There is a fire at', fire_index);
-    var fire_right = grid[fire_index+1]
-    change_terrain(fire_right)
-    var fire_left = grid[fire_index-1]
-    change_terrain(fire_left)
-    var fire_up = grid[fire_index-34]
-    change_terrain(fire_up)
-    var fire_down = grid[fire_index+34]
-    change_terrain(fire_down)
-    var fire_up_right = grid[fire_index-33]
-    change_terrain(fire_up_right)
-    var fire_up_left = grid[fire_index-35]
-    change_terrain(fire_up_left)
-    var fire_down_right = grid[fire_index+35]
-    change_terrain(fire_down_right)
-    var fire_down_left = grid[fire_index+33]
-    change_terrain(fire_down_left)
+    console.log("Hi. I'm spreading fire now");
+    console.log(fire_array);
+    fire_index = 999;
+    var fire_right = fire_index+1;
+    fire_array.push(fire_right);
+    var fire_left = fire_index-1;
+    fire_array.push(fire_left);
+    var fire_up = fire_index-34;
+    fire_array.push(fire_up);
+    var fire_down = fire_index+34;
+    fire_array.push(fire_down);
+    var fire_up_right = fire_index-33;
+    fire_array.push(fire_up_right);
+    var fire_up_left = fire_index-35;
+    fire_array.push(fire_up_left);
+    var fire_down_right = fire_index+35;
+    fire_array.push(fire_down_right);
+    var fire_down_left = fire_index+33;
+    fire_array.push(fire_down_left);
+    console.log(fire_array);
+
+    fire_array.forEach(i=> {
+
+        grid.splice(i,1,400);
+    });
+
     return
 }
 
@@ -618,6 +634,11 @@ else if (array_for_map[i] === 303) {
 else if (array_for_map[i] === 304) {
     // dragon
     array_for_map[i] = "<i class=\"fas fa-dragon fa-fw\" style=\"color:red\" title=\"A dragon which unsurprisingly eats people\"></i>";
+}
+
+else if (array_for_map[i] === 400) {
+    // fire
+    array_for_map[i] = "<i class=\"fas fa-fire fa-fw\" style=\"color:orange\" title=\"Fire. The kind that burns. Alot. \"></i>";
 }
 
 
