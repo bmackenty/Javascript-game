@@ -749,7 +749,7 @@ function map_interaction_item(map_object,destination){
     if (map_object <= 3 || (map_object >= 19 && map_object <= 25) || map_object === 5 || map_object === 7) {
         return ("allow_move")
 
-    } else if (map_object === 100  || map_object === 101){
+    } else if (map_object === 100  || map_object === 101 || map_object == 400){
         return ("prohibit_move")
     
 
