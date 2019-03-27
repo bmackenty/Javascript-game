@@ -236,39 +236,6 @@ function death() {
 function draw_map(array_for_map) {
     // TODO: put these in sensible order (parsing order == beter optimization??)
 
-function spread_fire(){
-    fire_row += 1;
-    console.log("Hi. I'm spreading fire now");
-    if(fire_row == 1) {
-        fire_index = 999;
-    } else {
-        let random = Math.floor(Math.random() * (2 -  (-2) + 2)) + (-2);
-        console.log(random)
-        fire_index = 999 + random;
-    }
-    var fire_right = fire_index+(1 * fire_row);
-    fire_array.push(fire_right);
-    var fire_left = fire_index-(1 * fire_row);
-    fire_array.push(fire_left);
-    var fire_up = fire_index-(34 * fire_row);
-    fire_array.push(fire_up);
-    var fire_down = fire_index+(34 * fire_row);
-    fire_array.push(fire_down);
-    var fire_up_right = fire_index-(33 * fire_row);
-    fire_array.push(fire_up_right);
-    var fire_up_left = fire_index-(35 * fire_row);
-    fire_array.push(fire_up_left);
-    var fire_down_right = fire_index+(35 * fire_row);
-    fire_array.push(fire_down_right);
-    var fire_down_left = fire_index+(33 * fire_row);
-    fire_array.push(fire_down_left);
-
-    fire_array.forEach(i=> {
-        if(grid[i] && (grid[i] == 4 || (grid[i] >= 10 || grid[i] <=18))) {
-            grid.splice(i,1,400);
-        }
-    })
-   }
    var temp_grid = array_for_map.slice(0);
     var counter = 0;
     var arrayLength = array_for_map.length;
@@ -1137,9 +1104,7 @@ function spread_fire(){
     if(fire_row == 1) {
         fire_index = 999;
     } else {
-        let random = Math.floor(Math.random() * (2 -  (-2) + 2)) + (-2);
-        console.log(random)
-        fire_index = 999 + random;
+        fire_index = 999 +  Math.floor(Math.random() * 10) - 0;
     }
     var fire_right = fire_index+(1 * fire_row);
     fire_array.push(fire_right);
@@ -1157,15 +1122,29 @@ function spread_fire(){
     fire_array.push(fire_down_right);
     var fire_down_left = fire_index+(33 * fire_row);
     fire_array.push(fire_down_left);
-
-    fire_array.forEach(i=> {
-        if(grid[i] && (grid[i] == 4 || (grid[i] >= 10 || grid[i] <=18))) {
-            grid.splice(i,1,400);
+    function test(p) {
+        if(!grid[p] || grid[p] == 99 || grid[p] == 100 || grid[p] <= 3) return;
+        let right = grid[p+(1)];
+        let left = grid[p-(1)];
+        let up = grid[p-(34)];
+        let down = grid[p+(34)];
+        let up_right = grid[p-(33)];
+        let up_left = grid[p-(35)];
+        let down_right = grid[p+(35)];
+        let down_left = grid[p+(33)];
+        if(left == 400 || right == 400 || up == 400 || down == 400 || up_right == 400 || up_left == 400 || down_right == 400 || down_left == 400) {
+            return true;
+        } else {
+            return false;
         }
-    });
-
-    return
-}
+    }
+    fire_array.forEach(i=> {
+            if(test(i)) {
+                grid.splice(i,1,400);
+            }
+        
+    })
+   }
 
 function starting_map() {
     console.log('function starting map start');
