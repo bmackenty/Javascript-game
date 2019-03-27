@@ -17,7 +17,7 @@ var combat_destination;
 var player_is_dead = false;
 var fire;
 var fire_array =[];
-
+var fire_row = 0;
 
 function check_for_achievement(action) {
     if (turn == 10) {
@@ -236,6 +236,39 @@ function death() {
 function draw_map(array_for_map) {
     // TODO: put these in sensible order (parsing order == beter optimization??)
 
+function spread_fire(){
+    fire_row += 1;
+    console.log("Hi. I'm spreading fire now");
+    if(fire_row == 1) {
+        fire_index = 999;
+    } else {
+        let random = Math.floor(Math.random() * (2 -  (-2) + 2)) + (-2);
+        console.log(random)
+        fire_index = 999 + random;
+    }
+    var fire_right = fire_index+(1 * fire_row);
+    fire_array.push(fire_right);
+    var fire_left = fire_index-(1 * fire_row);
+    fire_array.push(fire_left);
+    var fire_up = fire_index-(34 * fire_row);
+    fire_array.push(fire_up);
+    var fire_down = fire_index+(34 * fire_row);
+    fire_array.push(fire_down);
+    var fire_up_right = fire_index-(33 * fire_row);
+    fire_array.push(fire_up_right);
+    var fire_up_left = fire_index-(35 * fire_row);
+    fire_array.push(fire_up_left);
+    var fire_down_right = fire_index+(35 * fire_row);
+    fire_array.push(fire_down_right);
+    var fire_down_left = fire_index+(33 * fire_row);
+    fire_array.push(fire_down_left);
+
+    fire_array.forEach(i=> {
+        if(grid[i] && (grid[i] == 4 || (grid[i] >= 10 || grid[i] <=18))) {
+            grid.splice(i,1,400);
+        }
+    })
+   }
    var temp_grid = array_for_map.slice(0);
     var counter = 0;
     var arrayLength = array_for_map.length;
@@ -716,7 +749,7 @@ function map_interaction_item(map_object,destination){
     if (map_object <= 3 || (map_object >= 19 && map_object <= 25) || map_object === 5 || map_object === 7) {
         return ("allow_move")
 
-    } else if (map_object === 100  || map_object === 101){
+    } else if (map_object === 100  || map_object === 101 || map_object == 400){
         return ("prohibit_move")
     
 
@@ -935,15 +968,12 @@ function main_listener() {
             // then we call the move function and pass 'r' for right.
             move('r');
             check_for_achievement();
-
-            
-
+    
         } else if (!player_is_dead && !combat_mode && (key === 'ArrowLeft' || key === 39)) {
             // then we call the move function and pass 'l' for left.
             move('l');
             check_for_achievement();
-
-
+          
 
         } else if (!player_is_dead && !combat_mode && (key === 'ArrowUp' || key === 39)) {
             // then we call the move function and pass 'u' for up.
@@ -1102,30 +1132,36 @@ function restart(){
 }
 
 function spread_fire(){
+    fire_row += 1;
     console.log("Hi. I'm spreading fire now");
-    console.log(fire_array);
-    fire_index = 999;
-    var fire_right = fire_index+1;
+    if(fire_row == 1) {
+        fire_index = 999;
+    } else {
+        let random = Math.floor(Math.random() * (2 -  (-2) + 2)) + (-2);
+        console.log(random)
+        fire_index = 999 + random;
+    }
+    var fire_right = fire_index+(1 * fire_row);
     fire_array.push(fire_right);
-    var fire_left = fire_index-1;
+    var fire_left = fire_index-(1 * fire_row);
     fire_array.push(fire_left);
-    var fire_up = fire_index-34;
+    var fire_up = fire_index-(34 * fire_row);
     fire_array.push(fire_up);
-    var fire_down = fire_index+34;
+    var fire_down = fire_index+(34 * fire_row);
     fire_array.push(fire_down);
-    var fire_up_right = fire_index-33;
+    var fire_up_right = fire_index-(33 * fire_row);
     fire_array.push(fire_up_right);
-    var fire_up_left = fire_index-35;
+    var fire_up_left = fire_index-(35 * fire_row);
     fire_array.push(fire_up_left);
-    var fire_down_right = fire_index+35;
+    var fire_down_right = fire_index+(35 * fire_row);
     fire_array.push(fire_down_right);
-    var fire_down_left = fire_index+33;
+    var fire_down_left = fire_index+(33 * fire_row);
     fire_array.push(fire_down_left);
-    console.log(fire_array);
 
     fire_array.forEach(i=> {
-
-        grid.splice(i,1,400);
+        if(grid[i] && (grid[i] == 4 || (grid[i] >= 10 || grid[i] <=18))) {
+            grid.splice(i,1,400);
+        }
     });
 
     return
