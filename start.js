@@ -1,23 +1,23 @@
 // This is a javascript game that does fun stuff.
-const main_map = document.getElementById('main_map');
-var turn = 0;
-var grid = [];
-var terrain;
-var destination_terrain = 1;
-var player = {};
-var monster = {};
-var foo = [];
 var array_for_map = [];
 var clear_message_counter = 0;
-var number_of_magic_heals = 0;
-// There are certain keyboard events we only listen for when we are in combat
 var combat_mode = false;
 var current_destination;
 var combat_destination;
-var player_is_dead = false;
+var destination_terrain = 1;
 var fire;
+var foo = []; // oh my god, why?
 var fire_array =[];
 var fire_row = 0;
+var grid = [];
+const main_map = document.getElementById('main_map');
+var monster = {};
+var number_of_magic_heals = 0;
+var player_is_dead = false;
+var player = {};
+var turn = 0;
+var terrain;
+
 
 function check_for_achievement(action) {
     if (turn == 10) {
