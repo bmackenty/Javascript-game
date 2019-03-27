@@ -56,14 +56,16 @@ function combat_determine_outcome(combat_action){
             var crit_probability = Math.floor(Math.random()*100)+1;
             console.log(base_crit_chance);
             console.log(crit_probability);
+
             if (base_crit_chance > crit_probability) {
              var damage = Math.floor(Math.random() * 100)+1;
              monster.health = monster.health - damage;
              game_messages("combat_hit_crit",damage);
-            }
+            } else {
              var damage = Math.floor(Math.random() * 10)+1;
              monster.health = monster.health - damage;
              game_messages("combat_hit",damage);
+            }
         if (monster.health < 1){
              combat_over("monster_dead");
             }
@@ -379,18 +381,38 @@ function game_messages(message,extra){
 
     else if (message === "combat_hit") {
 
-        document.getElementById("messages").innerHTML += "<div class=\"information\">" + 
-        "<span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span> " + 
-        "You hit for " + extra + " points of damage. The monster has " + monster.health + " health left.</div>";
-        clear_message_counter += 1;
+        if (extra < monster.health) {
+            // if we hit the monster but don't kill it, this message it displayed: 
+            document.getElementById("messages").innerHTML += "<div class=\"information\">" + 
+            "<span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span> " + 
+            "You hit for " + extra + " points of damage. The monster has " + monster.health + " health left.</div>";
+            clear_message_counter += 1;
+
+        } else {
+            // if we hit the monster AND kill it, this message it displayed: 
+            document.getElementById("messages").innerHTML += "<div class=\"information\">" + 
+            "<span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span> " + 
+            "You hit for " + extra + " points of damage and VANQUISH the monster!</div>";
+            clear_message_counter += 1;
+        }
     }
 
     else if (message === "combat_hit_crit") {
 
-        document.getElementById("messages").innerHTML += "<div class=\"information\">" + 
-        "<span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span> " + 
-        "CRITICAL HIT!! You hit for " + extra + " points of damage. The monster has " + monster.health + " health left.</div>";
-        clear_message_counter += 1;
+        if (extra < monster.health) {
+            // if we hit the monster but don't kill it, this message it displayed: 
+            document.getElementById("messages").innerHTML += "<div class=\"information\">" + 
+            "<span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span> " + 
+            "You hit for " + extra + " points of damage. The monster has " + monster.health + " health left.</div>";
+            clear_message_counter += 1;
+
+        } else {
+            // if we hit the monster AND kill it, this message it displayed: 
+            document.getElementById("messages").innerHTML += "<div class=\"information\">" + 
+            "<span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span> " + 
+            "CRITICAL HIT! for " + extra + " points of damage and VANQUISH the monster!</div>";
+            clear_message_counter += 1;
+        }
     }
 
     else if (message === "combat_block") {
@@ -1259,8 +1281,6 @@ function update_stats(player) {
         document.getElementById("stats_and_inventory_block").innerHTML += "<li>" + k + "</li>";
     }
 }
-
-
 
 initialize();
 make_random_terrain();
