@@ -233,9 +233,6 @@ function death() {
     return
 }
 
-function draw_map(array_for_map) {
-    // TODO: put these in sensible order (parsing order == beter optimization??)
-
 function spread_fire(){
     fire_row += 1;
     console.log("Hi. I'm spreading fire now");
@@ -268,7 +265,12 @@ function spread_fire(){
             grid.splice(i,1,400);
         }
     })
-   }
+}
+
+function draw_map(array_for_map) {
+    // TODO: put these in sensible order (parsing order == beter optimization??)
+
+
    var temp_grid = array_for_map.slice(0);
     var counter = 0;
     var arrayLength = array_for_map.length;
@@ -369,6 +371,10 @@ else if (array_for_map[i] === 400) {
     array_for_map[i] = "<i class=\"fas fa-fire fa-fw\" style=\"color:orange\" title=\"Fire. The kind that burns. Alot. \"></i>";
 }
 
+else if (array_for_map[i] === 500) {
+    // fire
+    array_for_map[i] = "<i class=\"fas fa-shopping-cart fa-fw\" style=\"color:black\" title=\"Consumerism at its finest! \"></i>";
+}
 
 }
  
@@ -1215,6 +1221,8 @@ function starting_map() {
     grid.splice(500,1,303);
     // it's a dragon, and I hope we do other stuff with it other than just fight it in the future - Andrew
     grid.splice(545,1,304);
+    // Our Store! 
+    grid.splice(745,1,500);
 
         // the side mountain range along the left side of the map
         grid.splice(0, 1, 100);
@@ -1238,6 +1246,9 @@ function turn_checker(){
         make_fire();
     } else if (fire == true){
         spread_fire();
+    }
+    if (turn === 7) {
+        fire = false;
     }
     return
 }
