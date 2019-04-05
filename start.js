@@ -10,6 +10,7 @@ var foo = []; // oh my god, why?
 var fire_array =[];
 var fire_row = 0;
 var grid = [];
+var grid2 = [];
 const main_map = document.getElementById('main_map');
 var monster = {};
 var number_of_magic_heals = 0;
@@ -17,6 +18,7 @@ var player_is_dead = false;
 var player = {};
 var turn = 0;
 var terrain;
+var current_sector = 0;
 
 
 function check_for_achievement(action) {
@@ -270,8 +272,7 @@ function spread_fire(){
 function draw_map(array_for_map) {
     // TODO: put these in sensible order (parsing order == beter optimization??)
 
-
-   var temp_grid = array_for_map.slice(0);
+    var temp_grid = array_for_map.slice(0);
     var counter = 0;
     var arrayLength = array_for_map.length;
     for (var i = 0; i < arrayLength; i++) {
@@ -287,7 +288,6 @@ function draw_map(array_for_map) {
     } else if (array_for_map[i] === 4) {
         // this is a tree
         array_for_map[i] = "<i class=\"fas fa-tree fa-fw\" style=\"color:green\" title=\"A tall tree.\"></i>";
-
 
     } else if (array_for_map[i] === 11) {
         // this is a tree
@@ -382,8 +382,11 @@ array_for_map = array_for_map.join('');
 
 // this is where we draw the map. once we draw it, we want to turn grid back into a normal array. 
 document.getElementById("main_map").innerHTML = array_for_map;
-
-grid = temp_grid.slice(0);
+if (current_sector == 0){
+    grid = temp_grid.slice(0);
+} else if (current_sector == 1) {
+    grid2 = temp_grid.slice(0);
+}
 
 return array_for_map;
 }
@@ -808,13 +811,14 @@ function map_interaction_item(map_object,destination){
     } else if (map_object === 4 || (map_object >= 10 || map_object <=18)) {
             game_messages("gather_wood");
             player.inventory["craft_1"].quantity += 10;
+            if (current_sector == 0){
             grid[destination] = 1;
+            } else if (current_sector == 1) {
+            grid1[destination] = 1;
+            }
             return ("allow_move")
-
-
     } else {
         return("prohibit_move")
-
     }
 }
 
@@ -826,10 +830,19 @@ function move(direction) {
     var current_location = grid.indexOf(99);
     // now the destination. This ASSUMES A 34 LENGTH array
     var destination = current_location + 1;
+    console.log("destination: ", destination);
+    if (destination%34 == 0 && current_sector == 0) {
+        current_sector = 1;
+        console.log("It would seem the player is ready to walk off the edge of the world");
+        draw_map(grid2);
+    }
+
+    if (current_sector == 0) {
     // now we check if terrain is passable
     var result_of_move = map_interaction_item(grid[destination],destination);
 
     if (result_of_move === "allow_move") {
+
         // now lets replace the terrain that was in the old place.
         grid[destination - 1] = destination_terrain;
         // now let's get the terrain the place they want to go. we need this so we can replace it when they move later on. 
@@ -843,6 +856,21 @@ function move(direction) {
             draw_map(grid);
             update_footer();
             update_stats(player);
+        } else if (current_sector == 1) {
+        // now lets replace the terrain that was in the old place.
+        grid1[destination - 1] = destination_terrain;
+        // now let's get the terrain the place they want to go. we need this so we can replace it when they move later on. 
+        destination_terrain = grid1[current_location + 1];
+        // now let's move the player icon. 
+        grid1[destination] = 99;
+        current_destination = (destination+1);
+            // increment the turn counter 
+            turn_checker();
+            // now lets update the map
+            draw_map(grid1);
+            update_footer();
+            update_stats(player);
+        }
 
     } else {
         game_messages("cant_go_there");
@@ -855,7 +883,15 @@ function move(direction) {
         var current_location = grid.indexOf(99);
         // now the destination. This ASSUMES A 34 LENGTH array
         var destination = current_location - 1;
+        console.log("destination: ", destination);
+        if (destination%34 == 0 && current_sector == 1) {
+            current_sector = 0;
+            console.log("It would seem the player is ready to walk off the edge of the world");
+            draw_map(grid);
+        }
+
         // now we check if terrain is passable
+        if (current_sector == 0) {
         var result_of_move = map_interaction_item(grid[destination],destination);
     
         if (result_of_move === "allow_move") {
@@ -872,7 +908,7 @@ function move(direction) {
                 draw_map(grid);
                 update_footer();
                 update_stats(player);
-    
+        }
         } else {
             game_messages("cant_go_there");
         } 
@@ -885,6 +921,8 @@ function move(direction) {
     var current_location = grid.indexOf(99);
     // now the destination. This ASSUMES A 34 LENGTH array
     var destination = current_location - 34;
+    console.log("destination: ", destination);
+
     // now we check if terrain is passable
     var result_of_move = map_interaction_item(grid[destination],destination);
 
@@ -913,6 +951,8 @@ function move(direction) {
         var current_location = grid.indexOf(99);
         // now the destination. This ASSUMES A 34 LENGTH array
         var destination = current_location + 34;
+        console.log("destination: ", destination);
+
         // now we check if terrain is passable
         var result_of_move = map_interaction_item(grid[destination],destination);
     
@@ -1062,15 +1102,25 @@ function make_fire(){
     return
 }
 
-function make_random_terrain() {
+function make_random_terrain(sector) {
     console.log('function make random terrain start');
     // the stuff below generates an array which is then eventually translated into terrain
-    var counter = 1;
-    while ( counter <= 1191 ) {
-    // the line below creates some random terrain. totally random, TODO: this needs to be smart.
-    terrain = Math.floor(Math.random() * 25)+1;
-    grid.push(terrain);
-    counter += 1;
+    if (sector == 1){
+        var counter = 1;
+        while ( counter <= 1191 ) {
+        // the line below creates some random terrain. totally random, TODO: this needs to be smart.
+        terrain = Math.floor(Math.random() * 25)+1;
+        grid2.push(terrain);
+        counter += 1;
+        }
+    } else {
+        var counter = 1;
+        while ( counter <= 1191 ) {
+        // the line below creates some random terrain. totally random, TODO: this needs to be smart.
+        terrain = Math.floor(Math.random() * 25)+1;
+        grid.push(terrain);
+        counter += 1;
+        }
     }
     console.log('function make random terrain end');
     return grid;
@@ -1135,6 +1185,29 @@ if (monsterid == 300) {
 function restart(){
     window.location.reload(true);
     return
+}
+
+function store() {
+    store = {
+        store_inventory: {
+             //   '[[NAME OF ITEM],[CATEGORY],[DESCRIPTION],[PRICE]':10,
+                '[["Healing Potion"],["Potion"],["When consumed, this potion will increase the player\'s health by 50%"],[1000]]':5,
+                '[["Extra Damage Potion"],["Potion"],["When consumed, this potion will increase attacks by 50% for 3 battles"],[1000]]':5,
+                '[["Good Luck Potion"],["Potion"],["When consumed, this potion will increase the player\'s luck during the battle"],[1000]]':10,
+                '[["Bronze Trap"],["Trap"],["This trap will have a 25% chance of trapping your opponent"],[250]':10,
+                '[["Silver Trap"],["Trap"],["This trap will have a 75% chance of trapping your opponent"],[500]':8,
+                '[["Gold Trap"],["Trap"],["This trap will have a 100% chance of trapping your opponent"],[1000]':5,
+                '[["Mace"],["Weapon"],["A short ranged yet powerful weapon"],[500]':3,
+                '[["Shovel"],["Weapon"],["Great for gardening, construction, and low budget-battles"],[100]':5,
+                '[["Diamond Sword"],["Weapon"],["The ultimate weapon."],[100]':10,
+                '[["Grandma Edna\'s Secret Chili Recipe"],["Luxuries"],["You\'ll finally be able to make Grandma\'s famous chili (the secret ingredient is Ostrich Oil)"],[5000]':10,
+                '[["AirPods"],["Luxuries"],["The ultimate status symbol"],[10000]':3,
+                '[["Gold Toilet Paper"],["Luxuries"],["Wipe in luxury with this 24 karat gold toilet paper."],[7500]':3,
+                '[["Shield"],["Armour"],["You will be able to use this sheild to protect yourself from damage to the torso."],[500]':10,
+                '[["Helmet"],["Armour"],["You will be able to use this helmet to protect yourself from damage to the head."],[500]':10,
+                '[["Full Body Armour"],["Armour"],["You will be able to use this full body armour to protect yourself from damage to anywhere on the body."],[1000]':10
+                }
+            }
 }
 
 function spread_fire(){
@@ -1343,6 +1416,7 @@ function update_stats(player) {
 
 initialize();
 make_random_terrain();
+make_random_terrain(1)
 starting_map();
 draw_map(grid);
 main_listener();
