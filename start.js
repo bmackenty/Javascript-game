@@ -611,6 +611,11 @@ function game_messages(message,extra){
         "Why would I go to a buffet if I could just eat you?</div>";
     }
     
+    else if (message === "store_welcome") {
+        document.getElementById("messages").innerHTML += "<div class=\"information\">" + 
+        "<span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span> " + 
+        "Welcome to GameSmart! We are overpriced for you! </div>";
+    }
 
 }
 
@@ -807,6 +812,10 @@ function map_interaction_item(map_object,destination){
             combat(map_object,destination);
             return
 
+        } else if(map_object == 500) {
+            game_messages("store_welcome");
+            store(destination);
+            return 
 
     } else if (map_object === 4 || (map_object >= 10 || map_object <=18)) {
             game_messages("gather_wood");
@@ -1187,10 +1196,10 @@ function restart(){
     return
 }
 
-function store() {
+function store(destination) {
     store = {
         store_inventory: {
-             //   '[[NAME OF ITEM],[CATEGORY],[DESCRIPTION],[PRICE]':10,
+             // '[[NAME OF ITEM],[CATEGORY],[DESCRIPTION],[PRICE]':10,
                 '[["Healing Potion"],["Potion"],["When consumed, this potion will increase the player\'s health by 50%"],[1000]]':5,
                 '[["Extra Damage Potion"],["Potion"],["When consumed, this potion will increase attacks by 50% for 3 battles"],[1000]]':5,
                 '[["Good Luck Potion"],["Potion"],["When consumed, this potion will increase the player\'s luck during the battle"],[1000]]':10,
@@ -1208,6 +1217,15 @@ function store() {
                 '[["Full Body Armour"],["Armour"],["You will be able to use this full body armour to protect yourself from damage to anywhere on the body."],[1000]':10
                 }
             }
+
+store_draw();
+
+}
+
+function store_draw(){
+    document.getElementById('main_map').innerHTML = "<h2>Welcome to GameSmart!</h2><p>We are overpriced for you!</p>" +
+    "<p id=\"combat_choices\">Hi Ryan!</p>" + 
+    "<p>Hello again from the next line</p>";
 }
 
 function spread_fire(){
