@@ -24,24 +24,27 @@ var current_sector = 0;
 function check_for_achievement(action) {
     if (turn == 10) {
         player.achievements["Survived 10 turns!"] = 1;
+        player.xp += 10;
     }
 
     if (player.inventory.craft_1.quantity == 100) {
         player.achievements["Killer of perfectly fine trees"] = 1;
+        player.xp += 20;
     }
 
     if (player.inventory.craft_1.quantity == 1000) {
         player.achievements["Seriously, why are you killing all these trees?"] = 1;
+        player.xp += 300;
     }
 
     if (action == "talk") {
         player.achievements["Tried to talk your way out of trouble!"] = 1;
-
+        player.xp += 10;
     }
 
     if (action == "run_away") {
         player.achievements["Has run away...heh."] = 1;
-
+        player.xp += 10;
     }
 
 return;
@@ -62,16 +65,20 @@ function combat_determine_outcome(combat_action){
             if (base_crit_chance > crit_probability) {
              var damage = Math.floor(Math.random() * 100)+1;
              monster.health = monster.health - damage;
+             player.xp += 4;
              game_messages("combat_hit_crit",damage);
             } else {
              var damage = Math.floor(Math.random() * 10)+1;
              monster.health = monster.health - damage;
+             player.xp += 2;
              game_messages("combat_hit",damage);
             }
         if (monster.health < 1){
+            player.xp += monster.give_xp;
              combat_over("monster_dead");
             }
         } else {
+            player.xp += 1;
             game_messages("combat_miss");
         }
         if (combat_mode == true){
@@ -663,6 +670,7 @@ function initialize() {
         xp: 0,
         name: "Player",
         level: 1,
+        xp_to_level_up: 100,
         rank: "ready to be eaten",
         kingdom: "None",
         reputation: "huh?",
@@ -819,6 +827,7 @@ function map_interaction_item(map_object,destination){
 
     } else if (map_object === 4 || (map_object >= 10 || map_object <=18)) {
             game_messages("gather_wood");
+            player.xp += 1;
             player.inventory["craft_1"].quantity += 10;
             if (current_sector == 0){
             grid[destination] = 1;
@@ -1143,6 +1152,7 @@ if (monsterid == 300) {
         health: 10,
         intelligence: 500,
         name: "Spider",
+        give_xp: 20,
         base_chance_to_hit: 60,
         base_damage: 10,
         talkative: 9,
@@ -1153,6 +1163,7 @@ if (monsterid == 300) {
         health: 10,
         intelligence: 8,
         name: "Bear",
+        give_xp: 30,
         base_chance_to_hit: 40,
         base_damage: 10,
         talkative: 60,
@@ -1163,6 +1174,7 @@ if (monsterid == 300) {
         health: 10,
         intelligence: 6,
         name: "Kiwi Bird",
+        give_xp: 20,
         base_chance_to_hit: 50,
         base_damage: 10,
         talkative: 30,
@@ -1173,6 +1185,7 @@ if (monsterid == 300) {
         health: 10,
         intelligence: 75,
         name: "Android",
+        give_xp: 50,
         base_chance_to_hit: 50,
         base_damage: 10,
         talkative: 10,
@@ -1180,9 +1193,10 @@ if (monsterid == 300) {
     }
 }  else if(monsterid == 304) {
     monster = {
-        health: 40,
+        health: 50,
         intelligence: 6,
         name: "Dragon",
+        give_xp: 100,
         base_chance_to_hit: 70,
         base_damage: 10,
         talkative: 40,
@@ -1343,6 +1357,20 @@ function starting_map() {
     count_trees();
 }
 
+function level_increment(){
+    if (player.xp >= player.xp_to_level_up){;
+        player.level += 1;
+        console.log('You have leveled up! Your level is now: ' + player.level);
+        player.xp_to_level_up = Math.round(player.xp_to_level_up * 1.5);
+        console.log('xp_to_level_up is now: ' + player.xp_to_level_up);
+    } else {
+        console.log('Your xp: ' + player.xp);
+        console.log('Your level: ' + player.level);
+        console.log('Your xp to level up: ' + player.xp_to_level_up);
+    }
+    return
+}
+
 function turn_checker(){
     turn += 1;
     if (turn === 5) {
@@ -1353,6 +1381,7 @@ function turn_checker(){
     if (turn === 7) {
         fire = false;
     }
+    level_increment();
     return
 }
 
