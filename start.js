@@ -383,6 +383,11 @@ else if (array_for_map[i] === 500) {
     array_for_map[i] = "<i class=\"fas fa-shopping-cart fa-fw\" style=\"color:black\" title=\"Consumerism at its finest! \"></i>";
 }
 
+else if (array_for_map[i] === 600) {
+    // unicorn
+    array_for_map[i] = "<i class=\"fas fa-horse fa-fw\" style=\"color:pink\" title=\"A fluffy looking unicorn \"></i>";
+}
+
 }
  
 array_for_map = array_for_map.join('');
@@ -404,6 +409,18 @@ function draw_combat_screen(){
     "<p><img src=\""+ monster.image + "\"/> </p>";
 
 
+}
+
+function draw_friendly_animal_screen(){
+    document.getElementById('main_map').innerHTML = "<h2>A friendly critter looks at you with big round innocent eyes.</h2>" +
+    "<p id=\"combat_choices\"><strong>T</strong> - Talk! | <strong>P</strong> - Pet | <strong>R</strong> - Run away! | <strong>U</strong> - Use Item | <strong>S</strong> - Ride ! </p>" +
+    "<p><img src=\""+ monster.image + "\"/> </p>";
+
+}
+
+
+function friendly_animal(destination,name){
+    draw_friendly_animal_screen(); 
 }
 
 function exists(arr, search) {
@@ -624,6 +641,11 @@ function game_messages(message,extra){
         "Welcome to GameSmart! We are overpriced for you! </div>";
     }
 
+    else if (message === "friendly_animal") {
+        document.getElementById("messages").innerHTML += "<div class=\"information\">" + 
+        "<span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span> " + 
+        "An innocent looking critter!</div>";
+    }
 }
 
 function health_number_to_text(value){
@@ -823,6 +845,11 @@ function map_interaction_item(map_object,destination){
         } else if(map_object == 500) {
             game_messages("store_welcome");
             store(destination);
+            return 
+
+        } else if(map_object == 600) {
+            game_messages("friendly_animal");
+            friendly_animal(destination,name);
             return 
 
     } else if (map_object === 4 || (map_object >= 10 || map_object <=18)) {
@@ -1202,7 +1229,18 @@ if (monsterid == 300) {
         talkative: 40,
         image:'images/dragon.png'
     }
-}
+} else if(monsterid == 600) {
+    monster = {
+        health: 50,
+        intelligence: 6,
+        name: "Unicorn",
+        give_xp: 100,
+        base_chance_to_hit: 70,
+        base_damage: 10,
+        talkative: 40,
+        image:'images/unicorn.png'
+    }
+} 
 }
 
 function restart(){
@@ -1341,6 +1379,7 @@ function starting_map() {
     // Our Store! 
     grid.splice(745,1,500);
 
+
         // the side mountain range along the left side of the map
         grid.splice(0, 1, 100);
         grid.splice(34, 1, 100);
@@ -1380,6 +1419,10 @@ function turn_checker(){
     }
     if (turn === 7) {
         fire = false;
+    }
+    if (turn === 10){
+        // Unicorn
+        grid.splice(1023,1,600);
     }
     level_increment();
     return
