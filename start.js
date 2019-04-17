@@ -6,7 +6,6 @@ var current_destination;
 var combat_destination;
 var destination_terrain = 1;
 var fire;
-var foo = []; // oh my god, why?
 var fire_array =[];
 var fire_row = 0;
 var grid = [];
@@ -65,20 +64,16 @@ function combat_determine_outcome(combat_action){
             if (base_crit_chance > crit_probability) {
              var damage = Math.floor(Math.random() * 100)+1;
              monster.health = monster.health - damage;
-             player.xp += 4;
              game_messages("combat_hit_crit",damage);
             } else {
              var damage = Math.floor(Math.random() * 10)+1;
              monster.health = monster.health - damage;
-             player.xp += 2;
              game_messages("combat_hit",damage);
             }
         if (monster.health < 1){
-            player.xp += monster.give_xp;
              combat_over("monster_dead");
             }
         } else {
-            player.xp += 1;
             game_messages("combat_miss");
         }
         if (combat_mode == true){
@@ -145,7 +140,6 @@ function combat_determine_outcome(combat_action){
      }
  
  }
- 
  
  return
  }
@@ -446,13 +440,14 @@ function game_messages(message,extra){
     }
 
     else if (message === "combat_hit") {
-
+        
         if (extra < monster.health) {
             // if we hit the monster but don't kill it, this message it displayed: 
             document.getElementById("messages").innerHTML += "<div class=\"information\">" + 
             "<span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span> " + 
             "You hit for " + extra + " points of damage. The monster has " + monster.health + " health left.</div>";
             clear_message_counter += 1;
+            add_xp("combat_hit")
 
         } else {
             // if we hit the monster AND kill it, this message it displayed: 
@@ -460,6 +455,8 @@ function game_messages(message,extra){
             "<span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span> " + 
             "You hit for " + extra + " points of damage and VANQUISH the monster!</div>";
             clear_message_counter += 1;
+            add_xp("combat_hit")
+            add_xp("monster_dead")
         }
     }
 
@@ -471,6 +468,7 @@ function game_messages(message,extra){
             "<span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span> " + 
             "You hit for " + extra + " points of damage. The monster has " + monster.health + " health left.</div>";
             clear_message_counter += 1;
+            add_xp("combat_hit_crit")
 
         } else {
             // if we hit the monster AND kill it, this message it displayed: 
@@ -478,6 +476,8 @@ function game_messages(message,extra){
             "<span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span> " + 
             "CRITICAL HIT! for " + extra + " points of damage and VANQUISH the monster!</div>";
             clear_message_counter += 1;
+            add_xp("combat_hit_crit")
+            add_xp("monster_dead")
         }
     }
 
@@ -487,6 +487,7 @@ function game_messages(message,extra){
         "<span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span> " + 
         "You try to block the monster's attack!</div>";
         clear_message_counter += 1;
+        add_xp("combat_block")
     }
 
 
@@ -497,6 +498,7 @@ function game_messages(message,extra){
         "<span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span> " + 
         "You miss. And everyone is watching. Heh. </div>";
         clear_message_counter += 1;
+        add_xp("combat_miss")
     }
 
 
@@ -506,6 +508,7 @@ function game_messages(message,extra){
         "<span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span> " + 
         "You have walked into a bear trap and suffered horribly. The bears thank you. </div>";
         clear_message_counter += 1;
+        add_xp("bear_trap")
     }
 
     else if (message === "run_away") {
@@ -514,6 +517,7 @@ function game_messages(message,extra){
         "<span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span> " + 
         "You run away. The monster gets a free attack because of REASONS!!</div>";
         clear_message_counter += 1;
+        add_xp("run_away")
     }
 
 
@@ -540,6 +544,7 @@ function game_messages(message,extra){
         "<span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span> " + 
         "You gather some wood. Tree killer. </div>";
         clear_message_counter += 1;
+        add_xp("kill_tree")
     }
 
 
@@ -603,6 +608,7 @@ function game_messages(message,extra){
         document.getElementById("messages").innerHTML += "<div class=\"information\">" + 
         "<span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span> " + 
         "The monster decides not to eat you.</div>";
+        add_xp("combat_monster_goes_away")
     }
 
     else if (message === "combat_talk_fails") {
@@ -621,12 +627,14 @@ function game_messages(message,extra){
         document.getElementById("messages").innerHTML += "<div class=\"information\">" + 
         "<span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span> " + 
         "The monster drops to the ground, snoring softly...zzzzzzzzzzzzzzzz.....</div>";
+        add_xp("combat_monster_goes_to_sleep")
     }
 
     else if (message === "combat_monster_goes_to_joes") {
         document.getElementById("messages").innerHTML += "<div class=\"information\">" + 
         "<span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span> " + 
         "NO WAY! Seriously?! The monster leaps away to Joe's all you can eat buffet.</div>";
+        add_xp("combat_monster_goes_to_joes")
     }
 
     else if (message === "combat_no_buffet_for_you") {
@@ -854,7 +862,6 @@ function map_interaction_item(map_object,destination){
 
     } else if (map_object === 4 || (map_object >= 10 || map_object <=18)) {
             game_messages("gather_wood");
-            player.xp += 1;
             player.inventory["craft_1"].quantity += 10;
             if (current_sector == 0){
             grid[destination] = 1;
@@ -1326,7 +1333,7 @@ function spread_fire(){
             }
         
     })
-   }
+}
 
 function starting_map() {
     console.log('function starting map start');
@@ -1396,16 +1403,37 @@ function starting_map() {
     count_trees();
 }
 
+function add_xp(reason_for_xp){
+    if (reason_for_xp == "kill_tree"){
+        player.xp += 1;
+    } else if (reason_for_xp == "bear_trap"){
+        player.xp += 4;
+    } else if (reason_for_xp == "combat_hit"){
+        player.xp += 2;
+    // } else if (reason_for_xp == "combat_miss"){
+    //     player.xp += 0;
+    } else if (reason_for_xp == "combat_hit_crit"){
+        player.xp += 4;
+    } else if (reason_for_xp == "combat_block"){
+        player.xp += 1;
+    } else if (reason_for_xp == "monster_dead"){
+        player.xp += monster.give_xp;
+    } else if (reason_for_xp == "combat_monster_goes_away"){
+        player.xp += 5;
+    } else if (reason_for_xp == "combat_monster_goes_to_joes"){
+        player.xp += 5;
+    } else if (reason_for_xp == "combat_monster_goes_to_sleep"){
+        player.xp += 5;
+    }
+    return
+}
+
+
 function level_increment(){
     if (player.xp >= player.xp_to_level_up){;
+        player.xp -= player.xp_to_level_up;
         player.level += 1;
-        console.log('You have leveled up! Your level is now: ' + player.level);
         player.xp_to_level_up = Math.round(player.xp_to_level_up * 1.5);
-        console.log('xp_to_level_up is now: ' + player.xp_to_level_up);
-    } else {
-        console.log('Your xp: ' + player.xp);
-        console.log('Your level: ' + player.level);
-        console.log('Your xp to level up: ' + player.xp_to_level_up);
     }
     return
 }
@@ -1440,7 +1468,21 @@ function update_messages() {
 }
 
 function update_stats(player) {
-    document.getElementById("stats_and_inventory_block").innerHTML = "<div class=\"category\">Skills</div><ul>";
+    document.getElementById("stats_and_inventory_block").innerHTML = "<div class=\"category\">Stats</div>";
+    document.getElementById("stats_and_inventory_block").innerHTML += "Level: " + player.level + "<br />"
+    document.getElementById("stats_and_inventory_block").innerHTML += "Experience: " + player.xp + "<br />"
+    document.getElementById("stats_and_inventory_block").innerHTML += "Experiience to next level: " + (player.xp_to_level_up-player.xp) + "<ul>"
+    document.getElementById("stats_and_inventory_block").innerHTML += "<li>Magic: " + player.magic + "</li>";
+    document.getElementById("stats_and_inventory_block").innerHTML += "<li>Strength: " + player.strength + "</li>";
+    document.getElementById("stats_and_inventory_block").innerHTML += "<li>Intelligence: " + player.intelligence + "</li>";
+    document.getElementById("stats_and_inventory_block").innerHTML += "<li>Wisdom: " + player.wisdom + "</li>";
+    document.getElementById("stats_and_inventory_block").innerHTML += "<li>Dexterity: " + player.dexterity + "</li>";
+    document.getElementById("stats_and_inventory_block").innerHTML += "<li>Constitution: " + player.constitution + "</li>";
+    document.getElementById("stats_and_inventory_block").innerHTML += "<li>Charisma: " + player.charisma + "</li>";
+
+    document.getElementById("stats_and_inventory_block").innerHTML += "</ul><br />";
+
+    document.getElementById("stats_and_inventory_block").innerHTML += "<div class=\"category\">Skills</div><ul>";
     for(var i in player.skills) {
 
         document.getElementById("stats_and_inventory_block").innerHTML += "<li>" + i + " : " + player.skills[i] + "</li>";
