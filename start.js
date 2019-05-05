@@ -377,11 +377,6 @@ else if (array_for_map[i] === 500) {
     array_for_map[i] = "<i class=\"fas fa-shopping-cart fa-fw\" style=\"color:black\" title=\"Consumerism at its finest! \"></i>";
 }
 
-else if (array_for_map[i] === 600) {
-    // unicorn
-    array_for_map[i] = "<i class=\"fas fa-horse fa-fw\" style=\"color:pink\" title=\"A fluffy looking unicorn \"></i>";
-}
-
 }
  
 array_for_map = array_for_map.join('');
@@ -403,18 +398,6 @@ function draw_combat_screen(){
     "<p><img src=\""+ monster.image + "\"/> </p>";
 
 
-}
-
-function draw_friendly_animal_screen(){
-    document.getElementById('main_map').innerHTML = "<h2>A friendly critter looks at you with big round innocent eyes.</h2>" +
-    "<p id=\"combat_choices\"><strong>T</strong> - Talk! | <strong>P</strong> - Pet | <strong>R</strong> - Run away! | <strong>U</strong> - Use Item | <strong>S</strong> - Ride ! </p>" +
-    "<p><img src=\""+ monster.image + "\"/> </p>";
-
-}
-
-
-function friendly_animal(destination,name){
-    draw_friendly_animal_screen(); 
 }
 
 function exists(arr, search) {
@@ -649,11 +632,6 @@ function game_messages(message,extra){
         "Welcome to GameSmart! We are overpriced for you! </div>";
     }
 
-    else if (message === "friendly_animal") {
-        document.getElementById("messages").innerHTML += "<div class=\"information\">" + 
-        "<span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span> " + 
-        "An innocent looking critter!</div>";
-    }
 }
 
 function health_number_to_text(value){
@@ -701,6 +679,7 @@ function initialize() {
         name: "Player",
         level: 1,
         xp_to_level_up: 100,
+        engrams: 0,
         rank: "ready to be eaten",
         kingdom: "None",
         reputation: "huh?",
@@ -853,11 +832,6 @@ function map_interaction_item(map_object,destination){
         } else if(map_object == 500) {
             game_messages("store_welcome");
             store(destination);
-            return 
-
-        } else if(map_object == 600) {
-            game_messages("friendly_animal");
-            friendly_animal(destination,name);
             return 
 
     } else if (map_object === 4 || (map_object >= 10 || map_object <=18)) {
@@ -1136,7 +1110,29 @@ function main_listener() {
             combat_choice('3');
             check_for_achievement();
 
+        } else if (player.engrams > 0 && key === '!') {
+            player.strength += 1;
+            player.engrams -= 1;
 
+        } else if (player.engrams > 0 && key === '@') {
+            player.intelligence += 1;
+            player.engrams -= 1;
+
+        } else if (player.engrams > 0 && key === '#') {
+            player.wisdom += 1;
+            player.engrams -= 1;
+
+        } else if (player.engrams > 0 && key === '$') {
+            player.dexterity += 1;
+            player.engrams -= 1;
+
+        } else if (player.engrams > 0 && key === '%') {
+            player.constitution += 1;
+            player.engrams -= 1;
+
+        } else if (player.engrams > 0 && key === '^') {
+            player.charisma += 1;
+            player.engrams -= 1;
 
         } else if (key === '?' || key === 191) {
             document.getElementById("messages").innerHTML = key;         
@@ -1236,18 +1232,7 @@ if (monsterid == 300) {
         talkative: 40,
         image:'images/dragon.png'
     }
-} else if(monsterid == 600) {
-    monster = {
-        health: 50,
-        intelligence: 6,
-        name: "Unicorn",
-        give_xp: 100,
-        base_chance_to_hit: 70,
-        base_damage: 10,
-        talkative: 40,
-        image:'images/unicorn.png'
-    }
-} 
+}
 }
 
 function restart(){
@@ -1386,7 +1371,6 @@ function starting_map() {
     // Our Store! 
     grid.splice(745,1,500);
 
-
         // the side mountain range along the left side of the map
         grid.splice(0, 1, 100);
         grid.splice(34, 1, 100);
@@ -1428,11 +1412,11 @@ function add_xp(reason_for_xp){
     return
 }
 
-
 function level_increment(){
     if (player.xp >= player.xp_to_level_up){;
         player.xp -= player.xp_to_level_up;
         player.level += 1;
+        player.engrams += 1;
         player.xp_to_level_up = Math.round(player.xp_to_level_up * 1.5);
     }
     return
@@ -1447,10 +1431,6 @@ function turn_checker(){
     }
     if (turn === 7) {
         fire = false;
-    }
-    if (turn === 10){
-        // Unicorn
-        grid.splice(1023,1,600);
     }
     level_increment();
     return
@@ -1469,16 +1449,28 @@ function update_messages() {
 
 function update_stats(player) {
     document.getElementById("stats_and_inventory_block").innerHTML = "<div class=\"category\">Stats</div>";
-    document.getElementById("stats_and_inventory_block").innerHTML += "Level: " + player.level + "<br />"
-    document.getElementById("stats_and_inventory_block").innerHTML += "Experience: " + player.xp + "<br />"
-    document.getElementById("stats_and_inventory_block").innerHTML += "Experiience to next level: " + (player.xp_to_level_up-player.xp) + "<ul>"
-    document.getElementById("stats_and_inventory_block").innerHTML += "<li>Magic: " + player.magic + "</li>";
-    document.getElementById("stats_and_inventory_block").innerHTML += "<li>Strength: " + player.strength + "</li>";
-    document.getElementById("stats_and_inventory_block").innerHTML += "<li>Intelligence: " + player.intelligence + "</li>";
-    document.getElementById("stats_and_inventory_block").innerHTML += "<li>Wisdom: " + player.wisdom + "</li>";
-    document.getElementById("stats_and_inventory_block").innerHTML += "<li>Dexterity: " + player.dexterity + "</li>";
-    document.getElementById("stats_and_inventory_block").innerHTML += "<li>Constitution: " + player.constitution + "</li>";
-    document.getElementById("stats_and_inventory_block").innerHTML += "<li>Charisma: " + player.charisma + "</li>";
+    if (player.engrams > 0){
+        document.getElementById("stats_and_inventory_block").innerHTML += "Level: " + player.level + "<br />";
+        document.getElementById("stats_and_inventory_block").innerHTML += "Experience: " + player.xp + "<br />";
+        document.getElementById("stats_and_inventory_block").innerHTML += "Experiience to next level: " + (player.xp_to_level_up-player.xp) + "<ul>";
+        document.getElementById("stats_and_inventory_block").innerHTML += "<li>Strength: " + player.strength + "<b> +1 </b>(shift + 1)</li>";
+        document.getElementById("stats_and_inventory_block").innerHTML += "<li>Intelligence: " + player.intelligence + "<b> +1 </b>(shift + 2)</li>";
+        document.getElementById("stats_and_inventory_block").innerHTML += "<li>Wisdom: " + player.wisdom + "<b> +1 </b>(shift + 3)</li>";
+        document.getElementById("stats_and_inventory_block").innerHTML += "<li>Dexterity: " + player.dexterity + "<b> +1 </b>(shift + 4)</li>";
+        document.getElementById("stats_and_inventory_block").innerHTML += "<li>Constitution: " + player.constitution + "<b> +1 </b>(shift + 5)</li>";
+        document.getElementById("stats_and_inventory_block").innerHTML += "<li>Charisma: " + player.charisma + "<b> +1 </b>(shift + 6)</li><br />";
+        document.getElementById("stats_and_inventory_block").innerHTML += "<b>Engrams to spend: " + player.engrams + "</b><br />";
+    } else {
+        document.getElementById("stats_and_inventory_block").innerHTML += "Level: " + player.level + "<br />";
+        document.getElementById("stats_and_inventory_block").innerHTML += "Experience: " + player.xp + "<br />";
+        document.getElementById("stats_and_inventory_block").innerHTML += "Experiience to next level: " + (player.xp_to_level_up-player.xp) + "<ul>";
+        document.getElementById("stats_and_inventory_block").innerHTML += "<li>Strength: " + player.strength + "</li>";
+        document.getElementById("stats_and_inventory_block").innerHTML += "<li>Intelligence: " + player.intelligence + "</li>";
+        document.getElementById("stats_and_inventory_block").innerHTML += "<li>Wisdom: " + player.wisdom + "</li>";
+        document.getElementById("stats_and_inventory_block").innerHTML += "<li>Dexterity: " + player.dexterity + "</li>";
+        document.getElementById("stats_and_inventory_block").innerHTML += "<li>Constitution: " + player.constitution + "</li>";
+        document.getElementById("stats_and_inventory_block").innerHTML += "<li>Charisma: " + player.charisma + "</li><br />";
+    }
 
     document.getElementById("stats_and_inventory_block").innerHTML += "</ul><br />";
 
