@@ -1424,14 +1424,14 @@ function level_increment(){
 
 function turn_checker(){
     turn += 1;
-    if (turn === 5) {
-        make_fire();
-    } else if (fire == true){
-        spread_fire();
-    }
-    if (turn === 7) {
-        fire = false;
-    }
+    // if (turn === 5) {
+    //     make_fire();
+    // } else if (fire == true){
+    //     spread_fire();
+    // }
+    // if (turn === 7) {
+    //     fire = false;
+    // }
     level_increment();
     return
 }
