@@ -840,7 +840,7 @@ function map_interaction_item(map_object,destination){
             if (current_sector == 0){
             grid[destination] = 1;
             } else if (current_sector == 1) {
-            grid1[destination] = 1;
+            grid2[destination] = 1;
             }
             return ("allow_move")
     } else {
@@ -851,7 +851,7 @@ function map_interaction_item(map_object,destination){
 function move(direction) {
 // issue with not counting until the first move.
   if (direction === 'r'){
-
+    if (current_sector == 0) {
     // let's start by getting the current location of the player
     var current_location = grid.indexOf(99);
     // now the destination. This ASSUMES A 34 LENGTH array
@@ -860,10 +860,9 @@ function move(direction) {
     if (destination%34 == 0 && current_sector == 0) {
         current_sector = 1;
         console.log("It would seem the player is ready to walk off the edge of the world");
+        grid2[destination] = 99;
         draw_map(grid2);
     }
-
-    if (current_sector == 0) {
     // now we check if terrain is passable
     var result_of_move = map_interaction_item(grid[destination],destination);
 
@@ -882,66 +881,102 @@ function move(direction) {
             draw_map(grid);
             update_footer();
             update_stats(player);
-        } else if (current_sector == 1) {
-        // now lets replace the terrain that was in the old place.
-        grid1[destination - 1] = destination_terrain;
-        // now let's get the terrain the place they want to go. we need this so we can replace it when they move later on. 
-        destination_terrain = grid1[current_location + 1];
-        // now let's move the player icon. 
-        grid1[destination] = 99;
-        current_destination = (destination+1);
-            // increment the turn counter 
-            turn_checker();
-            // now lets update the map
-            draw_map(grid1);
-            update_footer();
-            update_stats(player);
-        }
+        } 
 
+    } else if (current_sector === 1) { 
+        console.log("welcome to sector 1");
+        // let's start by getting the current location of the player
+        var current_location = grid2.indexOf(99);
+        // now the destination. This ASSUMES A 34 LENGTH array
+        var destination = current_location + 1;
+        console.log("destination: ", destination);
+        // now we check if terrain is passable
+        var result_of_move = map_interaction_item(grid2[destination],destination);
+        if (result_of_move === "allow_move") {
+
+            // now lets replace the terrain that was in the old place.
+            grid2[destination - 1] = destination_terrain;
+            // now let's get the terrain the place they want to go. we need this so we can replace it when they move later on. 
+            destination_terrain = grid2[current_location + 1];
+            // now let's move the player icon. 
+            grid2[destination] = 99;
+            current_destination = (destination+1);
+                // increment the turn counter 
+                turn_checker();
+                // now lets update the map
+                draw_map(grid2);
+                update_footer();
+                update_stats(player);
+            } 
+    
     } else {
         game_messages("cant_go_there");
     } 
-}
+} else if (direction === 'l'){
+    if (current_sector == 0) {
+    // let's start by getting the current location of the player
+    var current_location = grid.indexOf(99);
+    // now the destination. This ASSUMES A 34 LENGTH array
+    var destination = current_location - 1;
+    console.log("destination: ", destination);
 
-     else if (direction === 'l'){
+    // now we check if terrain is passable
+    var result_of_move = map_interaction_item(grid[destination],destination);
 
+    if (result_of_move === "allow_move") {
+
+        // now lets replace the terrain that was in the old place.
+        grid[destination + 1] = destination_terrain;
+        // now let's get the terrain the place they want to go. we need this so we can replace it when they move later on. 
+        destination_terrain = grid[current_location - 1];
+        // now let's move the player icon. 
+        grid[destination] = 99;
+        current_destination = (destination-1);
+            // increment the turn counter 
+            turn_checker();
+            // now lets update the map
+            draw_map(grid);
+            update_footer();
+            update_stats(player);
+        } 
+    } else if (current_sector === 1) { 
+        console.log("welcome to sector 1");
         // let's start by getting the current location of the player
-        var current_location = grid.indexOf(99);
+        var current_location = grid2.indexOf(99);
         // now the destination. This ASSUMES A 34 LENGTH array
         var destination = current_location - 1;
         console.log("destination: ", destination);
         if (destination%34 == 0 && current_sector == 1) {
             current_sector = 0;
             console.log("It would seem the player is ready to walk off the edge of the world");
+            grid[destination] = 99;
             draw_map(grid);
         }
 
+
         // now we check if terrain is passable
-        if (current_sector == 0) {
-        var result_of_move = map_interaction_item(grid[destination],destination);
-    
+        var result_of_move = map_interaction_item(grid2[destination],destination);
         if (result_of_move === "allow_move") {
+
             // now lets replace the terrain that was in the old place.
-            grid[destination + 1] = destination_terrain;
+            grid2[destination + 1] = destination_terrain;
             // now let's get the terrain the place they want to go. we need this so we can replace it when they move later on. 
-            destination_terrain = grid[current_location - 1];
+            destination_terrain = grid2[current_location - 1];
             // now let's move the player icon. 
-            grid[destination] = 99;
-            current_destination = (destination-1);
+            grid2[destination] = 99;
+            current_destination = (destination - 1);
                 // increment the turn counter 
                 turn_checker();
                 // now lets update the map
-                draw_map(grid);
+                draw_map(grid2);
                 update_footer();
                 update_stats(player);
-        }
-        } else {
-            game_messages("cant_go_there");
-        } 
+            } 
     
-
-
-  } else if (direction === 'u'){
+    } else {
+        game_messages("cant_go_there");
+    } 
+} else if (direction === 'u'){
 
     // let's start by getting the current location of the player
     var current_location = grid.indexOf(99);
