@@ -1,10 +1,3 @@
-// CONFIG VARIABLES
-
-var startingPos = [10, 10]
-var game = new Game();
-var gridSize = [40, 40] // [X, Y]
-var viewportSize = [[0, 33], [0, 33]];
-
 class Game {
     constructor() {
         this.objectList = []
@@ -363,7 +356,12 @@ function registerListeners() {
     })
 }
 
-// START THE GAME
+// CONFIG VARIABLES
+var startingPos = [10, 10]
+var game = new Game();
+var gridSize = [40, 40] // [X, Y]
+var viewportSize = [[0, 33], [0, 33]];
 
+// START THE GAME
 generateMap(); // Map is automatically drawn when generated
 registerListeners();
