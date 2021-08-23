@@ -37,6 +37,7 @@ Every task has additional details that I will add when I have time. For now thou
 * TODO: add skill and eqipment into chance to block successfully 
 * TODO: add health bar for monsters during combat
 * TODO: add Joe's all you can eat buffet
+* TODO: how do we manage leveling up, titles, and XP ?
 
 == good tasks for newbies == 
 
