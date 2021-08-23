@@ -61,29 +61,43 @@ class Game {
     updateViewport() {
         var playerX = this.getPlayer().x;
         var playerY = this.getPlayer().y;
+        var modifiedViewport = false;
 
         // Check if the player is within 3 tiles of the border of the viewport
         // If yes then move the viewport to follow the player
+
         if (Math.abs(playerX - viewportSize[0][0]) <= 3) {
             viewportSize[0][0]--;
             viewportSize[0][1]--;
+            modifiedViewport = true;
         }
 
         if (Math.abs(playerX - viewportSize[0][1]) <= 3) {
             viewportSize[0][1]++;
             viewportSize[0][0]++;
+            modifiedViewport = true;
         }
 
         if (Math.abs(playerY - viewportSize[1][0]) <= 3) {
             viewportSize[1][0]--;
             viewportSize[1][1]--;
+            modifiedViewport = true;
             
         }
 
         if (Math.abs(playerY - viewportSize[1][1]) <= 3) {
             viewportSize[1][1]++;
             viewportSize[1][0]++;
+            modifiedViewport = true;
         }
+
+        /*
+        Since this function only updates the viewport by 1 square we want to make sure that if
+        the player is closer than 3 tiles to the border that the viewport is still the same
+        (A situation where this happens is if the player spawns close to the border)
+        */
+        if (modifiedViewport)
+            this.updateViewport();
     }
 
     /**
@@ -276,7 +290,17 @@ function generateMap() {
         }
     }
 
-    game.addObject("player", startingPos[0], startingPos[1], new Player());
+    // Find a random empty tile
+    while (true) {
+        var x = Math.floor(Math.random() * gridSize[0])
+        var y = Math.floor(Math.random() * gridSize[1])
+
+        if (!game.objectAt(x, y)) {
+            game.addObject("player", x, y, new Player());
+            break;
+        }
+    }
+    
     drawMap();
 }
 
@@ -357,7 +381,6 @@ function registerListeners() {
 }
 
 // CONFIG VARIABLES
-var startingPos = [10, 10]
 var game = new Game();
 var gridSize = [40, 40] // [X, Y]
 var viewportSize = [[0, 33], [0, 33]];

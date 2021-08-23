@@ -15,8 +15,6 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-
-    background-color: rgb(247, 247, 247);
 }
 
 .game {
@@ -28,7 +26,6 @@ body {
     padding: 20px 25px;
 
     border: 1px solid black;
-    border-radius: 1.5%;
 
     background-color: white;
 }
@@ -45,7 +42,7 @@ body {
     display: flex;
     flex-direction: column;
 
-    height: 600px;
+    height: 608px;
     width: 100%;
 
     margin: -1px 0 0 -1px;
@@ -58,6 +55,9 @@ body {
 #map {
     flex-direction: column-reverse;
 
+    border-width: 5px;
+
+    height: 600px;
     width: 600px;
 }
 
