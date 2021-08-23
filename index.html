@@ -3,37 +3,31 @@
         <title>A Game!</title>
         <link rel="stylesheet" href="game.css">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+
+        <!-- Ubuntu font is the best change my mind -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap" rel="stylesheet"> 
     </head>
     <body>
-        <div id="container">
-
-            <div id="header">
-                Header
-            </div>
-
-            <div id="left">
+        <div class="game">
+            <div class="game-board">
                 <div id="messages">
                     Messages
                 </div>
-            </div>
-        
-            <div id="stats_and_inventory_block">
-                Stats and inventory
-            </div>
-                
+            
+                <div id="map">
+                    Loading map...
+                </div>
 
-            <div id="main_map">
-                Main Map
+                <div id="stats_and_inventory_">
+                    Stats and inventory
+                </div>
             </div>
-
-        
-            <div class="clear"></div>
-        
             <div id="footer">
-                Footer
+                Health: 100
             </div>
         </div>
         <script src="start.js"></script>
     </body>
-
 </html>

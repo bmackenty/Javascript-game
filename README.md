@@ -1,10 +1,7 @@
 # javascript-text-based-RPG
-As I embark on my journey to learn javascript, I have a clear idea of what I want to build. A dwarven-fortress like game in javascript. The game is also used as a fun after-school activity for my students. :-) 
+This is a rework of javascript-text-based-RPG using classes and variables with names that make sense
 
-There is an online version of this, https://yeoldequiveringcommunistzombies.com/
-
-
-
+Visit the online version at: https://yeoldequiveringcommunistzombies.com/
 
 This is a javascript implementation of a simple ascii art RPG game
 
@@ -40,13 +37,5 @@ This is a javascript implementation of a simple ascii art RPG game
 
 == DONE STUFF ==
 
-* TODO: add image for death
-* TODO: after death, dont allow movement. 
-* TODO: remove bear trap after its been triggered
-* TODO: player object
-* TODO: put listener into a function. 
-* TODO: death
-* TODO: different trees
-* TODO: when dead after combat dont allow attacking to continue
-* TODO: rationally deal with images / icons / etc..
-* TODO: changelog (this is on github)
+* Map moves with the player
+* Object data structure

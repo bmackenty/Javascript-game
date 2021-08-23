@@ -17,8 +17,12 @@ class Game {
         var newX = this.getPlayer().x + xChange;
         var newY = this.getPlayer().y + yChange;
         
-        if (game.objectIsAt("mountain", newX, newY))
-            return false;
+        for (var object of game.objectsAt(newX, newY)) {
+            console.log("passable: " + object.data.passable)
+            if (object.data.passable == false) {
+                return false;
+            }
+        }
         if (newX < 0 || gridSize[0] < newX)
             return false;
         if (newY < 0 || gridSize[1] < newY)
@@ -117,8 +121,17 @@ class Game {
     }
 }
 
-class Player {
+class Object {
+    constructor(props) {
+        if (props) {
+            this.passable = props.passable != undefined ? props.passable : true;
+        }
+    }
+}
+
+class Player extends Object {
     constructor(name) {
+        super()
         this.name = name;
     }
 
@@ -127,8 +140,11 @@ class Player {
     }
 }
 
-class Tree {
+class Tree extends Object {
     constructor(type) {
+        super({
+            passable: true
+        });
         this.type = type;
     }
 
@@ -141,7 +157,13 @@ class Tree {
     }
 }
 
-class Mountain {
+class Mountain extends Object {
+    constructor() {
+        super({
+            passable: false
+        });
+    }
+
     get html() {
         return '<i class="fas fa-mountain fa-fw" style="color:grey"  title="A mountain"></i>';
     }
@@ -188,7 +210,7 @@ function drawMap() {
         mapHTML+='</div>'
     }
 
-    document.getElementById("main_map").innerHTML = mapHTML;
+    document.getElementById("map").innerHTML = mapHTML;
 }
 
 // Helper function for drawMap()
@@ -197,8 +219,8 @@ function tileOutsideMap(x, y) {
 }
 
 function generateMap() {
-    for (var x = 0; x < gridSize[0]; x++) {
-        for (var y = 0; y < gridSize[1]; y++) {
+    for (var x = 0; x <= gridSize[0]; x++) {
+        for (var y = 0; y <= gridSize[1]; y++) {
             if (Math.random() > 0.5) {
                 game.addObject("tree", x, y, new Tree())
             }

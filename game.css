@@ -1,140 +1,78 @@
 /*
-This CSS initially used from: 
-https://www.electrictoolbox.com/basic-3-column-fixed-width-css-layout/
-
-But it's been pretty hacked through :-) 
+Layout
 */
-.fa-fw{
-    padding: 1px;
-  }
+html, body {
+    height: 100%;
+    width: 100%;
 
-#container {
-    width: 1200px;
-    border: 1px;
-    border-style: solid;
+    margin: 0;
+    padding: 0;
 
+    font-family: 'Ubuntu', sans-serif;
 }
 
-#left {
-    float: left;
-    width: 210px;
-    height: 650px;
-    border-right-style: solid;
-    border-right-width: 1px;
-    padding:5px;
-    margin-right: 5px;
-    font-size: small;
-}
-
-
-#main_map {
-    margin-top: 2px;
-    text-align: center;
-
+body {
     display: flex;
-    flex-direction: column-reverse;
+    align-items: center;
+    justify-content: center;
+
+    background-color: rgb(51, 51, 51);
 }
 
-#stats_and_inventory_block {
-    float: right;
-    width: 200px;
+.game {
+    flex-direction: column;
+
     height: 650px;
-    border-left-style: solid;
-    border-left-width: 1px;
-    padding:5px;
-    font-size: small;
+    width: 80%;
+    
+    padding: 20px 25px;
+
+    border-radius: 1.5%;
+
+    background-color: rgb(232, 232, 232);
 }
 
-#stats_and_inventory_block strong {
-    text-decoration: underline;
+.game-board {
+    display: flex;
+    flex-direction: row;
+
+    height: 610px;
+    width: 100%;
 }
 
-.category {
-    border-width: 1px;
-    border-style: solid;
-    padding:2px;
-}  
+.game-board > * {
+    display: flex;
+    flex-direction: column;
 
-.combat_header {
-    border-width: 1px;
-    border-style: solid;
-    padding:2px;
-    /* position: absolute;
-    /* right: 850px;
-    width: 575px; */
-}  
+    height: 600px;
+    width: 100%;
 
+    margin: -1px 0 0 -1px;
+    padding: 2px;
 
-#header {
-    border-bottom-width: 1px;
-    border-bottom-style: solid;
-    padding:5px;
-}    
-
-
-
-.clear {
-    clear: both;
+    border: 1px solid black;
+    border-collapse: collapse;
 }
 
-#footer {
-    border-top-width: 1px;
-    border-top-style: solid;
-    padding:5px;
-}
-/* the alert box was taken from: 
-https://www.w3schools.com/howto/howto_js_alert.asp
-I have modified it. 
-*/
+#map {
+    flex-direction: column-reverse;
 
-/* The alert message box */
-.alert {
-    border-radius: 25px;
-    padding: 9px;
-    background-color: #f8d7da;
-    border-color: #f5c6cb;
-    color: #721c24;
-    margin-bottom: 15px;
+    width: 600px;
 }
 
-.information {
-    border-radius: 25px;
-    padding: 9px;
-    background-color: #cce5ff;
-    border-color: #b8daff;
-    color: #004085;
-    margin-bottom: 15px;
+.footer {
+    height: 40px;
 }
-
-
-
-/* The close button */
-.closebtn {
-    margin-left: 15px;
-    color: #721c24;
-    font-weight: bold;
-    float: right;
-    font-size: 22px;
-    line-height: 20px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-/* When moving the mouse over the close button */
-.closebtn:hover {
-    color: black;
-}
-
-
 
 /*
-Map classes
+Map
 */
+
 .map-row {
     display: flex;
     flex-direction: row;
 
-    height: 100%;
+    flex-grow: 1;
     width: 100%;
 }
 
