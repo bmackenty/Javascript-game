@@ -187,6 +187,14 @@ class Game {
     }
 }
 
+
+
+
+
+
+
+
+
 /*
 ===== OBJECTS
 */
@@ -212,6 +220,18 @@ class Player extends Object {
         super()
         this.name = name;
         this.health = 100;
+        this.inventory = [];
+
+        this.addItemToInventory(new Apple());
+    }
+
+    addItemToInventory(item) {
+        if (item instanceof Item) {
+            this.inventory.push(item);
+            return;
+        }
+        console.log("FATAL: Attempting to add a non-item to a inventory! (item below)")
+        console.log(item);
     }
 
     get html() {
@@ -268,8 +288,37 @@ class Mountain extends Object {
 
 
 
+
+
+
+
 /*
-===== MAP FUNCTIONS
+===== ITEMS
+*/
+class Item {
+
+    constructor(name, description) {
+        this.name = name;
+        this.description = description;
+    }
+}
+
+class Apple extends Item {
+
+    constructor() {
+        super("Apple", "An apple a day keeps MrMackenty away")
+    }
+}
+
+
+
+
+
+
+
+
+/*
+===== MAP AND STATS FUNCTIONS
 */
 
 function generateMap() {
@@ -311,7 +360,8 @@ function drawMap() {
     // (move the map view to follow the player when they walk to the edge of the map)
     game.updateViewport();
 
-    // Update the footer (stats, only health for now)
+    // Update all the tabs
+    updateStats();
     updateFooter();
 
     // Loop over all the rows in the map
@@ -345,11 +395,30 @@ function drawMap() {
     document.getElementById("map").innerHTML = mapHTML;
 }
 
+function updateStats() {
+    var statsHTML = "";
+
+    /*
+    Add all the info to the stats tab
+    */
+
+    statsHTML += "Inventory:<br>"
+
+    // Loop over all the items in the player's inventory
+    // and display them
+    for (var item of game.getPlayer().data.inventory) {
+       statsHTML+= `- ${item.name}`
+       statsHTML+= `<br>`
+    }
+
+    document.getElementById("stats").innerHTML = statsHTML;
+}
+
 function updateFooter() {
     var footerHTML = "";
 
     /*
-    Add all the statistics to the footer
+    Add all info the the footer
     */
 
     footerHTML += `Health: ${game.getPlayer().data.health}`
