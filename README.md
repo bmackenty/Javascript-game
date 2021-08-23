@@ -12,7 +12,6 @@ Every task has additional details that I will add when I have time. For now thou
 == Really difficult programming tasks == 
 
 * TODO: smart terrain generation
-* * we should 
 * TODO: edge of the world : how to deal with it? 
 * TODO: a space zone (really  - I have big plans for interplanetary travel)
 * TODO: a combat zone
