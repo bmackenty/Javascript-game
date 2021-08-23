@@ -3,7 +3,7 @@ This is a very poorly written dwarven-fortress like game in javascript. The game
 
 There is an always out-of-date online version of this, https://yeoldequiveringcommunistzombies.com/
 
-The goal of this project is to create a fun, funny, humourous, side-splittingly funny, laugh-until-you-blow-chunks game that can be enjoyed by anyone who has a sense of humour.  The game should also have decent mechanics that make playing fun. 
+The goal of this project is to create a fun, funny, humourous, side-splittingly funny, laugh-until-you-blow-chunks game that can be enjoyed by anyone who has a sense of humour. Hint: writing comedy is really hard.  The game should also have decent mechanics that make playing fun. Like all games, I expect players to learn something as they play. 
 
 Tasks are broken in levels of difficulty. You are not allowed to rewrite the whole thing. All commits must be well documented. Commits shouldn't break anything unless you really need to. Feel free to download a copy of this and tweak.  If you don't know how to commit, email your changes to Mr. MacKenty (bmackenty@aswarsaw.org) with a description of what the changes do. 
 
