@@ -19,7 +19,7 @@ Tasks are broken in levels of difficulty. You are not allowed to rewrite the who
 * TODO: maybe a crafting zone to craft stuff
 * TODO: an event zone, so after X number of turns we can trigger events
 
-== medium level programming tasks 
+== medium level programming tasks ==
 
 * TODO: achievement / badges / honors (all should be funny)
 * TODO: skills
