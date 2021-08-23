@@ -168,9 +168,7 @@ function drawMap() {
     var mapHTML = "";
     game.updateViewport();
 
-    console.log("tile: outside?");
     console.log("current player position: " + game.getPlayer().x + ":" + game.getPlayer().y)
-    console.log(tileOutsideMap(6, 2))
 
     for (var y = viewportSize[1][0]; y < viewportSize[1][1]; y++) {
         mapHTML+='<div class="map-row">'
