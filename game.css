@@ -29,8 +29,10 @@ But it's been pretty hacked through :-)
 
 #main_map {
     margin-top: 2px;
-   padding: 0 210px 0 160px;
-   text-align: center;
+    text-align: center;
+
+    display: flex;
+    flex-direction: column-reverse;
 }
 
 #stats_and_inventory_block {
@@ -121,4 +123,29 @@ I have modified it.
 /* When moving the mouse over the close button */
 .closebtn:hover {
     color: black;
+}
+
+
+
+/*
+Map classes
+*/
+.map-row {
+    display: flex;
+    flex-direction: row;
+
+    height: 100%;
+    width: 100%;
+}
+
+.map-loc {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-grow: 1;
+
+    margin: 1px;
+
+    overflow: hidden;
 }
