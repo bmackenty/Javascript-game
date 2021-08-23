@@ -1,23 +1,16 @@
 # javascript-text-based-RPG
-As I embark on my journey to learn javascript, I have a clear idea of what I want to build. A dwarven-fortress like game in javascript. The game is also used as a fun after-school activity for my students. :-) 
+This is a very poorly written dwarven-fortress like game in javascript. The game is also used as a fun after-school activity for my students. :-) 
 
-There is an online version of this, https://yeoldequiveringcommunistzombies.com/
+There is an always out-of-date online version of this, https://yeoldequiveringcommunistzombies.com/
 
+The goal of this project is to create a fun, funny, humourous, side-splittingly funny, laugh-until-you-blow-chunks game that can be enjoyed by anyone over the age of 60 or who is mostly blind. 
 
+Tasks are broken in levels of difficulty. You are not allowed to rewrite the whole thing. All commits must be well documented. Commits shouldn't break anything unless you really need tyo. 
 
-
-This is a javascript implementation of a simple ascii art RPG game
+== Really difficult programming tasks == 
 
 * TODO: smart terrain generation
-* TODO: inventory
-* TODO: achievement / badges / honors (all should be funny)
-* TODO: skills
-* TODO: moving around
 * TODO: edge of the world : how to deal with it? 
-* TODO: item name generator
-* TODO: building screen
-* TODO: a wilderness zone
-* TODO: a town zone
 * TODO: a space zone (really  - I have big plans for interplanetary travel)
 * TODO: a combat zone
 * TODO: a store zone (buy / sell)
@@ -25,18 +18,36 @@ This is a javascript implementation of a simple ascii art RPG game
 * TODO: a quest zone (give/receive quests)
 * TODO: maybe a crafting zone to craft stuff
 * TODO: an event zone, so after X number of turns we can trigger events
+
+== medium level programming tasks 
+
+* TODO: achievement / badges / honors (all should be funny)
+* TODO: skills
+* TODO: building screen
+* TODO: a wilderness zone
+* TODO: a town zone
 * TODO: animals 
-* TODO: NPC's
 * TODO: add credits
-* TODO: help screen, ditch tooltips
-* HINT: throw new Error("Something went badly wrong!");
-* LEARNED: about shallow copies. Thanks stackoverflow
-* TODO: make alert messages more random, funny and meaningful
-* TODO: add to credits https://game-icons.net/
-* TODO: add skill and eqipment into chnace to block successfully 
-* TODO: Ryan: add health bar for monsters during combat
+* TODO: add skill and eqipment into chance to block successfully 
+* TODO: add health bar for monsters during combat
 * TODO: add Joe's all you can eat buffet
-* TODO: foo
+
+== good tasks for newbies == 
+
+* TODO: inventory
+* TODO: item name generator
+* TODO: add to credits https://game-icons.net/
+
+== need design thinking here ==
+
+* TODO: NPC's
+
+
+
+
+
+
+
 
 == DONE STUFF ==
 
@@ -50,3 +61,4 @@ This is a javascript implementation of a simple ascii art RPG game
 * TODO: when dead after combat dont allow attacking to continue
 * TODO: rationally deal with images / icons / etc..
 * TODO: changelog (this is on github)
+* TODO: moving around
