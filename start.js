@@ -29,13 +29,30 @@ class Game {
     movePlayer(xChange, yChange) {
         var newX = this.getPlayer().x + xChange;
         var newY = this.getPlayer().y + yChange;
-        
+
+        /*
+        The reason why we use an areaPassable instead return the method in the for loop is
+        we still want to not move the player if the player has interacted with the object and removed it
+        (for example if a player cuts down the tree and it disappears we don't want him to move to the
+        tree spot in the same turn)
+        */
+        var areaPassable = true;
+
         // Loop through all the objects at the location the
         // player wants to move to and check if they're passable
         for (var object of game.objectsAt(newX, newY)) {
-            if (object.data.passable == false) {
-                return false;
-            }
+            if (object.data.passable == false)
+                areaPassable = false;
+        }
+
+        // Interact with all the objects the player is moving torwards
+        for (var object of game.objectsAt(newX, newY)) {
+            object.data.interact(newX, newY);
+        }
+
+        if (!areaPassable) {
+            drawMap(); // Draw the map now to update interacted objects
+            return false;
         }
 
         // If the player wants to move outside the map don't let him
@@ -185,7 +202,17 @@ class Game {
         }
         return false;
     }
+
+    removeObjectsAt(objectType, x, y) {
+        this.objectList = this.objectList.filter((value) => {
+            return (value.type != objectType) || (x != value.x || y != value.y);
+        })
+    }
 }
+
+
+
+
 
 
 
@@ -207,10 +234,14 @@ class Object {
         }
     }
 
-    // Default html value, in case something fails
-    // or someone forgets to specify it (why?!)
+    // Default html value, in case something fails or someone
+    // forgets to specify it (why do i have a feeling this will happen)
     get html() {
         return 'ERROR';
+    }
+
+    interact() {
+        return false;
     }
 }
 
@@ -242,7 +273,7 @@ class Player extends Object {
 class Tree extends Object {
 
     constructor(type) {
-        super({ passable: true });
+        super({ passable: false });
         this.type = type;
     }
 
@@ -268,8 +299,18 @@ class Tree extends Object {
                 return '<i class="fas fa-tree fa-fw" style="color:#2E4720" title="A yew tree."></i>';
             default:
                 return '<i class="fas fa-tree fa-fw" style="color:#387A19" title="An oak tree."></i>';
-        }
-        
+        } 
+    }
+
+    /**
+     * 
+     * @param {Number} x The x coordinate of the tree that is being interacted
+     * @param {Number} y The y coordinate of the tree that is being interacted
+     */
+    interact(x, y) {
+
+        game.getPlayer().data.addItemToInventory(new Wood())
+        game.removeObjectsAt('tree', x, y)
     }
 }
 
@@ -307,6 +348,13 @@ class Apple extends Item {
 
     constructor() {
         super("Apple", "An apple a day keeps MrMackenty away")
+    }
+}
+
+class Wood extends Item {
+
+    constructor() {
+        super("Wood", "It's just a tree log")
     }
 }
 
