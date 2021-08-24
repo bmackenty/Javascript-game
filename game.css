@@ -68,10 +68,6 @@ body {
     width: 600px;
 }
 
-.footer {
-    height: 40px;
-}
-
 /*
 Map
 */
@@ -94,6 +90,14 @@ Map
     margin: 1px;
 
     overflow: hidden;
+}
+
+/*
+Stats
+*/
+
+#stats p {
+    margin: 3px 0;
 }
 
 /*

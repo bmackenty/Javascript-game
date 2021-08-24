@@ -119,7 +119,7 @@ class Game {
 
     /**
      * Adds an object to the objectList array
-     * @param {String} objectType The object type in a string (current types is 'player', 'tree', 'mountain')
+     * @param {String} objectType The object type in a string
      * @param {Number} x The x coordinate the object will be placed in
      * @param {Number} y The y coordinate the object will be placed in
      * @param {Object} object The instance of the object (scroll down to OBJECTS)
@@ -152,6 +152,11 @@ class Game {
                         objectToDisplay = object;
                     }
                     break;
+                case "spider":
+                    if (currentZIndex < 5) {
+                        currentZIndex = 5;
+                        objectToDisplay = object;
+                    }
                 case "mountain":
                     if (currentZIndex < 8) {
                         currentZIndex = 8;
@@ -203,10 +208,20 @@ class Game {
         return false;
     }
 
-    removeObjectsAt(objectType, x, y) {
+    removeObjectsAt(objectType, x, y) { // TODO: There needs to be a option to remove a object from within the object
         this.objectList = this.objectList.filter((value) => {
             return (value.type != objectType) || (x != value.x || y != value.y);
         })
+    }
+
+    objectCount(objectType) {
+        var count = 0;
+        for (var object of this.objectList) {
+            if (object.type == objectType) {
+                count++;
+            }
+        }
+        return count;
     }
 }
 
@@ -251,10 +266,10 @@ class Player extends Object {
         super()
         this.name = name;
         this.health = 100;
+        this.strength = 5;
         this.inventory = [
             new Apple()
         ];
-
     }
 
     /**
@@ -305,6 +320,70 @@ class Player extends Object {
     }
 }
 
+class Spider extends Object {
+    constructor(health) {
+        super({
+            passable: false
+        });
+        this.health = health;
+        this.strength = 10;
+    }
+
+    get html() {
+        if (this.isDead) {
+            return '<i class="fas fa-solid fa-spider fa-fw" style="color:lightgray" title="A Spider."></i>';
+        }
+        return '<i class="fas fa-solid fa-spider fa-fw" style="color:red" title="A Spider."></i>';
+    }
+
+    interact(x, y) { // TODO: Make the spider automatically attack the player per turn if it can
+        if (this.isDead) {
+            var boneCollected = Math.floor((Math.random() * 2) + 1);
+
+            game.getPlayer().data.addItemToInventory(new String());
+            game.getPlayer().data.addItemToInventory(new Bone(), boneCollected);
+            game.removeObjectsAt('spider', x, y);
+
+            addMessage("Looted dead spider", `Found 1 string and ${boneCollected} bone`);
+        } else {
+            var spiderDamage = game.getPlayer().data.strength;
+            this.takeDamage(spiderDamage, x, y);
+
+            if (this.isDead) {
+                addMessage("Killed Spider", `Dealt: ${spiderDamage} damage and killed the spider`);
+            } else {
+                var playerDamage = this.attackPlayer(); // Only let the spider fight back if it has survived the turn
+                addMessage("Attacked Spider", `Dealt: ${spiderDamage} damage (${this.health} health left) and recieved ${playerDamage} damage`);
+            }
+        }
+    }
+
+    /**
+     * Attack the player
+     * @returns {Number} The amount of damage dealt to the player
+     */
+    attackPlayer() {
+        game.getPlayer().data.health -= this.strength;
+        return this.strength;
+    }
+
+    /**
+     * Take damage and check if the spider is dead
+     * @param {Number} damage The amount of damage to take
+     */
+    takeDamage(damage, x, y) {
+        this.health -= damage;
+
+        if (this.isDead) {
+            this.passable = true;
+        }
+    }
+
+    get isDead() {
+        return this.health <= 0;
+    }
+}
+
 class Tree extends Object {
 
     constructor(type) {
@@ -346,7 +425,7 @@ class Tree extends Object {
 
         game.getPlayer().data.addItemToInventory(new Wood())
         addMessage("Cut down tree", "You have cut down a tree for 1 wood");
-        game.removeObjectsAt('tree', x, y)
+        game.removeObjectsAt("tree", x, y)
     }
 }
 
@@ -394,9 +473,19 @@ class Wood extends Item {
     }
 }
 
+class Bone extends Item {
 
+    constructor() {
+        super("Bone", "Some being's bone")
+    }
+}
 
+class String extends Item {
 
+    constructor() {
+        super("String", "How did you get this?")
+    }
+}
 
 
 
@@ -419,6 +508,16 @@ function generateMap() {
 
             if (Math.random() < 0.4) { // 40% chance we spawn a tree
                 game.addObject("tree", x, y, new Tree(Math.floor(Math.random() * 9))) // Pick a random tree type from 1 - 8
+                continue;
+            }
+
+            if (Math.random() < 0.005) { // 2% chance we spawn a spider
+                game.addObject("spider", x, y, new Spider(10))
+                continue;
+            }
+
+            if (Math.random() < 0.005) { // 2% chance we spawn a spider
+                game.addObject("spider", x, y, new Spider(10))
             }
         }
     }
@@ -446,7 +545,6 @@ function drawMap() {
 
     // Update all the tabs
     updateStats();
-    updateFooter();
 
     // Loop over all the rows in the map
     for (var y = viewportSize[1][0]; y < viewportSize[1][1]; y++) {
@@ -486,7 +584,8 @@ function updateStats() {
     Add all the info to the stats tab
     */
 
-    statsHTML += "Inventory:<br>"
+    statsHTML += `<p><strong>Health: </strong>${game.getPlayer().data.health}</p>`;
+    statsHTML += "<p><strong>Inventory:</strong></p>"
 
     // Loop over all the items in the player's inventory
     // and display them
@@ -496,18 +595,6 @@ function updateStats() {
     }
 
     document.getElementById("stats").innerHTML = statsHTML;
-}
-
-function updateFooter() {
-    var footerHTML = "";
-
-    /*
-    Add all info the the footer
-    */
-
-    footerHTML += `Health: ${game.getPlayer().data.health}`
-
-    document.getElementById("footer").innerHTML = footerHTML;
 }
 
 function addMessage(title, description) {
