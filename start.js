@@ -251,18 +251,53 @@ class Player extends Object {
         super()
         this.name = name;
         this.health = 100;
-        this.inventory = [];
+        this.inventory = [
+            new Apple()
+        ];
 
-        this.addItemToInventory(new Apple());
     }
 
-    addItemToInventory(item) {
+    /**
+     * Adds a item to the player's inventory
+     * @param {Object} item The item object to add to the inventory
+     * @param {Number} count The amount of the item object to add to the inventory (default is 1)
+     */
+    addItemToInventory(item, count = 1) {
         if (item instanceof Item) {
-            this.inventory.push(item);
+            // Loop over the amount of times to add the item
+            for (var i = 0; i < count; i++) {
+                this.inventory.push(item); // Add item to inventory
+            }
+            // Update the stats display after changing the player's inventory
+            updateStats();
             return;
         }
+
+        // The item isn't of the Item class, FATAL
         console.log("FATAL: Attempting to add a non-item to a inventory! (item below)")
         console.log(item);
+    }
+
+    /**
+     * Returns a array with the different types of items in the player inventory and the amount of times
+     * that item is seen in the player inventory. Useful for displaying in statistics
+     * @returns {Array} A array of different items and their count in the format { name: ITEM_NAME, count: ITEM_COUNT }
+     */
+    get backpack() {
+        var backpack = [];
+
+        inventoryLoop:
+        for (var item of this.inventory) {
+            for (var packItem of backpack) {
+                if (packItem.name == item.name) {
+                    packItem.count++;
+                    continue inventoryLoop;
+                }
+            }
+            backpack.push({ name: item.name, count: 1 })
+        }
+
+        return backpack;
     }
 
     get html() {
@@ -454,8 +489,8 @@ function updateStats() {
 
     // Loop over all the items in the player's inventory
     // and display them
-    for (var item of game.getPlayer().data.inventory) {
-       statsHTML+= `- ${item.name}`
+    for (var item of game.getPlayer().data.backpack) {
+       statsHTML+= `- ${item.name} (${item.count})`
        statsHTML+= `<br>`
     }
 

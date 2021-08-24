@@ -55,6 +55,8 @@ body {
 
 .game-board > *:not(#map) {
     padding: 10px;
+
+    overflow-y: scroll;
 }
 
 #map {
