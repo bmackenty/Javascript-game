@@ -3,6 +3,18 @@ class Game {
         this.objectList = []
     }
 
+    doTurn() {
+        // Loop over all the objects in the game
+        // and alert them that the game has finished
+        // a turn
+        for (var object of this.objectList) {
+            object.data.doTurn(object.x, object.y);
+        }
+
+        // Redraw the map after doing everybody's turn
+        drawMap();
+    }
+
     /**
      * Gets the player
      * @returns {Object} The player object
@@ -51,7 +63,8 @@ class Game {
         }
 
         if (!areaPassable) {
-            drawMap(); // Draw the map now to update interacted objects
+            // Do turn
+            this.doTurn();
             return false;
         }
 
@@ -66,8 +79,8 @@ class Game {
         this.getPlayer().x += xChange;
         this.getPlayer().y += yChange;
 
-        // After moving the player draw the map again
-        drawMap();
+        // Do turn
+        this.doTurn();
 
         return true; // Return true (player successfully moved)
     }
@@ -208,6 +221,32 @@ class Game {
         return false;
     }
 
+    moveObject(objectType, x, y, xChange, yChange) {
+        for (var object of this.objectsAt(x, y)) {
+            if (object.type == objectType) {
+                var newX = object.x + xChange;
+                var newY = object.y + yChange;
+
+                // Check if there are already any objects in the new location
+                if (game.objectsAt(newX, newY).length > 0)
+                    return false;
+
+                // If the object wants to move outside the map don't let them
+                if (newX < 0 || gridSize[0] < newX)
+                    return false;
+                if (newY < 0 || gridSize[1] < newY)
+                    return false;
+                
+                object.x = newX;
+                object.y = newY;
+
+                return true
+            }
+        }
+        console.log(`FATAL: Attempting to move unexistant object ${objectType} at the coordinates ${x}:${y}`)
+        return undefined;
+    }
+
     removeObjectsAt(objectType, x, y) { // TODO: There needs to be a option to remove a object from within the object
         this.objectList = this.objectList.filter((value) => {
             return (value.type != objectType) || (x != value.x || y != value.y);
@@ -222,6 +261,10 @@ class Game {
             }
         }
         return count;
+    }
+
+    distance(x, y, x2, y2) {
+        return (Math.max(x, x2) - Math.min(x, x2)) + (Math.max(y, y2) - Math.min(y, y2))
     }
 }
 
@@ -256,6 +299,10 @@ class Object {
     }
 
     interact() {
+        return false;
+    }
+
+    doTurn(x, y) {
         return false;
     }
 }
@@ -327,6 +374,12 @@ class Spider extends Object {
         });
         this.health = health;
         this.strength = 10;
+        this.randomMoveCooldown = 0;
+        this.lockedOntoPlayer = false;
+    }
+
+    get isDead() {
+        return this.health <= 0;
     }
 
     get html() {
@@ -336,7 +389,7 @@ class Spider extends Object {
         return '<i class="fas fa-solid fa-spider fa-fw" style="color:red" title="A Spider."></i>';
     }
 
-    interact(x, y) { // TODO: Make the spider automatically attack the player per turn if it can
+    interact(x, y) {
         if (this.isDead) {
             var boneCollected = Math.floor((Math.random() * 2) + 1);
 
@@ -347,13 +400,12 @@ class Spider extends Object {
             addMessage("Looted dead spider", `Found 1 string and ${boneCollected} bone`);
         } else {
             var spiderDamage = game.getPlayer().data.strength;
-            this.takeDamage(spiderDamage, x, y);
+            this.takeDamage(spiderDamage);
 
             if (this.isDead) {
                 addMessage("Killed Spider", `Dealt: ${spiderDamage} damage and killed the spider`);
             } else {
-                var playerDamage = this.attackPlayer(); // Only let the spider fight back if it has survived the turn
-                addMessage("Attacked Spider", `Dealt: ${spiderDamage} damage (${this.health} health left) and recieved ${playerDamage} damage`);
+                addMessage("Attacked Spider", `Dealt: ${spiderDamage} damage (${this.health} health left)`);
             }
         }
     }
@@ -363,24 +415,111 @@ class Spider extends Object {
      * @returns {Number} The amount of damage dealt to the player
      */
     attackPlayer() {
-        game.getPlayer().data.health -= this.strength;
-        return this.strength;
+        var damage = this.strength;
+
+        game.getPlayer().data.health -= damage;
+        addMessage("Attacked by Spider", `Recieved ${damage} damage (${game.getPlayer().data.health} heath left)`)
+        return damage;
     }
 
     /**
      * Take damage and check if the spider is dead
      * @param {Number} damage The amount of damage to take
      */
-    takeDamage(damage, x, y) {
+    takeDamage(damage) {
         this.health -= damage;
 
-        if (this.isDead) {
+        if (this.isDead)
             this.passable = true;
+    }
+
+    doTurn(x, y) {
+        if (!this.isDead) { // Spiders can't move when dead (UNLESS)
+            if (this.lockedOntoPlayer) {
+                console.log('spider locked onto player')
+                this.moveTorwardsPlayer(x, y)
+            } else {
+                if (Math.random() < 0.15) { // 15% chance the spider will move randomly
+                    var moveAmount = Math.random() > 0.5 ? 1 : -1 // The amount to move (1 or -1)
+                    var movePlane = Math.random() > 0.5 ? 0 : 1 // The plane in which to move in (0 is x, 1 is y)
+
+                    // If movePlane is equal to X set the variable to moveAmount, else set variable to 0
+                    var moveX = movePlane == 0 ? moveAmount : 0
+                    var moveY = movePlane == 1 ? moveAmount : 0
+
+                    var spiderMovedSuccessfully = game.moveObject('spider', x, y, moveX, moveY)
+
+                    if (!spiderMovedSuccessfully) { // Spider failed to move (obstacle in the way)
+                        game.moveObject('spider', x, y, -moveX, -moveY) // Try to move in the oppposite direction
+                    }
+                }
+            }
+
+            // If the player is within 7 tiles of the spider lock onto the player
+            this.lockedOntoPlayer = game.distance(x, y, game.getPlayer().x, game.getPlayer().y) < 7
         }
     }
 
-    get isDead() {
-        return this.health <= 0;
+    /**
+     * Move torwards the player
+     * 
+     * DO NOT TOUCH UNLESS YOU AREN'T AFRAID OF LOSING BRAINCELLS
+     * 
+     * this is what i call a broke man's a* algorithm
+     * 
+     * @param {Number} x X coordinate of the spider
+     * @param {Number} y Y coordainte of the spider
+     */
+    moveTorwardsPlayer(x, y) {
+        // Distance needed to travel to get to the player
+        var distanceX = game.getPlayer().x - x
+        var distanceY = game.getPlayer().y - y
+
+        console.log(`need to travel ${distanceX}:${distanceY} to get to the player`)
+
+        if (distanceX == 0 && distanceY == 0) // We are already at the player? This should never happen...
+            return;
+
+        if (distanceX + distanceY == 1) { // We are within 1 tile of the player (no need to move, just attack him)
+            this.attackPlayer()
+            return;
+        }
+
+        // Move the spider torwards the player
+        if (distanceX == 0) { // We only need to move up or down to get torwards the player
+            console.log('moving the spider up or down torwards ellia ' + (distanceY > 0 ? 1 : -1))
+            if (!game.moveObject('spider', x, y, 0, distanceY > 0 ? 1 : -1)) {
+               // Obstacle is in the way
+
+               // Try moving randomly left or right to see if no more obstacle
+               game.moveObject('spider', x, y, Math.random() > 0.5 ? 1 : -1, 0)
+            }
+        } else if (distanceY == 0) { // We only need to move left or right to get torwards the player
+            console.log('moving the spider left or right torwards the player' + (distanceX > 0 ? 1 : -1))
+            if (!game.moveObject('spider', x, y, distanceX > 0 ? 1 : -1, 0)) {
+                // Obstacle is in the way
+
+                // Try moving randomly up or down to see if no more obstacle
+               game.moveObject('spider', x, y, 0, Math.random() > 0.5 ? 1 : -1)
+            }
+        } else {
+            // We choose to randomly move diagonally or horizontally to get the the player
+            var movePlane = Math.random() > 0.5 ? 0 : 1 // The plane in which to move in (0 is x, 1 is y)
+
+            var moveX = movePlane == 0 ? (distanceX > 0 ? 1 : -1) : 0
+            var moveY = movePlane == 1 ? (distanceY > 0 ? 1 : -1) : 0
+
+            if (!game.moveObject('spider', x, y, moveX, moveY)) {
+                // Obstacle is in the way
+
+                // Try switching the planes to see if we can move
+                game.moveObject('spider', x, y, moveY, moveX)
+            }
+        }
+    
+        if (distanceX + distanceY == 1) { // We are within 1 tile of the player (attack him)
+            this.attackPlayer()
+        }
     }
 }
 
@@ -498,7 +637,6 @@ function generateMap() {
     // Loop over all the X and Y coordinates of the map
     for (var x = 0; x <= gridSize[0]; x++) {
         for (var y = 0; y <= gridSize[1]; y++) {
-
             /*
             This really needs to be done better but
             I really can't be bothered so unless
@@ -506,18 +644,20 @@ function generateMap() {
             to implement it
             */
 
-            if (Math.random() < 0.4) { // 40% chance we spawn a tree
+            var randomNumber = (Math.random() * 100) + 1 // Get a random number from 1-100 (with decimals)
+            if (randomNumber < 40) { // 40% chance we spawn a tree
                 game.addObject("tree", x, y, new Tree(Math.floor(Math.random() * 9))) // Pick a random tree type from 1 - 8
                 continue;
             }
 
-            if (Math.random() < 0.005) { // 2% chance we spawn a spider
+            if (randomNumber < 40.5) { // 0.5% chance we spawn a spider
                 game.addObject("spider", x, y, new Spider(10))
                 continue;
             }
 
-            if (Math.random() < 0.005) { // 2% chance we spawn a spider
-                game.addObject("spider", x, y, new Spider(10))
+            if (randomNumber < 40.6) { // 0.1% chance we spawn a dead spider
+                game.addObject("spider", x, y, new Spider(0))
+                continue;
             }
         }
     }
