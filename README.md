@@ -20,7 +20,6 @@ This is a javascript implementation of a simple ascii art RPG game
 * TODO: NPC's
 * TODO: Credits (don't forget to add https://game-icons.net/)
 * TODO: Shortcuts and help screen
-* TODO: Messages
 * TODO: Combat
 * TODO: add Joe's all you can eat buffet (i'm not gonna question why this is here, i'm just gonna do it)
 * TODO: Messages
@@ -32,3 +31,4 @@ This is a javascript implementation of a simple ascii art RPG game
 * Inventory
 * TODO: Item Stacking in inventory
 * TODO: Overflowing in inventory and messages
+* TODO: Messages

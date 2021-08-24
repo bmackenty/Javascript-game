@@ -95,3 +95,14 @@ Map
 
     overflow: hidden;
 }
+
+/*
+Messages
+*/
+.message {
+    margin: 10px 0;
+}
+
+.message-title {
+    font-weight: 700;
+}

@@ -345,6 +345,7 @@ class Tree extends Object {
     interact(x, y) {
 
         game.getPlayer().data.addItemToInventory(new Wood())
+        addMessage("Cut down tree", "You have cut down a tree for 1 wood");
         game.removeObjectsAt('tree', x, y)
     }
 }
@@ -507,6 +508,19 @@ function updateFooter() {
     footerHTML += `Health: ${game.getPlayer().data.health}`
 
     document.getElementById("footer").innerHTML = footerHTML;
+}
+
+function addMessage(title, description) {
+    var messageHTML = "";
+    var msgId = Math.floor(Math.random() * 1000000000)
+
+    messageHTML += `<div class="message" id="msg-id-${msgId}">`
+    messageHTML += `<div class="message-title">${title}</div>`
+    messageHTML += `<div class="message-description">${description}</div>`
+    messageHTML += '</div>'
+
+    document.getElementById("messages").innerHTML += messageHTML;
+    document.getElementById(`msg-id-${msgId}`).scrollIntoView();
 }
 
 function registerListeners() {
