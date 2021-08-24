@@ -5,7 +5,6 @@ Visit the online version at: https://yeoldequiveringcommunistzombies.com/
 
 This is a javascript implementation of a simple ascii art RPG game
 
-* TODO: I DON'T KNOW WHY, I DON'T KNOW HOW, but sometimes the player gets generated somewhere and the viewport doesn't update (this happens quite frequently, just refresh the page a couple of times and look for the player)
 * TODO: Persistant data in cookies
 * TODO: Better terrain generation
 * TODO: Achievements
@@ -32,3 +31,4 @@ This is a javascript implementation of a simple ascii art RPG game
 * TODO: Item Stacking in inventory
 * TODO: Overflowing in inventory and messages
 * TODO: Messages
+* TODO: I DON'T KNOW WHY, I DON'T KNOW HOW, but sometimes the player gets generated somewhere and the viewport doesn't update (this happens quite frequently, just refresh the page a couple of times and look for the player)

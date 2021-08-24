@@ -80,29 +80,29 @@ class Game {
         var playerY = this.getPlayer().y;
         var modifiedViewport = false;
 
-        // Check if the player is within 3 tiles of the border of the viewport
+        // Check if the player is within X tiles of the border of the viewport
         // If yes then move the viewport to follow the player
 
-        if (Math.abs(playerX - viewportSize[0][0]) <= 3) {
+        if ((playerX - viewportSize[0][0]) < borderViewDistance) {
             viewportSize[0][0]--;
             viewportSize[0][1]--;
             modifiedViewport = true;
         }
 
-        if (Math.abs(playerX - viewportSize[0][1]) <= 3) {
+        if ((viewportSize[0][1] - playerX) <= borderViewDistance) {
             viewportSize[0][1]++;
             viewportSize[0][0]++;
             modifiedViewport = true;
         }
 
-        if (Math.abs(playerY - viewportSize[1][0]) <= 3) {
+        if ((playerY - viewportSize[1][0]) < borderViewDistance) {
             viewportSize[1][0]--;
             viewportSize[1][1]--;
             modifiedViewport = true;
             
         }
 
-        if (Math.abs(playerY - viewportSize[1][1]) <= 3) {
+        if ((viewportSize[1][1] - playerY) <= borderViewDistance) {
             viewportSize[1][1]++;
             viewportSize[1][0]++;
             modifiedViewport = true;
@@ -118,8 +118,8 @@ class Game {
     }
 
     /**
-     * 
-     * @param {String} objectType The object type in a string
+     * Adds an object to the objectList array
+     * @param {String} objectType The object type in a string (current types is 'player', 'tree', 'mountain')
      * @param {Number} x The x coordinate the object will be placed in
      * @param {Number} y The y coordinate the object will be placed in
      * @param {Object} object The instance of the object (scroll down to OBJECTS)
@@ -429,7 +429,7 @@ function generateMap() {
         var y = Math.floor(Math.random() * gridSize[1])
 
         if (!game.objectAt(x, y)) {
-            game.addObject("player", x, y, new Player());
+            game.addObject("player", x, y, new Player()); // TODO MOVE VIEWPORT INTO PLAYER AT GAME START
             break;
         }
     }
@@ -554,6 +554,7 @@ function registerListeners() {
 // CONFIG VARIABLES
 var game = new Game();
 var gridSize = [40, 40] // [X, Y]
+var borderViewDistance = 3;
 var viewportSize = [[0, 33], [0, 33]];
 
 // START THE GAME
