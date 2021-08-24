@@ -512,6 +512,9 @@ function updateFooter() {
 
 function addMessage(title, description) {
     var messageHTML = "";
+
+    // We assign the message a random msgId so that later on in the code
+    // we can refrence the msgId and scroll the message into the view
     var msgId = Math.floor(Math.random() * 1000000000)
 
     messageHTML += `<div class="message" id="msg-id-${msgId}">`
@@ -520,6 +523,8 @@ function addMessage(title, description) {
     messageHTML += '</div>'
 
     document.getElementById("messages").innerHTML += messageHTML;
+
+    // Scroll the message into view using them msgId assigned earlier
     document.getElementById(`msg-id-${msgId}`).scrollIntoView();
 }
 
