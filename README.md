@@ -21,7 +21,6 @@ This is a javascript implementation of a simple ascii art RPG game
 * TODO: Shortcuts and help screen
 * TODO: Combat
 * TODO: add Joe's all you can eat buffet (i'm not gonna question why this is here, i'm just gonna do it)
-* TODO: Messages
 
 == DONE STUFF ==
 
