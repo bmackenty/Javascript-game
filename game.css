@@ -62,6 +62,16 @@ body {
     width: 600px;
 }
 
+#death-message {
+    height: 600px;
+    width: 600px;
+
+    font-family: 'DEATH FONT ver1.0', sans-serif;
+    text-align: center;
+    font-size: 400%;
+
+    margin-top: 20%;
+}
 /*
 Map
 */

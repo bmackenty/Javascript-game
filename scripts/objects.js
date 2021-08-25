@@ -119,6 +119,18 @@ class Player extends Object {
     }
 
     /**
+     * Removes health from the players' inventory
+     * @param {Number} damage - The amount of damage
+     */
+    removeHealth(damage) {
+        this.health -= damage;
+        // if health is below or equal to 1, end the game
+        if (this.health <= 0) {
+            game.endGame();
+        }
+    }
+  
+    /**
      * Removes a item from the player's inventory
      * @param {Object} item - The item object to remove from the inventory
      * @param {*} count - The amount of items to remove
@@ -149,21 +161,21 @@ class Player extends Object {
 
     craftItem(recipe) {
         if (recipe.requirementsSatisfied(this.inventory)) {
-			var itemsLeft = [...recipe.input];
+			      var itemsLeft = [...recipe.input];
 
-			for (var iItem of this.inventory) {
-				for (var rIndex in itemsLeft) {
-					if (iItem.name == itemsLeft[rIndex].name) {
-						itemsLeft.splice(rIndex, 1);
-						this.removeItemFromInventory(iItem);
-					}
-				}
-			}
+            for (var iItem of this.inventory) {
+                for (var rIndex in itemsLeft) {
+                    if (iItem.name == itemsLeft[rIndex].name) {
+                        itemsLeft.splice(rIndex, 1);
+                        this.removeItemFromInventory(iItem);
+                    }
+                }
+            }
 
-			this.addItemToInventory(recipe.output);
-		} else {
-			console.log(`FATAL: Attempting to craft item (${recipe.output.name}) player doesn't hvae the items for`)
-		}
+			      this.addItemToInventory(recipe.output);
+		    } else {
+			      console.log(`FATAL: Attempting to craft item (${recipe.output.name}) player doesn't hvae the items for`)
+		    }
     }
 }
 
@@ -267,8 +279,7 @@ class Enemy extends Object {
      */
     attackPlayer() {
         var damage = this.strength;
-
-        game.getPlayer().health -= damage;
+        game.getPlayer().removeHealth(damage);
         game.alert(`Attacked by ${this.name}`, `Recieved ${damage} damage (${game.getPlayer().health} heath left)`)
         return damage;
     }
@@ -370,7 +381,7 @@ class Enemy extends Object {
             }
         }
     
-        if (distanceX + distanceY == 1) { // We are within 1 tile of the player (attack him)
+        if (game.distance(this, game.getPlayer()) == 1) { // We are within 1 tile of the player (attack him)
             this.attackPlayer()
         }
     }

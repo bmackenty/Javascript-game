@@ -3,6 +3,7 @@ class Game {
         this.objectArray = [] // Array of all the objects in the game
         this.viewportSize = [[0, 33], [0, 33]];
         this.currentTurn = 0;
+        this.gameRunning = true;
 
         this.generateMap();
         this.registerListeners();
@@ -49,34 +50,36 @@ class Game {
      * (reasons why player didn't move might include attempting to walk outside the map or into a impassable object)
      */
     movePlayer(xChange, yChange) {
-        var newX = this.getPlayer().x + xChange;
-        var newY = this.getPlayer().y + yChange;
+        if (this.gameRunning) {
+            var newX = this.getPlayer().x + xChange;
+            var newY = this.getPlayer().y + yChange;
 
-        // Interact with object at new location and
-        // check if it's passable
-        var objectAtLocation = game.objectAt(newX, newY)
-        if (objectAtLocation) {
-            if (objectAtLocation.passable == false) {
+            // Interact with object at new location and
+            // check if it's passable
+            var objectAtLocation = game.objectAt(newX, newY)
+            if (objectAtLocation) {
+                if (objectAtLocation.passable == false) {
+                    objectAtLocation.interact(newX, newY);
+                    this.doTurn();
+                    return false;
+                }
                 objectAtLocation.interact(newX, newY);
-                this.doTurn();
-                return false;
             }
-            objectAtLocation.interact(newX, newY);
+
+            // If the player wants to move outside the map don't let him
+            if (newX < 0 || gridSize[0] < newX)
+                return false;
+            if (newY < 0 || gridSize[1] < newY)
+                return false;
+
+
+            // After all the checks update the player's location
+            this.getPlayer().x += xChange;
+            this.getPlayer().y += yChange;
+
+            this.doTurn();
+            return true;
         }
-
-        // If the player wants to move outside the map don't let him
-        if (newX < 0 || gridSize[0] < newX)
-            return false;
-        if (newY < 0 || gridSize[1] < newY)
-            return false;
-
-
-        // After all the checks update the player's location
-        this.getPlayer().x += xChange;
-        this.getPlayer().y += yChange;
-
-        this.doTurn();
-        return true;
     }
 
     /**
@@ -281,46 +284,48 @@ class Game {
      * Draws the map for the user
      */
     drawMap() {
-        var mapHTML = "";
-    
-        // Update the viewport
-        // (move the map view to follow the player when they walk to the edge of the map)
-        this.updateViewport();
-    
-        // Loop over all the rows in the viewport
-        for (var y = this.viewportSize[1][0]; y < this.viewportSize[1][1]; y++) {
-            mapHTML+='<div class="map-row">' // Open row element
-    
-            // Loop over all the tiles in the row
-            for (var x = this.viewportSize[0][0]; x < this.viewportSize[0][1]; x++) {
-    
-                // If the tile is outside the map display a mountain
-                if ((x > gridSize[0] || x < 0) || (y > gridSize[1] || y < 0)) {
-                    mapHTML+= '<div class="map-loc"><i class=\"fas fa-mountain fa-fw\" style=\"color:grey\"  title=\"A mountain\"></i></div>';
-                    continue;
+        if (this.gameRunning) {
+            var mapHTML = "";
+        
+            // Update the viewport
+            // (move the map view to follow the player when they walk to the edge of the map)
+            this.updateViewport();
+        
+            // Loop over all the rows in the viewport
+            for (var y = this.viewportSize[1][0]; y < this.viewportSize[1][1]; y++) {
+                mapHTML+='<div class="map-row">' // Open row element
+        
+                // Loop over all the tiles in the row
+                for (var x = this.viewportSize[0][0]; x < this.viewportSize[0][1]; x++) {
+        
+                    // If the tile is outside the map display a mountain
+                    if ((x > gridSize[0] || x < 0) || (y > gridSize[1] || y < 0)) {
+                        mapHTML+= '<div class="map-loc"><i class=\"fas fa-mountain fa-fw\" style=\"color:grey\"  title=\"A mountain\"></i></div>';
+                        continue;
+                    }
+
+                    // If the player is at that location, display him
+                    if (this.getPlayer().x == x && this.getPlayer().y == y) {
+                        mapHTML+=`<div class="map-loc">${this.getPlayer().html}</div>`
+                        continue;
+                    }
+        
+                    var object = this.objectAt(x, y)
+        
+                    if (object) { // If there is a object at those coordinates
+                        // Display the object
+                        mapHTML += `<div class="map-loc">${object.html}</div>`
+                    } else { // No object here
+                        // Display the three dots
+                        mapHTML+='<div class="map-loc"><i class=\"fas fa-ellipsis-h fa-fw\" style=\"color:#D2B48C\"></i></div>';
+                    }
                 }
-    
-                // If the player is at that location, display him
-                if (this.getPlayer().x == x && this.getPlayer().y == y) {
-                    mapHTML+=`<div class="map-loc">${this.getPlayer().html}</div>`
-                    continue;
-                }
-    
-                var object = this.objectAt(x, y)
-    
-                if (object) { // If there is a object at those coordinates
-                    // Display the object
-                    mapHTML += `<div class="map-loc">${object.html}</div>`
-                } else { // No object here
-                    // Display the three dots
-                    mapHTML+='<div class="map-loc"><i class=\"fas fa-ellipsis-h fa-fw\" style=\"color:#D2B48C\"></i></div>';
-                }
+                mapHTML+='</div>' // Close row element
             }
-            mapHTML+='</div>' // Close row element
+        
+            // Display mapHTML onto the visible <div> element
+            document.getElementById("map").innerHTML = mapHTML;
         }
-    
-        // Display mapHTML onto the visible <div> element
-        document.getElementById("map").innerHTML = mapHTML;
     }
 
     /**
@@ -431,5 +436,12 @@ class Game {
                     break;
             }
         })
+    }
+
+    // end the game once the player reaches 0 health
+    // reset the innerhtml of the map and display "you died"
+    endGame() {
+        document.getElementById("map").innerHTML = "<p id='death-message'>Game Over</p>";
+        this.gameRunning = false;
     }
 }
