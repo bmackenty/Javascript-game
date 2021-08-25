@@ -117,6 +117,27 @@ Stats and Crafting
     font-weight: bold;
 }
 
+recipe {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.recipe-header {
+    font-weight: 700;
+}
+
+recipe > *:not(button) {
+    margin: 2px 0;
+    width: 100%;
+}
+
+recipe li {
+    text-indent: 10px;
+    
+    list-style-type: none;
+}
+
 /*
 Messages
 */

@@ -23,7 +23,6 @@ class Game {
         // Update the map and statistics after finishing the turn
         this.drawMap();
         this.updateStats();
-        this.updateRecipes();
     }
 
     /**
@@ -276,7 +275,6 @@ class Game {
 
         this.drawMap(); // Draw the map after generating it
         this.updateStats(); // Display statistics
-        this.updateRecipes(); // Update available recipes
     }
 
     /**
@@ -347,37 +345,58 @@ class Game {
     
         // Display statsHTML onto the visible <div> element
         document.getElementById("stats").innerHTML = statsHTML;
+
+        this.updateRecipes(); // Whenever the stats are updated the recipes will also need to be updated
     }
     
     updateRecipes() {
-        var recipesList = document.getElementById("recipes-list")
-        recipesList.innerHTML = "";
+        var recipes = document.getElementById("recipes-list")
+        recipes.innerHTML = "";
 
-        var msgId = Math.floor(Math.random() * 1000000000);
-        var recipes = [new Recipe(new Apple(), [new Wood()])]
+        for (var recipe of this.getPlayer().recipeList) {
 
-        for (var recipe of recipes) {
-            var recipesHTML = "";
+            // If the player doesn't have the items required for the recipe skip it
+            if (!recipe.requirementsSatisfied(this.getPlayer().inventory))
+                continue;
+            
+            // Create custom recipe element
+            var recipeElement = document.createElement("recipe")
+            var recipeHTML = "";
 
-            recipesHTML+= `<div class="recipe">`
-            recipesHTML+= `${recipe.output.name}: <button id="${msgId}">Craft</button>`
-            recipesHTML+= `</div>`
+            recipeHTML += `<p><span class="recipe-header">Crafts:</span> ${recipe.output.name}</p>` // Display the recipe output
+            recipeHTML += `<p class="recipe-header">Requires: </p>` // Display recipe requires text
 
-            recipesList.innerHTML += recipesHTML;
+            // Loop through all the items required to make the recipe and display them
+            for (var input of this.itemsToBackpack(recipe.input)) {
+                recipeHTML += `<li>- ${input.name} (${input.count})</li>`
+            }
 
-            setTimeout(() => {
-                document.getElementById(msgId).onclick = () => {
-                    this.getPlayer().craftItem(recipe);
-                }
-            }, 100)
+            recipeHTML += `<button style="margin: 0 auto;">Craft</button>` // Display craft button
+
+            // Set the html of the recipe element to recipeHTML
+            recipeElement.innerHTML = recipeHTML;
+
+            var clickingRecipe = new Recipe(recipe.output, recipe.input);
+            // When the recipe button is clicked craft the item
+            recipeElement.onclick = () => {
+                this.getPlayer().craftItem(clickingRecipe);
+            }
+
+            // Add the recipeElement to the recipeList
+            recipes.appendChild(recipeElement);
         }
     }
 
+    /**
+     * Display a notification style alert to the player
+     * @param {String} title - The alert title
+     * @param {String} description - The alert description
+     */
     alert(title, description) {
         var messageHTML = "";
     
-        // We assign the message a random msgId so that later on in the code
-        // we can refrence the msgId and scroll the message into the view
+        // Assign message a random id so later on in the code we 
+        // can refrence msgId and scroll the message into the view
         var msgId = Math.floor(Math.random() * 1000000000)
     
         messageHTML += `<div class="message" id="msg-id-${msgId}">` // Open the message <div>

@@ -1,5 +1,10 @@
 class Item {
 
+    /**
+     * Create a item
+     * @param {String} name - The name of the item
+     * @param {String} description - The description of the item
+     */
     constructor(name, description) {
         this.name = name;
         this.description = description;
@@ -45,5 +50,12 @@ class RawMeat extends Item {
 
     constructor() {
         super("Raw Meat", "Not recommended to be eaten raw")
+    }
+}
+
+class LeatherBoots extends Item {
+
+    constructor() {
+        super("Leather Boots", "Great for hiking, not so much for killing");
     }
 }
