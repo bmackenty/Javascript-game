@@ -4,11 +4,10 @@ class Game {
     }
 
     doTurn() {
-        // Loop over all the objects in the game
-        // and alert them that the game has finished
-        // a turn
+        // Loop over all the objects in the game and 
+        // alert them that the game has finished a turn
         for (var object of this.objectList) {
-            object.data.doTurn(object.x, object.y);
+            object.doTurn(object.x, object.y);
         }
 
         // Redraw the map after doing everybody's turn
@@ -33,9 +32,9 @@ class Game {
 
     /**
      * Attempts to move the player
-     * @param {number} xChange
-     * @param {number} yChange
-     * @returns {boolean} Whether the player has successfully moved or not 
+     * @param {number} - xChange
+     * @param {number} - yChange
+     * @returns {boolean} - Whether the player has successfully moved or not 
      * (reasons why player didn't move might include attempting to walk outside the map or into a impassable object)
      */
     movePlayer(xChange, yChange) {
@@ -53,13 +52,13 @@ class Game {
         // Loop through all the objects at the location the
         // player wants to move to and check if they're passable
         for (var object of game.objectsAt(newX, newY)) {
-            if (object.data.passable == false)
+            if (object.passable == false)
                 areaPassable = false;
         }
 
         // Interact with all the objects the player is moving torwards
         for (var object of game.objectsAt(newX, newY)) {
-            object.data.interact(newX, newY);
+            object.interact(newX, newY);
         }
 
         if (!areaPassable) {
@@ -132,25 +131,20 @@ class Game {
 
     /**
      * Adds an object to the objectList array
-     * @param {String} objectType The object type in a string
-     * @param {Number} x The x coordinate the object will be placed in
-     * @param {Number} y The y coordinate the object will be placed in
-     * @param {Object} object The instance of the object (scroll down to OBJECTS)
+     * @param {String} objectType - The object type in a string
+     * @param {Number} x - The x coordinate the object will be placed in
+     * @param {Number} y - The y coordinate the object will be placed in
+     * @param {Object} object - The instance of the object (scroll down to OBJECTS)
      */
-    addObject(objectType, x, y, object) {
-        this.objectList.push({
-            type: objectType,
-            x: x,
-            y: y,
-            data: object
-        })
+    addObject(object) {
+        this.objectList.push(object)
     }
 
     /**
      * Gets the most important object at a location
      * @param {Number} x 
      * @param {Number} y 
-     * @returns The object with the highest zIndex in a certain location
+     * @returns {Object} - The object with the highest zIndex in a certain location
      * (most important, gets displayed above the other objects)
      */
     objectAt(x, y) {
@@ -182,6 +176,12 @@ class Game {
                         objectToDisplay = object;
                     }
                     break;
+                case "bear":
+                    if (currentZIndex < 5) {
+                        currentZIndex = 5;
+                        objectToDisplay = object;
+                    }
+                    break;
             }
         }
 
@@ -192,7 +192,7 @@ class Game {
      * Get all the objects in a certain location
      * @param {Number} x 
      * @param {Number} y 
-     * @returns {Array} Array of objects at the location
+     * @returns {Array} - Array of objects at the location
      */
     objectsAt(x, y) {
         var objects = []
@@ -204,52 +204,30 @@ class Game {
         return objects;
     }
 
-    /**
-     * Checks if there is a object with the objectType specificed
-     * in a certain location
-     * @param {String} objectType
-     * @param {Number} x 
-     * @param {Number} y 
-     * @returns 
-     */
-    objectIsAt(objectType, x, y) {
-        for (var object of this.objectsAt(x, y,)) {
-            if (object.type == objectType) {
-                return true;
-            }
-        }
-        return false;
+    moveObject(object, xChange, yChange) {
+        var newX = object.x + xChange;
+        var newY = object.y + yChange;
+
+        // Check if there are already any objects in the new location
+        if (game.objectsAt(newX, newY).length > 0)
+            return false;
+
+        // If the object wants to move outside the map don't let them
+        if (newX < 0 || gridSize[0] < newX)
+            return false;
+        if (newY < 0 || gridSize[1] < newY)
+            return false;
+        
+        object.x = newX;
+        object.y = newY;
+
+        return true
     }
 
-    moveObject(objectType, x, y, xChange, yChange) {
-        for (var object of this.objectsAt(x, y)) {
-            if (object.type == objectType) {
-                var newX = object.x + xChange;
-                var newY = object.y + yChange;
+    removeObject(object) { // TODO: There needs to be a option to remove a object from within the object
 
-                // Check if there are already any objects in the new location
-                if (game.objectsAt(newX, newY).length > 0)
-                    return false;
-
-                // If the object wants to move outside the map don't let them
-                if (newX < 0 || gridSize[0] < newX)
-                    return false;
-                if (newY < 0 || gridSize[1] < newY)
-                    return false;
-                
-                object.x = newX;
-                object.y = newY;
-
-                return true
-            }
-        }
-        console.log(`FATAL: Attempting to move unexistant object ${objectType} at the coordinates ${x}:${y}`)
-        return undefined;
-    }
-
-    removeObjectsAt(objectType, x, y) { // TODO: There needs to be a option to remove a object from within the object
         this.objectList = this.objectList.filter((value) => {
-            return (value.type != objectType) || (x != value.x || y != value.y);
+            return (value != object);
         })
     }
 
@@ -265,6 +243,28 @@ class Game {
 
     distance(x, y, x2, y2) {
         return (Math.max(x, x2) - Math.min(x, x2)) + (Math.max(y, y2) - Math.min(y, y2))
+    }
+
+    /**
+     * Returns a array with the different types of items in the array and the amount of times
+     * that item is seen in the array. Useful for displaying statistics
+     * @returns {Array} - A array of different items and their count in the format { name: ITEM_NAME, count: ITEM_COUNT }
+     */
+    itemsToBackpack(items) {
+        var backpack = [];
+
+        inventoryLoop:
+        for (var item of items) {
+            for (var packItem of backpack) {
+                if (packItem.name == item.name) {
+                    packItem.count++;
+                    continue inventoryLoop;
+                }
+            }
+            backpack.push({ name: item.name, count: 1 })
+        }
+
+        return backpack;
     }
 }
 
@@ -286,10 +286,13 @@ class Game {
 
 class Object {
 
-    constructor(props) {
+    constructor(props, x, y) {
         if (props) {
             this.passable = props.passable != undefined ? props.passable : true;
         }
+
+        this.x = x;
+        this.y = y;
     }
 
     // Default html value, in case something fails or someone
@@ -298,19 +301,25 @@ class Object {
         return 'ERROR';
     }
 
+    // Default type value
+    // (also should be declared every time)
+    get type() {
+        return 'default';
+    }
+
     interact() {
         return false;
     }
 
-    doTurn(x, y) {
+    doTurn() {
         return false;
     }
 }
 
 class Player extends Object {
 
-    constructor(name) {
-        super()
+    constructor(name, x, y) {
+        super({}, x, y)
         this.name = name;
         this.health = 100;
         this.strength = 5;
@@ -321,8 +330,8 @@ class Player extends Object {
 
     /**
      * Adds a item to the player's inventory
-     * @param {Object} item The item object to add to the inventory
-     * @param {Number} count The amount of the item object to add to the inventory (default is 1)
+     * @param {Object} item - The item object to add to the inventory
+     * @param {Number} count - The amount of the item object to add to the inventory (default is 1)
      */
     addItemToInventory(item, count = 1) {
         if (item instanceof Item) {
@@ -340,40 +349,37 @@ class Player extends Object {
         console.log(item);
     }
 
-    /**
-     * Returns a array with the different types of items in the player inventory and the amount of times
-     * that item is seen in the player inventory. Useful for displaying in statistics
-     * @returns {Array} A array of different items and their count in the format { name: ITEM_NAME, count: ITEM_COUNT }
-     */
-    get backpack() {
-        var backpack = [];
-
-        inventoryLoop:
-        for (var item of this.inventory) {
-            for (var packItem of backpack) {
-                if (packItem.name == item.name) {
-                    packItem.count++;
-                    continue inventoryLoop;
-                }
-            }
-            backpack.push({ name: item.name, count: 1 })
-        }
-
-        return backpack;
+    get html() {
+        return '<i class="fas fa-child fa-fw" style="color:blue" title="You."></i>';
     }
 
-    get html() {
-        return '<i class="fas fa-child fa-fw" style="color:red" title="You."></i>';
+    get type() {
+        return 'player';
     }
 }
 
-class Spider extends Object {
-    constructor(health) {
+class Enemy extends Object {
+
+    /**
+     * Create a new enemy (this should never be called directly, use child classes)
+     * @param {String} name - The name of the enemy
+     * @param {Number} health - The health of the enemy
+     * @param {Number} strength - The strength of the enemy (damage to deal)
+     * @param {Number} sight - How far away the enemy can spot the player
+     * @param {Array} drops - Array of Items that the enemy drops
+     * @param {Float} strollChance - The chance in decimals that the enemy will move randomly
+     */
+    constructor(name, health, strength, sight, drops, strollChance, x, y) {
         super({
             passable: false
-        });
+        }, x, y);
+        this.name = name;
         this.health = health;
-        this.strength = 10;
+        this.strength = strength;
+        this.sight = sight;
+        this.drops = drops;
+        this.strollChance = strollChance;
+
         this.randomMoveCooldown = 0;
         this.lockedOntoPlayer = false;
     }
@@ -384,28 +390,61 @@ class Spider extends Object {
 
     get html() {
         if (this.isDead) {
-            return '<i class="fas fa-solid fa-spider fa-fw" style="color:lightgray" title="A Spider."></i>';
+            return this.deadHtml;
         }
-        return '<i class="fas fa-solid fa-spider fa-fw" style="color:red" title="A Spider."></i>';
+        return this.aliveHtml;
     }
 
-    interact(x, y) {
+    get aliveHtml() {
+        return 'ERROR';
+    }
+
+    get deadHtml() {
+        return 'ERROR';
+    }
+
+    // This doesn't get specified here
+    // Specify it in the child classes
+    get type() {
+        return 'default';
+    }
+
+    interact() {
         if (this.isDead) {
-            var boneCollected = Math.floor((Math.random() * 2) + 1);
+            var backpack = game.itemsToBackpack(this.drops);
+            var message = "Found ";
 
-            game.getPlayer().data.addItemToInventory(new String());
-            game.getPlayer().data.addItemToInventory(new Bone(), boneCollected);
-            game.removeObjectsAt('spider', x, y);
+            // Add all the drops to the player inventory
+            for (var drop of this.drops) {
+                game.getPlayer().addItemToInventory(drop);
+            }
+            
+            // Formatting message to display to the player (don't touch unless you lose brain cells yes)
+            for (var drop of backpack) {
+                if (backpack[backpack.length - 1] == drop) { // Last item?
+                    message+= `${drop.count} ${drop.name}`;
+                } else if (backpack[backpack.length - 2] == drop) { // Second last item?
+                    if (backpack.length == 2) {
+                        message+= `${drop.count} ${drop.name} and `;
+                    } else {
+                        message+= `${drop.count} ${drop.name}, and `;
+                    }
+                } else {
+                    message+= `${drop.count} ${drop.name}, `;
+                }
+            }
 
-            addMessage("Looted dead spider", `Found 1 string and ${boneCollected} bone`);
+            // Delete the enemey
+            game.removeObject(this);
+            addMessage(`Looted ${this.name}`, message);
         } else {
-            var spiderDamage = game.getPlayer().data.strength;
-            this.takeDamage(spiderDamage);
+            var damageTaken = game.getPlayer().strength;
+            this.takeDamage(damageTaken);
 
             if (this.isDead) {
-                addMessage("Killed Spider", `Dealt: ${spiderDamage} damage and killed the spider`);
+                addMessage(`Killed ${this.name}`, `Dealt ${damageTaken} damage and killed ${this.name}`);
             } else {
-                addMessage("Attacked Spider", `Dealt: ${spiderDamage} damage (${this.health} health left)`);
+                addMessage(`Attacked ${this.name}`, `Dealt ${damageTaken} damage (${this.health} health left)`);
             }
         }
     }
@@ -417,13 +456,13 @@ class Spider extends Object {
     attackPlayer() {
         var damage = this.strength;
 
-        game.getPlayer().data.health -= damage;
-        addMessage("Attacked by Spider", `Recieved ${damage} damage (${game.getPlayer().data.health} heath left)`)
+        game.getPlayer().health -= damage;
+        addMessage(`Attacked by ${this.name}`, `Recieved ${damage} damage (${game.getPlayer().health} heath left)`)
         return damage;
     }
 
     /**
-     * Take damage and check if the spider is dead
+     * Take damage and check if the enemy is dead
      * @param {Number} damage The amount of damage to take
      */
     takeDamage(damage) {
@@ -433,13 +472,12 @@ class Spider extends Object {
             this.passable = true;
     }
 
-    doTurn(x, y) {
-        if (!this.isDead) { // Spiders can't move when dead (UNLESS)
+    doTurn() {
+        if (!this.isDead) { // Enemies can't move when dead (UNLESS)
             if (this.lockedOntoPlayer) {
-                console.log('spider locked onto player')
-                this.moveTorwardsPlayer(x, y)
+                this.moveTorwardsPlayer(this.x, this.y)
             } else {
-                if (Math.random() < 0.15) { // 15% chance the spider will move randomly
+                if (Math.random() < this.strollChance) { // X chance the enemy will move randomly
                     var moveAmount = Math.random() > 0.5 ? 1 : -1 // The amount to move (1 or -1)
                     var movePlane = Math.random() > 0.5 ? 0 : 1 // The plane in which to move in (0 is x, 1 is y)
 
@@ -447,16 +485,16 @@ class Spider extends Object {
                     var moveX = movePlane == 0 ? moveAmount : 0
                     var moveY = movePlane == 1 ? moveAmount : 0
 
-                    var spiderMovedSuccessfully = game.moveObject('spider', x, y, moveX, moveY)
+                    var spiderMovedSuccessfully = game.moveObject(this, moveX, moveY)
 
-                    if (!spiderMovedSuccessfully) { // Spider failed to move (obstacle in the way)
-                        game.moveObject('spider', x, y, -moveX, -moveY) // Try to move in the oppposite direction
+                    if (!spiderMovedSuccessfully) { // Enemy failed to move (obstacle in the way)
+                        game.moveObject(this, -moveX, -moveY) // Try to move in the oppposite direction
                     }
                 }
             }
 
-            // If the player is within 7 tiles of the spider lock onto the player
-            this.lockedOntoPlayer = game.distance(x, y, game.getPlayer().x, game.getPlayer().y) < 7
+            // If the player is within X (sight) tiles of the spider lock onto the player
+            this.lockedOntoPlayer = game.distance(this.x, this.y, game.getPlayer().x, game.getPlayer().y) < this.sight;
         }
     }
 
@@ -467,40 +505,40 @@ class Spider extends Object {
      * 
      * this is what i call a broke man's a* algorithm
      * 
-     * @param {Number} x X coordinate of the spider
-     * @param {Number} y Y coordainte of the spider
+     * @param {Number} x - X coordinate of the spider
+     * @param {Number} y - Y coordainte of the spider
      */
     moveTorwardsPlayer(x, y) {
         // Distance needed to travel to get to the player
         var distanceX = game.getPlayer().x - x
         var distanceY = game.getPlayer().y - y
 
-        console.log(`need to travel ${distanceX}:${distanceY} to get to the player`)
+        // console.log(`need to travel ${distanceX}:${distanceY} to get to the player`)
 
         if (distanceX == 0 && distanceY == 0) // We are already at the player? This should never happen...
             return;
 
-        if (distanceX + distanceY == 1) { // We are within 1 tile of the player (no need to move, just attack him)
+        if (game.distance(game.getPlayer().x, game.getPlayer().y, x, y) == 1) { // We are within 1 tile of the player (no need to move, just attack him)
             this.attackPlayer()
             return;
         }
 
         // Move the spider torwards the player
         if (distanceX == 0) { // We only need to move up or down to get torwards the player
-            console.log('moving the spider up or down torwards ellia ' + (distanceY > 0 ? 1 : -1))
-            if (!game.moveObject('spider', x, y, 0, distanceY > 0 ? 1 : -1)) {
+            // console.log('moving the spider up or down torwards ellia ' + (distanceY > 0 ? 1 : -1))
+            if (!game.moveObject(this, 0, distanceY > 0 ? 1 : -1)) {
                // Obstacle is in the way
 
                // Try moving randomly left or right to see if no more obstacle
-               game.moveObject('spider', x, y, Math.random() > 0.5 ? 1 : -1, 0)
+               game.moveObject(this, Math.random() > 0.5 ? 1 : -1, 0)
             }
         } else if (distanceY == 0) { // We only need to move left or right to get torwards the player
-            console.log('moving the spider left or right torwards the player' + (distanceX > 0 ? 1 : -1))
-            if (!game.moveObject('spider', x, y, distanceX > 0 ? 1 : -1, 0)) {
+            // console.log('moving the spider left or right torwards the player' + (distanceX > 0 ? 1 : -1))
+            if (!game.moveObject(this, distanceX > 0 ? 1 : -1, 0)) {
                 // Obstacle is in the way
 
                 // Try moving randomly up or down to see if no more obstacle
-               game.moveObject('spider', x, y, 0, Math.random() > 0.5 ? 1 : -1)
+               game.moveObject(this, 0, Math.random() > 0.5 ? 1 : -1)
             }
         } else {
             // We choose to randomly move diagonally or horizontally to get the the player
@@ -509,11 +547,11 @@ class Spider extends Object {
             var moveX = movePlane == 0 ? (distanceX > 0 ? 1 : -1) : 0
             var moveY = movePlane == 1 ? (distanceY > 0 ? 1 : -1) : 0
 
-            if (!game.moveObject('spider', x, y, moveX, moveY)) {
+            if (!game.moveObject(this, moveX, moveY)) {
                 // Obstacle is in the way
 
                 // Try switching the planes to see if we can move
-                game.moveObject('spider', x, y, moveY, moveX)
+                game.moveObject(this, moveY, moveX)
             }
         }
     
@@ -523,15 +561,57 @@ class Spider extends Object {
     }
 }
 
+class Spider extends Enemy {
+
+    /**
+     * Create a spider
+     * @param {Boolean} dead - Controls whether the spider spawns dead or not
+     */
+    constructor(dead = false, x, y) {
+        super("Spider", dead ? 0 : 10, 10, 7, [new String(), new Bone(), new Bone()], 0.15, x, y);
+    }
+
+    get aliveHtml() {
+        return '<i class="fas fa-solid fa-spider fa-fw" style="color:red" title="A Spider."></i>';
+    }
+
+    get deadHtml() {
+        return '<i class="fas fa-solid fa-spider fa-fw" style="color:lightgray" title="A Spider."></i>';
+    }
+
+    get type() {
+        return 'spider';
+    }
+}
+
+class Bear extends Enemy {
+
+    constructor( x, y) {
+        super("Bear", 40, 10, 10, [new Leather(), new Leather(), new Leather(), new RawMeat(), new RawMeat()], 0.05, x, y);
+    }
+
+    get aliveHtml() {
+        return '<i class="fas fa-solid fa-paw fa-fw" style="color:brown" title="A Bear."></i>';
+    }
+
+    get deadHtml() {
+        return '<i class="fas fa-solid fa-paw fa-fw" style="color:lightgray" title="A Bear."></i>';
+    }
+
+    get type() {
+        return 'bear';
+    }
+}
+
 class Tree extends Object {
 
-    constructor(type) {
-        super({ passable: false });
-        this.type = type;
+    constructor(type, x, y) {
+        super({ passable: false }, x, y);
+        this.treeType = type;
     }
 
     get html() {
-        switch (this.type) {
+        switch (this.treeType) {
             case 0:
                 return '<i class="fas fa-tree fa-fw" style="color:#229954" title="A grue tree."></i>'
             case 1:
@@ -555,27 +635,35 @@ class Tree extends Object {
         } 
     }
 
+    get type() {
+        return 'tree';
+    }
+
     /**
      * 
      * @param {Number} x The x coordinate of the tree that is being interacted
      * @param {Number} y The y coordinate of the tree that is being interacted
      */
-    interact(x, y) {
+    interact() {
 
-        game.getPlayer().data.addItemToInventory(new Wood())
+        game.getPlayer().addItemToInventory(new Wood())
         addMessage("Cut down tree", "You have cut down a tree for 1 wood");
-        game.removeObjectsAt("tree", x, y)
+        game.removeObject(this)
     }
 }
 
 class Mountain extends Object {
 
-    constructor() {
-        super({ passable: false });
+    constructor(x, y) {
+        super({ passable: false }, x, y);
     }
 
     get html() {
         return '<i class="fas fa-mountain fa-fw" style="color:grey"  title="A mountain"></i>';
+    }
+
+    get type() {
+        return 'mountain';
     }
 }
 
@@ -626,6 +714,20 @@ class String extends Item {
     }
 }
 
+class Leather extends Item {
+
+    constructor() {
+        super("Leather", "Maybe you can make some clothes out of this...")
+    }
+}
+
+class RawMeat extends Item {
+
+    constructor() {
+        super("Raw Meat", "Not recommended to be eaten raw")
+    }
+}
+
 
 
 
@@ -637,6 +739,7 @@ function generateMap() {
     // Loop over all the X and Y coordinates of the map
     for (var x = 0; x <= gridSize[0]; x++) {
         for (var y = 0; y <= gridSize[1]; y++) {
+            
             /*
             This really needs to be done better but
             I really can't be bothered so unless
@@ -646,17 +749,22 @@ function generateMap() {
 
             var randomNumber = (Math.random() * 100) + 1 // Get a random number from 1-100 (with decimals)
             if (randomNumber < 40) { // 40% chance we spawn a tree
-                game.addObject("tree", x, y, new Tree(Math.floor(Math.random() * 9))) // Pick a random tree type from 1 - 8
+                game.addObject(new Tree(Math.floor(Math.random() * 9), x, y)) // Pick a random tree type from 1 - 8
                 continue;
             }
 
             if (randomNumber < 40.5) { // 0.5% chance we spawn a spider
-                game.addObject("spider", x, y, new Spider(10))
+                game.addObject(new Spider(false, x, y));
                 continue;
             }
 
             if (randomNumber < 40.6) { // 0.1% chance we spawn a dead spider
-                game.addObject("spider", x, y, new Spider(0))
+                game.addObject(new Spider(true, x, y))
+                continue;
+            }
+
+            if (randomNumber < 40.7) { // 0.1% chance we spawn a bear spider
+                game.addObject(new Bear(false, x, y))
                 continue;
             }
         }
@@ -668,7 +776,7 @@ function generateMap() {
         var y = Math.floor(Math.random() * gridSize[1])
 
         if (!game.objectAt(x, y)) {
-            game.addObject("player", x, y, new Player()); // TODO MOVE VIEWPORT INTO PLAYER AT GAME START
+            game.addObject(new Player("", x, y));
             break;
         }
     }
@@ -704,7 +812,7 @@ function drawMap() {
             // If there is a object at those coordinates
             if (object) {
                 // Display the object
-                mapHTML += `<div class="map-loc">${object.data.html}</div>`
+                mapHTML += `<div class="map-loc">${object.html}</div>`
             } else {
                 // Display the three dots
                 mapHTML+='<div class="map-loc"><i class=\"fas fa-ellipsis-h fa-fw\" style=\"color:#D2B48C\"></i></div>';
@@ -724,12 +832,12 @@ function updateStats() {
     Add all the info to the stats tab
     */
 
-    statsHTML += `<p><strong>Health: </strong>${game.getPlayer().data.health}</p>`;
+    statsHTML += `<p><strong>Health: </strong>${game.getPlayer().health}</p>`;
     statsHTML += "<p><strong>Inventory:</strong></p>"
 
     // Loop over all the items in the player's inventory
     // and display them
-    for (var item of game.getPlayer().data.backpack) {
+    for (var item of game.itemsToBackpack(game.getPlayer().inventory)) {
        statsHTML+= `- ${item.name} (${item.count})`
        statsHTML+= `<br>`
     }

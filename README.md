@@ -15,7 +15,6 @@ This is a javascript implementation of a simple ascii art RPG game
 * TODO: Quests
 * TODO: Crafting
 * TODO: Random events
-* TODO: Animals
 * TODO: NPC's
 * TODO: Credits (don't forget to add https://game-icons.net/)
 * TODO: Shortcuts and help screen
@@ -24,13 +23,9 @@ This is a javascript implementation of a simple ascii art RPG game
 
 == DONE STUFF ==
 
+* Messages & Stats
+* Scrolling map
 * Map moves with the player
-* Object data structure
-* Inventory
-* Item Stacking in inventory
-* Overflowing in inventory and messages
-* Messages
-* I DON'T KNOW WHY, I DON'T KNOW HOW, but sometimes the player gets generated somewhere and the viewport doesn't update (this happens quite frequently, just refresh the page a couple of times and look for the player)
-* Enemies
+* Inventory (and ItemStacking)
+* Enemies (enemy loot and enemy movement)
 * Combat
-* Enemy movement
