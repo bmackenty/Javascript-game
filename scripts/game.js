@@ -397,7 +397,6 @@ class Game {
     // reset the innerhtml of the map and display "you died"
     endGame() {
         document.getElementById("map").innerHTML = "<p id='death-message'>Game Over</p>";
-
         this.gameRunning = false;
     }
 }
