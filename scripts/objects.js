@@ -112,6 +112,17 @@ class Player extends Object {
         console.log("FATAL: Attempting to add a non-item to a inventory! (item below)")
         console.log(item);
     }
+
+    /**
+     * @param {Number} damage - The amount of damage
+     */
+    removeHealth(damage) {
+        this.health -= damage;
+        // if health is below or equal to 1, end the game
+        if (this.health <= 0) {
+            game.endGame();
+        }
+    }
 }
 
 class Enemy extends Object {
@@ -214,8 +225,7 @@ class Enemy extends Object {
      */
     attackPlayer() {
         var damage = this.strength;
-
-        game.getPlayer().health -= damage;
+        game.getPlayer().removeHealth(damage);
         game.alert(`Attacked by ${this.name}`, `Recieved ${damage} damage (${game.getPlayer().health} heath left)`)
         return damage;
     }
@@ -317,7 +327,7 @@ class Enemy extends Object {
             }
         }
     
-        if (distanceX + distanceY == 1) { // We are within 1 tile of the player (attack him)
+        if (game.distance(this, game.getPlayer()) == 1) { // We are within 1 tile of the player (attack him)
             this.attackPlayer()
         }
     }
