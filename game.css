@@ -158,6 +158,10 @@ recipe li {
 /*
 Messages
 */
+#messages {
+    overflow-y: scroll;
+}
+
 .message {
     margin: 10px 0;
 }
