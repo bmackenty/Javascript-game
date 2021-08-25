@@ -1,7 +1,9 @@
 # javascript-text-based-RPG
 This is a rework of javascript-text-based-RPG using classes and variables with names that make sense
 
-Visit the online version at: https://yeoldequiveringcommunistzombies.com/
+***
+There is a worse version of this online at [https://yeoldequiveringcommunistzombies.com/](yeoldequiveringcommunistzombies.com).
+**
 
 This is a javascript implementation of a simple ascii art RPG game
 
@@ -20,6 +22,7 @@ This is a javascript implementation of a simple ascii art RPG game
 * TODO: Shortcuts and help screen
 * TODO: add Joe's all you can eat buffet (i'm not gonna question why this is here, i'm just gonna do it)
 * TODO: Deaths
+* TODO: Player sights
 
 == DONE STUFF ==
 
