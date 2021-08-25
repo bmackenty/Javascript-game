@@ -15,7 +15,6 @@ This is a javascript implementation of a simple ascii art RPG game
 * TODO: Zoning (Wilderness with monster generation)
 * TODO: Towns (with buy / sell stores)
 * TODO: Quests
-* TODO: Crafting
 * TODO: Random events
 * TODO: NPC's
 * TODO: Credits (don't forget to add https://game-icons.net/)
@@ -23,6 +22,7 @@ This is a javascript implementation of a simple ascii art RPG game
 * TODO: add Joe's all you can eat buffet (i'm not gonna question why this is here, i'm just gonna do it)
 * TODO: Deaths
 * TODO: Player sights
+* TODO: Add sticks
 
 == DONE STUFF ==
 
@@ -32,3 +32,4 @@ This is a javascript implementation of a simple ascii art RPG game
 * Inventory (and ItemStacking)
 * Enemies (enemy loot and enemy movement)
 * Combat
+* Crafting

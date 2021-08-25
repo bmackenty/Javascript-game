@@ -43,7 +43,7 @@ body {
     flex-direction: column;
 
     /* Do not know why the height is this exact number, it just happens to work */
-    height: 592px;
+    height: 608px;
     width: 100%;
 
     margin: -1px 0 0 -1px;
@@ -51,12 +51,6 @@ body {
 
     border: 1px solid black;
     border-collapse: collapse;
-}
-
-.game-board > *:not(#map) {
-    padding: 10px;
-
-    overflow-y: scroll;
 }
 
 #map {
@@ -93,16 +87,81 @@ Map
 }
 
 /*
-Stats
+=======
+Right side of the board
 */
+
+.right {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.right > * {
+    height: 50%;
+    width: 100%;
+}
+
+/*
+Stats and Crafting
+*/
+
+#stats {
+    padding: 10px;
+
+    overflow-y: scroll;
+    box-sizing: border-box;
+}
 
 #stats p {
     margin: 3px 0;
 }
 
 /*
+Recipes
+*/
+
+.recipes {
+    padding: 10px;
+
+    overflow-y: scroll;
+    box-sizing: border-box;
+}
+
+.recipes-title {
+    text-align: center;
+    font-weight: bold;
+}
+
+recipe {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.recipe-header {
+    font-weight: 700;
+}
+
+recipe > *:not(button) {
+    margin: 2px 0;
+    width: 100%;
+}
+
+recipe li {
+    text-indent: 10px;
+    
+    list-style-type: none;
+}
+
+/*
 Messages
 */
+#messages {
+    overflow-y: scroll;
+}
+
 .message {
     margin: 10px 0;
 }

@@ -24,6 +24,7 @@ class Object {
         this.x = x;
         this.y = y;
 
+        this.afterSpawn();
         return this;
     }
 
@@ -82,6 +83,10 @@ class Player extends Object {
         this.inventory = [
             new Apple()
         ];
+
+        this.recipeList = [
+            new Recipe(new LeatherBoots(), [new Leather(), new Leather(), new String()])
+        ]
     }
 
     get html() {
@@ -95,7 +100,7 @@ class Player extends Object {
     /**
      * Adds a item to the player's inventory
      * @param {Object} item - The item object to add to the inventory
-     * @param {Number} count - The amount of the item object to add to the inventory
+     * @param {Number} count - The amount of the items to add
      */
     addItemToInventory(item, count = 1) {
         if (item instanceof Item) {
@@ -111,6 +116,54 @@ class Player extends Object {
         // The item isn't of the Item class, FATAL
         console.log("FATAL: Attempting to add a non-item to a inventory! (item below)")
         console.log(item);
+    }
+
+    /**
+     * Removes a item from the player's inventory
+     * @param {Object} item - The item object to remove from the inventory
+     * @param {*} count - The amount of items to remove
+     * @returns 
+     */
+    removeItemFromInventory(item, count = 1) {
+        if (item instanceof Item) {
+            // Loop over the amount of times to remove the item
+            for (var i = 0; i < count; i++) {
+
+                // Loop over all the items in the player's inventory
+                for (var iIndex in this.inventory) {
+                    // If the looped item is the same as the item to remove
+                    if (this.inventory[iIndex].name == item.name) {
+                        this.inventory.splice(iIndex, 1) // Remove item
+                    }
+                }
+            }
+            // Update the stats display after changing the player's inventory
+            game.updateStats();
+            return;
+        }
+
+        // The item isn't of the Item class, FATAL
+        console.log("FATAL: Attempting to add a non-item to a inventory! (item below)")
+        console.log(item);
+    }
+
+    craftItem(recipe) {
+        if (recipe.requirementsSatisfied(this.inventory)) {
+			var itemsLeft = [...recipe.input];
+
+			for (var iItem of this.inventory) {
+				for (var rIndex in itemsLeft) {
+					if (iItem.name == itemsLeft[rIndex].name) {
+						itemsLeft.splice(rIndex, 1);
+						this.removeItemFromInventory(iItem);
+					}
+				}
+			}
+
+			this.addItemToInventory(recipe.output);
+		} else {
+			console.log(`FATAL: Attempting to craft item (${recipe.output.name}) player doesn't hvae the items for`)
+		}
     }
 }
 
