@@ -346,10 +346,10 @@ class Game {
         // Display statsHTML onto the visible <div> element
         document.getElementById("stats").innerHTML = statsHTML;
 
-        this.updateRecipes(); // Whenever the stats are updated the recipes will also need to be updated
+        this.updateCrafting(); // Whenever the stats are updated the recipes will also need to be updated
     }
     
-    updateRecipes() {
+    updateCrafting() {
         var recipes = document.getElementById("recipes-list")
         recipes.innerHTML = "";
 
