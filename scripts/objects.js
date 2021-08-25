@@ -159,23 +159,29 @@ class Player extends Object {
         console.log(item);
     }
 
+    /**
+     * Crafts the recipe for the player (removes the required items and gives the output)
+     * @param {Object} recipe - The recipe to craft
+     */
     craftItem(recipe) {
-        if (recipe.requirementsSatisfied(this.inventory)) {
-			      var itemsLeft = [...recipe.input];
+        if (game.running) {
+            if (recipe.requirementsSatisfied(this.inventory)) {
+                var itemsLeft = [...recipe.input];
 
-            for (var iItem of this.inventory) {
-                for (var rIndex in itemsLeft) {
-                    if (iItem.name == itemsLeft[rIndex].name) {
-                        itemsLeft.splice(rIndex, 1);
-                        this.removeItemFromInventory(iItem);
+                for (var iItem of this.inventory) {
+                    for (var rIndex in itemsLeft) {
+                        if (iItem.name == itemsLeft[rIndex].name) {
+                            itemsLeft.splice(rIndex, 1);
+                            this.removeItemFromInventory(iItem);
+                        }
                     }
                 }
-            }
 
-			      this.addItemToInventory(recipe.output);
-		    } else {
-			      console.log(`FATAL: Attempting to craft item (${recipe.output.name}) player doesn't hvae the items for`)
-		    }
+                this.addItemToInventory(recipe.output);
+            } else {
+                console.log(`FATAL: Attempting to craft item (${recipe.output.name}) player doesn't hvae the items for`)
+            }
+        }
     }
 }
 

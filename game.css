@@ -61,20 +61,40 @@ body {
     height: 600px;
     width: 600px;
 }
-
-#death-message {
-    height: 600px;
-    width: 600px;
-
-    font-family: 'DEATH FONT ver1.0', sans-serif;
-    text-align: center;
-    font-size: 400%;
-
-    margin-top: 20%;
-}
 /*
 Map
 */
+
+#map {
+    position: relative;
+}
+
+#map::before {
+    position: absolute;
+
+    height: 100%;
+    width: 100%;
+
+    padding: calc(50% - 4rem) 0;
+
+    font-size: 4rem;
+    font-family: 'DEATH FONT ver1.0', sans-serif;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0);
+    color: transparent;
+
+    content: "You dead";
+    box-sizing: border-box;
+    z-index: 2;
+
+    transition: color 4s linear;
+    transition: background-color 4s linear;
+}
+
+.map-ended::before {
+    background-color: rgba(0, 0, 0, 0.9) !important;
+    color: white !important;
+}
 
 .map-row {
     display: flex;
