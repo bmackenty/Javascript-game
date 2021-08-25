@@ -93,11 +93,28 @@ Map
 }
 
 /*
-Stats
+Stats and Crafting
 */
+
+.left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.left > * {
+    height: 50%;
+    width: 100%;
+}
 
 #stats p {
     margin: 3px 0;
+}
+
+.recipes-title {
+    text-align: center;
+    font-weight: bold;
 }
 
 /*

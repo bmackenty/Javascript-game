@@ -112,6 +112,25 @@ class Player extends Object {
         console.log("FATAL: Attempting to add a non-item to a inventory! (item below)")
         console.log(item);
     }
+
+    craftItem(recipe) {
+        if (recipe.requirementsSatisfied(this.inventory)) {
+			var itemsLeft = [...recipe.input];
+
+			for (var iIndex in this.inventory) {
+				for (var rIndex in itemsLeft) {
+					if (this.inventory[iIndex].name == itemsLeft[rIndex].name) {
+						itemsLeft.splice(rIndex, 1);
+						this.inventory.splice(iIndex, 1);
+					}
+				}
+			}
+
+			this.addItemToInventory(recipe.output);
+		} else {
+			console.log(`FATAL: Attempting to craft item (${recipe.output.name}) player doesn't hvae the items for`)
+		}
+    }
 }
 
 class Enemy extends Object {

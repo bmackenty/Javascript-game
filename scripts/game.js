@@ -23,6 +23,7 @@ class Game {
         // Update the map and statistics after finishing the turn
         this.drawMap();
         this.updateStats();
+        this.updateRecipes();
     }
 
     /**
@@ -275,6 +276,7 @@ class Game {
 
         this.drawMap(); // Draw the map after generating it
         this.updateStats(); // Display statistics
+        this.updateRecipes(); // Update available recipes
     }
 
     /**
@@ -347,6 +349,30 @@ class Game {
         document.getElementById("stats").innerHTML = statsHTML;
     }
     
+    updateRecipes() {
+        var recipesList = document.getElementById("recipes-list")
+        recipesList.innerHTML = "";
+
+        var msgId = Math.floor(Math.random() * 1000000000);
+        var recipes = [new Recipe(new Apple(), [new Wood()])]
+
+        for (var recipe of recipes) {
+            var recipesHTML = "";
+
+            recipesHTML+= `<div class="recipe">`
+            recipesHTML+= `${recipe.output.name}: <button id="${msgId}">Craft</button>`
+            recipesHTML+= `</div>`
+
+            recipesList.innerHTML += recipesHTML;
+
+            setTimeout(() => {
+                document.getElementById(msgId).onclick = () => {
+                    this.getPlayer().craftItem(recipe);
+                }
+            }, 100)
+        }
+    }
+
     alert(title, description) {
         var messageHTML = "";
     
