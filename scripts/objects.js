@@ -159,17 +159,14 @@ class Player extends Object {
      */
     removeItem(item, count = 1) {
         if (item instanceof Item) {
-            // Loop over the amount of times to remove the item
-            for (var i = 0; i < count; i++) {
-
-                // Loop over all the items in the player's inventory
-                for (var iIndex in this.inventory) {
-                    // If the looped item is the same as the item to remove
-                    if (this.inventory[iIndex].name == item.name) {
+            for (var iIndex in this.inventory) { // Loop over all the items in the player's inventory
+                if (this.inventory[iIndex].name == item.name) { // If the looped item is the same as the item to remove
+                    if (count-- >= 1) { // If count (before removing one) is bigger than one
                         this.inventory.splice(iIndex, 1) // Remove item
                     }
                 }
             }
+
             // Update the stats display after changing the player's inventory
             game.updateStats();
             return;
