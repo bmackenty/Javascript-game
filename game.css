@@ -148,6 +148,10 @@ Stats and Crafting
     margin: 3px 0;
 }
 
+.skill {
+    text-indent: 10px;
+}
+
 /*
 Recipes
 */
@@ -168,10 +172,6 @@ recipe {
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-
-.recipe-header {
-    font-weight: 700;
 }
 
 recipe > *:not(button) {
