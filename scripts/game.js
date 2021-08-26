@@ -228,19 +228,18 @@ class Game {
     }
 
     /**
-     * Loops through the inventory.
-     * Returns the count of items that are like the itemToFind.
-     * @param {Object} itemToFind - The item / class to look for.
-     * @returns {Number}
+     * Get the count of a specific item in the player inventory
+     * @param {Object} item - The item class to look for.
+     * @returns {Number} The amount of times the item appears in the inventory
      */
-    getItemCount(itemToFind) {
-        let counter = 0;
+    getItemCount(item) {
+        let amount = 0;
         for (let item of game.getPlayer().inventory) {
-            if (item instanceof itemToFind) {
-                counter += 1;
+            if (item instanceof item) {
+                amount++;
             }
         }
-        return counter;
+        return amount;
     }
 
     /**
