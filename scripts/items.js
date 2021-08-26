@@ -41,48 +41,111 @@ class Recipe {
 class Apple extends Item {
 
     constructor() {
-        super("Apple", "An apple a day keeps MrMackenty away")
+        super("Apple", "An apple a day keeps MrMackenty away");
     }
 }
 
 class Wood extends Item {
 
     constructor() {
-        super("Wood", "It's just a tree log")
+        super("Wood", "It's just a tree log");
+    }
+}
+
+class Stick extends Item {
+
+    constructor() {
+        super("Stick", "Almight stick.");
+    }
+}
+
+class SharpenedStick extends Item {
+
+    constructor() {
+        super("Sharpened Stick", "It's a stick, AND IT'S SHARPENED.")
     }
 }
 
 class Bone extends Item {
 
     constructor() {
-        super("Bone", "Some being's bone")
+        super("Bone", "Some being's bone.");
     }
 }
 
 class String extends Item {
 
     constructor() {
-        super("String", "How did you get this?")
+        super("String", "Spiderman's hair.");
     }
 }
 
 class Leather extends Item {
 
     constructor() {
-        super("Leather", "Maybe you can make some clothes out of this...")
+        super("Leather", "Maybe you can make some clothes out of this...");
     }
 }
 
 class RawMeat extends Item {
 
     constructor() {
-        super("Raw Meat", "Not recommended to be eaten raw")
+        super("Raw Meat", "Not recommended to be eaten raw.");
     }
 }
 
 class LeatherBoots extends Item {
 
     constructor() {
-        super("Leather Boots", "Great for hiking, not so much for killing");
+        super("Leather Boots", "Great for hiking, not so much for killing.");
+    }
+}
+
+class Berry extends Item {
+
+    constructor() {
+        super("Berry", "A ok food source.");
+    }
+}
+
+class Flint extends Item {
+
+    constructor() {
+        super("Flint", "A special type of sharp rock.");
+    }
+}
+
+class Leaf extends Item {
+
+    constructor() {
+        super("Leaf", "A green not spikey funny object.")
+    }
+}
+
+class SewingKit extends Item {
+    
+    constructor() {
+        super("Sewing Kit", "A advanced item used in crafting for advanced clothing.")
+    }
+}
+
+class FlintAxe extends Item {
+
+    constructor() {
+        super("Flint axe", "It's not amazing, great, or good, but better than whatever you have.")
+    }
+}
+
+class MeshFilter extends Item {
+
+    constructor() {
+        super("Mesh filter", "Stops the flies from comming in")
+    }
+}
+
+class JungleHat extends Item {
+    
+    constructor() {
+        super("Jungle Hat", "IUNGLE BOIIIIIIIIII. FLY LIKE A BIRD, FLY THROUGH THE TREEEEES, SPEAK VIETNAMEEESE (only with this hat)")
     }
 }

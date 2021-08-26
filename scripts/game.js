@@ -260,7 +260,17 @@ class Game {
                 }
     
                 if (randomNumber < 40.7) { // 0.1% chance we spawn a bear spider
-                    this.addObject(new Bear(false).spawn(x, y));
+                    this.addObject(new Bear().spawn(x, y));
+                    continue;
+                }
+
+                if (randomNumber < 41.7) { // 1% chance we spawn a berry bush
+                    this.addObject(new BerryBush().spawn(x, y));
+                    continue;
+                }
+
+                if (randomNumber < 42) { // 0.3% chance we spawn a flint block
+                    this.addObject(new FlintBlock().spawn(x, y));
                     continue;
                 }
             }
@@ -368,6 +378,9 @@ class Game {
             var recipeElement = document.createElement("recipe")
             var recipeHTML = "";
 
+            // Assign recipe a random id so we can assign a click handler to it
+            var recipeId = Math.floor(Math.random() * 1000000000);
+
             recipeHTML += `<p><span class="recipe-header">Crafts:</span> ${recipe.output.name}</p>` // Display the recipe output
             recipeHTML += `<p class="recipe-header">Requires: </p>` // Display recipe requires text
 
@@ -376,19 +389,18 @@ class Game {
                 recipeHTML += `<li>- ${input.name} (${input.count})</li>`
             }
 
-            recipeHTML += `<button style="margin: 0 auto;">Craft</button>` // Display craft button
+            recipeHTML += `<button style="margin: 0 auto;" id="${recipeId}">Craft</button>` // Display craft button
 
             // Set the html of the recipe element to recipeHTML
             recipeElement.innerHTML = recipeHTML;
 
-            var clickingRecipe = new Recipe(recipe.output, recipe.input);
-            // When the recipe button is clicked craft the item
-            recipeElement.onclick = () => {
-                this.getPlayer().craftItem(clickingRecipe);
-            }
-
             // Add the recipeElement to the recipeList
             recipes.appendChild(recipeElement);
+
+            // When the recipe button is clicked craft the item
+            document.getElementById(recipeId).onclick = e => {
+                this.getPlayer().craftItem(recipe);
+            }
         }
     }
 
