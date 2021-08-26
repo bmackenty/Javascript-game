@@ -81,15 +81,7 @@ class Player extends Object {
         this.hp = 100;
         this.strength = 5;
         this.inventory = [
-            new Apple(),
-            new Wood(),
-            new Wood(),
-            new Wood(),
-            new Flint(),
-            new String(),
-            new String(),
-            new Stick(),
-            new Stick()
+            new Apple()
         ];
 
         this.recipeList = [
