@@ -3,7 +3,7 @@ class Game {
         this.objectArray = [] // Array of all the objects in the game
         this.viewportSize = [[0, 33], [0, 33]];
         this.currentTurn = 0;
-        this.gameRunning = true;
+        this.running = true;
 
         this.generateMap();
         this.registerListeners();
@@ -13,17 +13,19 @@ class Game {
      * Play a turn in the game
      */
     doTurn() {
-        this.currentTurn++; // Update the turn number
+        if (this.running) {
+            this.currentTurn++; // Update the turn number
 
-        // Loop over all the objects in the game and 
-        // alert them that the game has finished a turn
-        for (var object of this.objectArray) {
-            object.doTurn();
+            // Loop over all the objects in the game and 
+            // alert them that the game has finished a turn
+            for (var object of this.objectArray) {
+                object.doTurn();
+            }
+
+            // Update the map and statistics after finishing the turn
+            this.drawMap();
+            this.updateStats();
         }
-
-        // Update the map and statistics after finishing the turn
-        this.drawMap();
-        this.updateStats();
     }
 
     /**
@@ -50,7 +52,7 @@ class Game {
      * (reasons why player didn't move might include attempting to walk outside the map or into a impassable object)
      */
     movePlayer(xChange, yChange) {
-        if (this.gameRunning) {
+        if (this.running) {
             var newX = this.getPlayer().x + xChange;
             var newY = this.getPlayer().y + yChange;
 
@@ -274,7 +276,17 @@ class Game {
                 }
     
                 if (randomNumber < 40.7) { // 0.1% chance we spawn a bear spider
-                    this.addObject(new Bear(false).spawn(x, y));
+                    this.addObject(new Bear().spawn(x, y));
+                    continue;
+                }
+
+                if (randomNumber < 41.7) { // 1% chance we spawn a berry bush
+                    this.addObject(new BerryBush().spawn(x, y));
+                    continue;
+                }
+
+                if (randomNumber < 42) { // 0.3% chance we spawn a flint block
+                    this.addObject(new FlintBlock().spawn(x, y));
                     continue;
                 }
             }
@@ -300,48 +312,46 @@ class Game {
      * Draws the map for the user
      */
     drawMap() {
-        if (this.gameRunning) {
-            var mapHTML = "";
-        
-            // Update the viewport
-            // (move the map view to follow the player when they walk to the edge of the map)
-            this.updateViewport();
-        
-            // Loop over all the rows in the viewport
-            for (var y = this.viewportSize[1][0]; y < this.viewportSize[1][1]; y++) {
-                mapHTML+='<div class="map-row">' // Open row element
-        
-                // Loop over all the tiles in the row
-                for (var x = this.viewportSize[0][0]; x < this.viewportSize[0][1]; x++) {
-        
-                    // If the tile is outside the map display a mountain
-                    if ((x > gridSize[0] || x < 0) || (y > gridSize[1] || y < 0)) {
-                        mapHTML+= '<div class="map-loc"><i class=\"fas fa-mountain fa-fw\" style=\"color:grey\"  title=\"A mountain\"></i></div>';
-                        continue;
-                    }
-
-                    // If the player is at that location, display him
-                    if (this.getPlayer().x == x && this.getPlayer().y == y) {
-                        mapHTML+=`<div class="map-loc">${this.getPlayer().html}</div>`
-                        continue;
-                    }
-        
-                    var object = this.objectAt(x, y)
-        
-                    if (object) { // If there is a object at those coordinates
-                        // Display the object
-                        mapHTML += `<div class="map-loc">${object.html}</div>`
-                    } else { // No object here
-                        // Display the three dots
-                        mapHTML+='<div class="map-loc"><i class=\"fas fa-ellipsis-h fa-fw\" style=\"color:#D2B48C\"></i></div>';
-                    }
+        var mapHTML = "";
+    
+        // Update the viewport
+        // (move the map view to follow the player when they walk to the edge of the map)
+        this.updateViewport();
+    
+        // Loop over all the rows in the viewport
+        for (var y = this.viewportSize[1][0]; y < this.viewportSize[1][1]; y++) {
+            mapHTML+='<div class="map-row">' // Open row element
+    
+            // Loop over all the tiles in the row
+            for (var x = this.viewportSize[0][0]; x < this.viewportSize[0][1]; x++) {
+    
+                // If the tile is outside the map display a mountain
+                if ((x > gridSize[0] || x < 0) || (y > gridSize[1] || y < 0)) {
+                    mapHTML+= '<div class="map-loc"><i class=\"fas fa-mountain fa-fw\" style=\"color:grey\"  title=\"A mountain\"></i></div>';
+                    continue;
                 }
-                mapHTML+='</div>' // Close row element
+
+                // If the player is at that location, display him
+                if (this.getPlayer().x == x && this.getPlayer().y == y) {
+                    mapHTML+=`<div class="map-loc">${this.getPlayer().html}</div>`
+                    continue;
+                }
+    
+                var object = this.objectAt(x, y)
+    
+                if (object) { // If there is a object at those coordinates
+                    // Display the object
+                    mapHTML += `<div class="map-loc">${object.html}</div>`
+                } else { // No object here
+                    // Display the three dots
+                    mapHTML+='<div class="map-loc"><i class=\"fas fa-ellipsis-h fa-fw\" style=\"color:#D2B48C\"></i></div>';
+                }
             }
-        
-            // Display mapHTML onto the visible <div> element
-            document.getElementById("map").innerHTML = mapHTML;
+            mapHTML+='</div>' // Close row element
         }
+    
+        // Display mapHTML onto the visible <div> element
+        document.getElementById("map").innerHTML = mapHTML;
     }
 
     /**
@@ -353,11 +363,14 @@ class Game {
         /*
         Add all the info to statsHTML
         */
-    
+
         statsHTML += `<p style="text-align: center"><strong>TURN </strong>${this.currentTurn}</p>`
         statsHTML += `<p><strong>Health: </strong>${this.getPlayer().health}</p>`;
-        statsHTML += "<br><p><strong>Inventory:</strong></p>";
-    
+        
+        statsHTML += this.getSkillsHTML(); // Display the player's skillSet
+
+        statsHTML += "<p><strong>Inventory:</strong></p>"; // Inventory title
+
         // Loop over all the items in the player's inventory and display them
         for (var item of this.itemsToBackpack(this.getPlayer().inventory)) {
            statsHTML+= `- ${item.name} (${item.count})`
@@ -377,13 +390,79 @@ class Game {
     
         // Display statsHTML onto the visible <div> element
         document.getElementById("stats").innerHTML = statsHTML;
+
+        this.updateCrafting(); // Whenever the stats are updated the recipes will also need to be updated
     }
     
+    getSkillsHTML() {
+        var skillsHTML = `<div style="margin: 10px 0;"><p"><strong>Skills:</strong></p>`;
+
+        for (var skill in this.getPlayer().skillSet) {
+            skillsHTML += `<p class="skill">${skill.charAt(0).toUpperCase() + skill.slice(1)} : ${this.getPlayer().getSkillLevel(skill)} (${this.getPlayer().getXpToNextLevel(skill)} xp to level up)</p>`
+        }
+
+        skillsHTML += `</div>`
+
+        return skillsHTML;
+    }
+
+    updateCrafting() {
+        var recipes = document.getElementById("recipes-list")
+        recipes.innerHTML = "";
+
+        for (var rIndex in this.getPlayer().recipeList) {
+            var recipe = this.getPlayer().recipeList[rIndex]; // Get the recipe using the recipe index
+
+            // If the player doesn't have the items required for the recipe skip it
+            if (!recipe.requirementsSatisfied(this.getPlayer().inventory))
+                continue;
+            
+            // Create custom recipe element
+            var recipeElement = document.createElement("recipe")
+            var recipeHTML = "";
+
+            // Assign recipe a random id so we can assign a click handler to it
+            var recipeId = Math.floor(Math.random() * 1000000000);
+
+            recipeHTML += `<p><strong>Crafts:</strong> ${recipe.output.name}</p>` // Display the recipe output
+            recipeHTML += `<p><strong>Requires: </strong></p>` // Display recipe requires text
+
+            // Loop through all the items required to make the recipe and display them
+            for (var input of this.itemsToBackpack(recipe.input)) {
+                recipeHTML += `<li>- ${input.name} (${input.count})</li>`
+            }
+
+            // Create the recipeButton
+            var recipeButton = document.createElement("button");
+            recipeButton.id = recipeId;
+            recipeButton.style.margin = "0 auto";
+            recipeButton.innerHTML = "Craft";
+            recipeButton.setAttribute("data-recipe", rIndex) // Set the index of the recipe to "data-recipe"
+
+            // When the recipe button is clicked craft the item
+            recipeButton.onclick = e => {
+                this.getPlayer().craftItem(this.getPlayer().recipeList[e.target.getAttribute("data-recipe")]);
+            }
+
+            // Set the html of the recipe element
+            recipeElement.innerHTML = recipeHTML;
+            recipeElement.appendChild(recipeButton); // Add the button to recipeElement
+
+            // Add the recipeElement to the recipeList
+            recipes.appendChild(recipeElement);
+        }
+    }
+
+    /**
+     * Display a notification style alert to the player
+     * @param {String} title - The alert title
+     * @param {String} description - The alert description
+     */
     alert(title, description) {
         var messageHTML = "";
     
-        // We assign the message a random msgId so that later on in the code
-        // we can refrence the msgId and scroll the message into the view
+        // Assign message a random id so later on in the code we 
+        // can refrence msgId and scroll the message into the view
         var msgId = Math.floor(Math.random() * 1000000000)
     
         messageHTML += `<div class="message" id="msg-id-${msgId}">` // Open the message <div>
@@ -420,10 +499,17 @@ class Game {
         })
     }
 
-    // end the game once the player reaches 0 health
-    // reset the innerhtml of the map and display "you died"
+    /**
+     * End the game
+     */
     endGame() {
-        document.getElementById("map").innerHTML = "<p id='death-message'>Game Over</p>";
-        this.gameRunning = false;
+        this.running = false;
+
+        // After 200ms alert the player of their death and display the death screen
+        // (the reason we do this is to have the death alert to be the last one)
+        setTimeout(() => {
+            this.alert("Death!", `You survived ${this.currentTurn} turns`)
+            document.getElementById("map").classList.add("map-ended")
+        }, 200)
     }
 }
