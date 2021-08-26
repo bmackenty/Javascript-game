@@ -4,13 +4,19 @@ This is a rework of a javascript implementation of a simple ascii art RPG game u
 # Tasks
 
 ## Difficulty
-The tasks are broken down in 3 difficulty levels, X, XX, and XXX, with XXX being the hardest. This is the knowleadge required for each of the difficulties.
+The coding tasks are broken down in 3 difficulty levels, X, XX, and XXX, with XXX being the hardest. The game design tasks are broken down in 3 difficulties, GB, GD, and GM, both requiring different skillsets. This is the knowleadge required for each of the difficulties.
 
-- X - Simple understanding of OOP (Objects/Inheritance/Classes) and ability to work with basic javascript operands and variables
+- X - Simple understanding of OOP (Objects/Inheritance/Classes) and ability to work with basic javascript operands and variables. Simple knowleadge of HTML and CSS.
 
 - XX - In depth understanding of OOP and ability to create new Systems based on OOP. In depth understanding of the codebase and knowleadge of the DOM interaction
 
 - XXX - Fluent in JS and OOP. Proficent understanding of the browser, being able to work with cookies, understanding the css specificity system, proficent in CSS Pseudo elements, great knowleadge of modern coding conventions. Ability to create algorithms and ability to rewrite code to make the codebase more efficient and more straightforward. Also indepth knowleadge of the JSDOC syntax and good comment writing skills. Design knowleadge is required and must have a good understanding of how to create modern and intuitive UIs and UXs.
+
+- GD - Game design. You will need to be creative. You will create new mechanics/items/weapons for the game. They have to be enjoyable, add some kind of new concept into the game (the item's can't be too repetative) and be somewhat funny and fitting with the theme of the game. Basic knowleage of game balance and game math is required but nothing too advanced as weapons can be rebalanced and calculated in the future. 
+
+- GB - Game balance. Video game knowleage. Ability to make changes to weapons/items/mechanics to make the more realistic, enjoyable. You will need to balance out the game's properties to make all the items viable options (no completely useless items that have no purpose what-so-ever) and make no weapons overpowered (too easy to obtain, break the game, and invalidate all alternatives).
+
+- GM - Game math. You need to know math, functions, parabolas and stuff like that (be able to make graphs mostly). You will be required to make functions to calculate XP requirements, damage, and general calculations related with the game
 
 ## Task marking convention
 
@@ -39,7 +45,19 @@ The tasks are broken down in 3 difficulty levels, X, XX, and XXX, with XXX being
 * Consuming items and eating food
 
 ### X
-* Create more crafting recipes
+* Landing page
+
+### GD
+* More weapons
+* More crafting recipes
+* More objects
+
+### GB
+* Spider and Bear HP/Strength/Drops/XpDrops balances
+
+### GM
+* Improved combat XP requirements
+* Improved combat skill bonus damage calculation
 
 ### WIP
 
