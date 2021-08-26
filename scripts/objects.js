@@ -82,6 +82,13 @@ class Player extends Object {
         this.inventory = [
             new Apple()
         ];
+        this.achievments = [
+            new A_Played(),
+            new A_Survivor(),
+            new A_SpiderHunter(),
+            new A_BeastSlayer(),
+            new A_Deforestation(),
+        ];
     }
 
     get html() {

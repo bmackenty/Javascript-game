@@ -226,6 +226,22 @@ class Game {
     }
 
     /**
+     * Loops through the inventory.
+     * Returns the count of items that are like the itemToFind.
+     * @param {Object} itemToFind - The item / class to look for.
+     * @returns {Number}
+     */
+    getItemCount(itemToFind) {
+        let counter = 0;
+        for (let item of game.getPlayer().inventory) {
+            if (item instanceof itemToFind) {
+                counter += 1;
+            }
+        }
+        return counter;
+    }
+
+    /**
      * Generates the map terrain
      */
     generateMap() {
@@ -340,12 +356,23 @@ class Game {
     
         statsHTML += `<p style="text-align: center"><strong>TURN </strong>${this.currentTurn}</p>`
         statsHTML += `<p><strong>Health: </strong>${this.getPlayer().health}</p>`;
-        statsHTML += "<p><strong>Inventory:</strong></p>";
+        statsHTML += "<br><p><strong>Inventory:</strong></p>";
     
         // Loop over all the items in the player's inventory and display them
         for (var item of this.itemsToBackpack(this.getPlayer().inventory)) {
            statsHTML+= `- ${item.name} (${item.count})`
            statsHTML+= `<br>`
+        }
+
+        statsHTML += "<br><p><strong>Achievments:</strong></p>";
+        
+        // Loop over all the achievments created and check if the condition to achieve them has been fulfilled.
+        // Display only the achieved ones inside the html.
+        for (var achievment of this.getPlayer().achievments) {
+            achievment.checkAchieved();
+            if (achievment.isAchieved) {
+                statsHTML+= `${achievment.name}<br> - "${achievment.description}"<br>`
+            }
         }
     
         // Display statsHTML onto the visible <div> element
