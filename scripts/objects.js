@@ -93,15 +93,12 @@ class Player extends Object {
         ];
 
         this.recipeList = [
-            /*new Recipe(new LeatherBoots(), [new Leather(), new Leather(), new String()]),
+            new Recipe(new LeatherBoots(), [new Leather(), new Leather(), new String()]),
             new Recipe(new SewingKit, [new String(), new String(), new String(), new SharpenedStick()]),
             new Recipe(new MeshFilter(), [new String(), new String(), new String(), new SewingKit()]),
-            new Recipe(new SharpenedStick(), [new Wood(), new Stick(), new Stick(), new Flint()])
-            new Recipe(new JungleHat(), [new SewingKit(), new SewingKit(), new Leaf(), new Leaf(), new Leaf(), new Leaf(), new Leaf()]),*/
-
-            new Recipe(new Wood(), [new Apple()]),
-            new Recipe(new Apple(), [new Wood()]),
+            new Recipe(new SharpenedStick(), [new Wood(), new Stick(), new Stick(), new Flint()]),
             new Recipe(new FlintAxe(), [new Wood(), new Wood(), new Flint()]),
+            new Recipe(new JungleHat(), [new SewingKit(), new SewingKit(), new MeshFilter(), new Leaf(), new Leaf(), new Leaf(), new Leaf(), new Leaf()])
         ]
     }
 

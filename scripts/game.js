@@ -368,7 +368,8 @@ class Game {
         var recipes = document.getElementById("recipes-list")
         recipes.innerHTML = "";
 
-        for (var recipe of this.getPlayer().recipeList) {
+        for (var rIndex in this.getPlayer().recipeList) {
+            var recipe = this.getPlayer().recipeList[rIndex]; // Get the recipe using the recipe index
 
             // If the player doesn't have the items required for the recipe skip it
             if (!recipe.requirementsSatisfied(this.getPlayer().inventory))
@@ -389,18 +390,24 @@ class Game {
                 recipeHTML += `<li>- ${input.name} (${input.count})</li>`
             }
 
-            recipeHTML += `<button style="margin: 0 auto;" id="${recipeId}">Craft</button>` // Display craft button
+            // Create the recipeButton
+            var recipeButton = document.createElement("button");
+            recipeButton.id = recipeId;
+            recipeButton.style.margin = "0 auto";
+            recipeButton.innerHTML = "Craft";
+            recipeButton.setAttribute("data-recipe", rIndex) // Set the index of the recipe to "data-recipe"
 
-            // Set the html of the recipe element to recipeHTML
+            // When the recipe button is clicked craft the item
+            recipeButton.onclick = e => {
+                this.getPlayer().craftItem(this.getPlayer().recipeList[e.target.getAttribute("data-recipe")]);
+            }
+
+            // Set the html of the recipe element
             recipeElement.innerHTML = recipeHTML;
+            recipeElement.appendChild(recipeButton); // Add the button to recipeElement
 
             // Add the recipeElement to the recipeList
             recipes.appendChild(recipeElement);
-
-            // When the recipe button is clicked craft the item
-            document.getElementById(recipeId).onclick = e => {
-                this.getPlayer().craftItem(recipe);
-            }
         }
     }
 
