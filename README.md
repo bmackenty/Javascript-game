@@ -27,11 +27,12 @@ The tasks are broken down in 3 difficulty levels, X, XX, and XXX, with XXX being
 * Credits (don't forget to add https://game-icons.net/)
 * Building (Placing walls and building fortifications) `POST`
 * Player clothing/armor equipping `CON`
+* Projectiles `POST`
 
 ### XX
-* TODO: Towns (buy / sell stores) `POST`
-* TODO: Quests
-* TODO: NPC's
+* Towns (buy / sell stores) `POST`
+* Quests
+* NPC's
 * Shortcuts and help screen
 * Random events (fires, zombie apocalypse?, spider infestation)
 * Joe's all you can eat buffet (i'm not gonna question when this was here, why this was here, or who put this here, just gonna leave it)
