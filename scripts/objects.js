@@ -102,7 +102,7 @@ class Player extends Object {
                  * @returns {Number} Amount of xp required to get that to that level
                  */
                 levelingFormula: (level) => {
-                    return level**2;
+                    return Math.round((level**1.6) + (level*6.5));
                 }
             }
         }
@@ -118,7 +118,8 @@ class Player extends Object {
 
     // Keep this method here for future items that do more damage
     get attack() {
-        return this.strength;
+        var combatBonus = ((this.getSkillLevel("combat")*0.9)**1.4)
+        return Math.round(this.strength + combatBonus);
     }
 
     /**
@@ -127,7 +128,7 @@ class Player extends Object {
      * @returns {Number} The level of the specified skill
      */
     getSkillLevel(skillName) {
-        var currentLevel = 1; // Start at level 1
+        var currentLevel = 0;
 
         while (true) {
             if (this.skillSet[skillName].xp > this.skillSet[skillName].levelingFormula(currentLevel + 1)) { // If the player has enough xp for the next level
