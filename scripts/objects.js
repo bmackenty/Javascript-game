@@ -78,7 +78,7 @@ class Player extends Object {
     constructor(name) {
         super({})
         this.name = name;
-        this.health = 100;
+        this.hp = 100;
         this.strength = 5;
         this.inventory = [
             new Apple()
@@ -98,11 +98,44 @@ class Player extends Object {
     }
 
     /**
+     * Return the player's health
+     */
+    get health() {
+        // If the player is alive display his health
+        // Otherwise display the "DEAD" text
+        return this.isAlive ? this.hp : "DEAD";
+    }
+
+    /**
+     * Set the player's health
+     * @param {Number} newHealth - The new amount of health
+     */
+    set health(newHealth) {
+        if (this.isAlive) {
+            // If the player is alive set the health
+            this.hp = newHealth;
+
+            // Check if the health set kills the player
+            if (!this.isAlive) {
+                game.endGame(); // End the gmae (player dead)
+            }
+        }
+    }
+
+    /**
+     * Check whether the player is alive
+     * (We can do funny stuff with this later)
+     */
+    get isAlive() {
+        return this.hp > 0;
+    }
+
+    /**
      * Adds a item to the player's inventory
      * @param {Object} item - The item object to add to the inventory
      * @param {Number} count - The amount of the items to add
      */
-    addItemToInventory(item, count = 1) {
+     addItem(item, count = 1) {
         if (item instanceof Item) {
             // Loop over the amount of times to add the item
             for (var i = 0; i < count; i++) {
@@ -117,18 +150,6 @@ class Player extends Object {
         console.log("FATAL: Attempting to add a non-item to a inventory! (item below)")
         console.log(item);
     }
-
-    /**
-     * Removes health from the players' inventory
-     * @param {Number} damage - The amount of damage
-     */
-    removeHealth(damage) {
-        this.health -= damage;
-        // if health is below or equal to 1, end the game
-        if (this.health <= 0) {
-            game.endGame();
-        }
-    }
   
     /**
      * Removes a item from the player's inventory
@@ -136,7 +157,7 @@ class Player extends Object {
      * @param {*} count - The amount of items to remove
      * @returns 
      */
-    removeItemFromInventory(item, count = 1) {
+    removeItem(item, count = 1) {
         if (item instanceof Item) {
             // Loop over the amount of times to remove the item
             for (var i = 0; i < count; i++) {
@@ -172,12 +193,12 @@ class Player extends Object {
                     for (var rIndex in itemsLeft) {
                         if (iItem.name == itemsLeft[rIndex].name) {
                             itemsLeft.splice(rIndex, 1);
-                            this.removeItemFromInventory(iItem);
+                            this.removeItem(iItem);
                         }
                     }
                 }
 
-                this.addItemToInventory(recipe.output);
+                this.addItem(recipe.output);
             } else {
                 console.log(`FATAL: Attempting to craft item (${recipe.output.name}) player doesn't hvae the items for`)
             }
@@ -246,7 +267,7 @@ class Enemy extends Object {
 
             // Add all the drops to the player inventory
             for (var drop of this.drops) {
-                game.getPlayer().addItemToInventory(drop);
+                game.getPlayer().addItem(drop);
             }
             
             // Formatting message to display to the player (don't touch unless you lose brain cells yes)
@@ -285,7 +306,7 @@ class Enemy extends Object {
      */
     attackPlayer() {
         var damage = this.strength;
-        game.getPlayer().removeHealth(damage);
+        game.getPlayer().health -= damage;
         game.alert(`Attacked by ${this.name}`, `Recieved ${damage} damage (${game.getPlayer().health} heath left)`)
         return damage;
     }
@@ -482,7 +503,7 @@ class Tree extends Object {
      * Cut down the tree
      */
     interact() {
-        game.getPlayer().addItemToInventory(new Wood())
+        game.getPlayer().addItem(new Wood())
         game.alert("Cut down tree", "You have cut down a tree for 1 wood");
         game.removeObject(this)
     }
