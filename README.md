@@ -39,12 +39,9 @@ The tasks are broken down in 3 difficulty levels, X, XX, and XXX, with XXX being
 * Consuming items and eating food
 
 ### X
-* Add randomized and more realisic tree drops
 * Create more crafting recipes
 
 ### WIP
-* XX Achievements (Ethen)
-* XX Skills (Daniel)
 
 ### DONE
 
@@ -56,6 +53,9 @@ The tasks are broken down in 3 difficulty levels, X, XX, and XXX, with XXX being
 * Combat (@dladeira)
 * Crafting (@dladeira)
 * Deaths (@swissguy5)
+* Achievements (@swissguy5)
+* Skills (@dladeira)
+* Randomized and realisic tree drops (@dladeira)
 
 ## Current maintainers
 
