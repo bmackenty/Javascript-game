@@ -228,21 +228,6 @@ class Game {
     }
 
     /**
-     * Get the count of a specific item in the player inventory
-     * @param {Object} item - The item class to look for.
-     * @returns {Number} The amount of times the item appears in the inventory
-     */
-    getItemCount(item) {
-        let amount = 0;
-        for (let item of game.getPlayer().inventory) {
-            if (item instanceof item) {
-                amount++;
-            }
-        }
-        return amount;
-    }
-
-    /**
      * Generates the map terrain
      */
     generateMap() {

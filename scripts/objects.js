@@ -249,6 +249,21 @@ class Player extends Object {
     }
 
     /**
+     * Get the count of a specific item in the player inventory
+     * @param {Object} item - The item class to look for.
+     * @returns {Number} The amount of times the item appears in the inventory
+     */
+     getItemCount(itemToFind) {
+        let amount = 0;
+        for (let item of this.inventory) {
+            if (item instanceof itemToFind) {
+                amount++;
+            }
+        }
+        return amount;
+    }
+
+    /**
      * Crafts the recipe for the player (removes the required items and gives the output)
      * @param {Object} recipe - The recipe to craft
      */

@@ -53,7 +53,7 @@ class A_SpiderHunter extends Achievements {
 
     checkAchieved() {
         if (game) {
-            if (game.getItemCount(String) >= 5) {
+            if (game.getPlayer().getItemCount(String) >= 5) {
                 this.isAchieved = true;
             }
         }
@@ -87,7 +87,7 @@ class A_Deforestation extends Achievements {
 
     checkAchieved() {
         if (game) {
-            if (game.getItemCount(Wood) >= 100) {
+            if (game.getPlayer().getItemCount(Wood) >= 100) {
                 this.isAchieved = true;
             }
         }
