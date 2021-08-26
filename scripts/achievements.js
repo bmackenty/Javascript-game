@@ -1,4 +1,4 @@
-class Achievments {
+class Achievements {
 
     constructor(name, description) {
         this.name = name;
@@ -12,8 +12,8 @@ class Achievments {
     }
 }
 
-// A_ is used to differentiate achievments from other classes.
-class A_Played extends Achievments {
+// A_ is used to differentiate achievements from other classes.
+class A_Played extends Achievements {
     
     constructor() {
         super('Played', 'You played the game.')
@@ -29,7 +29,7 @@ class A_Played extends Achievments {
 
 }
 
-class A_Survivor extends Achievments {
+class A_Survivor extends Achievements {
 
     constructor() {
         super('Survivor', 'You survived until turn 25.')
@@ -45,7 +45,7 @@ class A_Survivor extends Achievments {
 
 }
 
-class A_SpiderHunter extends Achievments {
+class A_SpiderHunter extends Achievements {
 
     constructor() {
         super('Spider Hunter', 'Obtain 5 string.')
@@ -61,7 +61,7 @@ class A_SpiderHunter extends Achievments {
 
 }
 
-class A_BeastSlayer extends Achievments {
+class A_BeastSlayer extends Achievements {
 
     constructor() {
         super('Beast Slayer', 'You killed a bear.')
@@ -79,7 +79,7 @@ class A_BeastSlayer extends Achievments {
 
 }
 
-class A_Deforestation extends Achievments {
+class A_Deforestation extends Achievements {
     
     constructor() {
         super('Deforestation', 'You monster!')

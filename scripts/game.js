@@ -364,14 +364,14 @@ class Game {
            statsHTML+= `<br>`
         }
 
-        statsHTML += "<br><p><strong>Achievments:</strong></p>";
+        statsHTML += "<br><p><strong>achievements:</strong></p>";
         
-        // Loop over all the achievments created and check if the condition to achieve them has been fulfilled.
+        // Loop over all the achievements created and check if the condition to achieve them has been fulfilled.
         // Display only the achieved ones inside the html.
-        for (var achievment of this.getPlayer().achievments) {
-            achievment.checkAchieved();
-            if (achievment.isAchieved) {
-                statsHTML+= `${achievment.name}<br> - "${achievment.description}"<br>`
+        for (var achievement of this.getPlayer().achievements) {
+            achievement.checkAchieved();
+            if (achievement.isAchieved) {
+                statsHTML+= `${achievement.name}<br> - "${achievement.description}"<br>`
             }
         }
     
