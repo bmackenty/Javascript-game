@@ -228,6 +228,21 @@ class Game {
     }
 
     /**
+     * Get the count of a specific item in the player inventory
+     * @param {Object} item - The item class to look for.
+     * @returns {Number} The amount of times the item appears in the inventory
+     */
+    getItemCount(item) {
+        let amount = 0;
+        for (let item of game.getPlayer().inventory) {
+            if (item instanceof item) {
+                amount++;
+            }
+        }
+        return amount;
+    }
+
+    /**
      * Generates the map terrain
      */
     generateMap() {
@@ -350,7 +365,6 @@ class Game {
 
         statsHTML += `<p style="text-align: center"><strong>TURN </strong>${this.currentTurn}</p>`
         statsHTML += `<p><strong>Health: </strong>${this.getPlayer().health}</p>`;
-    
         
         statsHTML += this.getSkillsHTML(); // Display the player's skillSet
 
@@ -360,6 +374,17 @@ class Game {
         for (var item of this.itemsToBackpack(this.getPlayer().inventory)) {
            statsHTML+= `- ${item.name} (${item.count})`
            statsHTML+= `<br>`
+        }
+
+        statsHTML += "<br><p><strong>achievements:</strong></p>";
+        
+        // Loop over all the achievements created and check if the condition to achieve them has been fulfilled.
+        // Display only the achieved ones inside the html.
+        for (var achievement of this.getPlayer().achievements) {
+            achievement.checkAchieved();
+            if (achievement.isAchieved) {
+                statsHTML+= `${achievement.name}<br> - "${achievement.description}"<br>`
+            }
         }
     
         // Display statsHTML onto the visible <div> element

@@ -83,6 +83,14 @@ class Player extends Object {
         this.inventory = [
             new Apple()
         ];
+      
+        this.achievements = [
+            new A_Played(),
+            new A_Survivor(),
+            new A_SpiderHunter(),
+            new A_BeastSlayer(),
+            new A_Deforestation(),
+        ];
 
         this.recipeList = [
             new Recipe(new LeatherBoots(), [new Leather(), new Leather(), new String()]),
