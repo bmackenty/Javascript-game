@@ -347,11 +347,15 @@ class Game {
         /*
         Add all the info to statsHTML
         */
-    
+
         statsHTML += `<p style="text-align: center"><strong>TURN </strong>${this.currentTurn}</p>`
         statsHTML += `<p><strong>Health: </strong>${this.getPlayer().health}</p>`;
-        statsHTML += "<p><strong>Inventory:</strong></p>";
     
+        
+        statsHTML += this.getSkillsHTML(); // Display the player's skillSet
+
+        statsHTML += "<p><strong>Inventory:</strong></p>"; // Inventory title
+
         // Loop over all the items in the player's inventory and display them
         for (var item of this.itemsToBackpack(this.getPlayer().inventory)) {
            statsHTML+= `- ${item.name} (${item.count})`
@@ -364,6 +368,18 @@ class Game {
         this.updateCrafting(); // Whenever the stats are updated the recipes will also need to be updated
     }
     
+    getSkillsHTML() {
+        var skillsHTML = `<div style="margin: 10px 0;"><p"><strong>Skills:</strong></p>`;
+
+        for (var skill in this.getPlayer().skillSet) {
+            skillsHTML += `<p class="skill">${skill.charAt(0).toUpperCase() + skill.slice(1)} : ${this.getPlayer().getSkillLevel(skill)} (${this.getPlayer().getXpToNextLevel(skill)} xp to level up)</p>`
+        }
+
+        skillsHTML += `</div>`
+
+        return skillsHTML;
+    }
+
     updateCrafting() {
         var recipes = document.getElementById("recipes-list")
         recipes.innerHTML = "";
@@ -382,8 +398,8 @@ class Game {
             // Assign recipe a random id so we can assign a click handler to it
             var recipeId = Math.floor(Math.random() * 1000000000);
 
-            recipeHTML += `<p><span class="recipe-header">Crafts:</span> ${recipe.output.name}</p>` // Display the recipe output
-            recipeHTML += `<p class="recipe-header">Requires: </p>` // Display recipe requires text
+            recipeHTML += `<p><strong>Crafts:</strong> ${recipe.output.name}</p>` // Display the recipe output
+            recipeHTML += `<p><strong>Requires: </strong></p>` // Display recipe requires text
 
             // Loop through all the items required to make the recipe and display them
             for (var input of this.itemsToBackpack(recipe.input)) {

@@ -92,6 +92,20 @@ class Player extends Object {
             new Recipe(new FlintAxe(), [new Wood(), new Wood(), new Flint()]),
             new Recipe(new JungleHat(), [new SewingKit(), new SewingKit(), new MeshFilter(), new Leaf(), new Leaf(), new Leaf(), new Leaf(), new Leaf()])
         ]
+
+        this.skillSet = {
+            combat: {
+                xp: 0,
+                /**
+                 * Get the xp required to achieve a specific level
+                 * @param {Number} level - The level to check the amount of xp required for
+                 * @returns {Number} Amount of xp required to get that to that level
+                 */
+                levelingFormula: (level) => {
+                    return level**2;
+                }
+            }
+        }
     }
 
     get html() {
@@ -102,8 +116,51 @@ class Player extends Object {
         return 'player';
     }
 
+    // Keep this method here for future items that do more damage
+    get attack() {
+        return this.strength;
+    }
+
     /**
-     * Return the player's health
+     * Get the specified skill's level
+     * @param {String} skillName - The name of the skill
+     * @returns {Number} The level of the specified skill
+     */
+    getSkillLevel(skillName) {
+        var currentLevel = 1; // Start at level 1
+
+        while (true) {
+            if (this.skillSet[skillName].xp > this.skillSet[skillName].levelingFormula(currentLevel + 1)) { // If the player has enough xp for the next level
+                currentLevel++; // Increase the current level by one
+            } else {
+                break; // Else exit the loop and return the current level
+            }
+        }
+        return currentLevel;
+    }
+
+    /**
+     * Get the amount of xp required to get the next level in a skill
+     * @param {String} skillName - The name of the skill
+     * @returns {Number} The amount of xp points required to progress to the next level
+     */
+    getXpToNextLevel(skillName) {
+        var currentXp = this.skillSet[skillName].xp;
+        var currentLevel = this.getSkillLevel(skillName)
+        return this.skillSet[skillName].levelingFormula(currentLevel + 1) - currentXp;
+    }
+    
+    /**
+     * Adds xp to a specific player skill
+     * @param {String} skillName - The name of the skill
+     * @param {Number} xpAmount - The amount of xp to add to the skill
+     */
+    addSkillXp(skillName, xpAmount) {
+        this.skillSet[skillName].xp += xpAmount;
+    }
+
+    /**
+     * Get the player's health
      */
     get health() {
         // If the player is alive display his health
@@ -219,7 +276,7 @@ class Enemy extends Object {
      * @param {Array} drops - Array of Items that the enemy drops
      * @param {Float} strollChance - The chance in decimals that the enemy will move randomly
      */
-    constructor(name, health, strength, sight, drops, strollChance) {
+    constructor(name, health, strength, sight, drops, strollChance, combatXpGain) {
         super({
             passable: false
         });
@@ -229,6 +286,7 @@ class Enemy extends Object {
         this.sight = sight;
         this.drops = drops;
         this.strollChance = strollChance;
+        this.combatXpGain = combatXpGain;
 
         this.randomMoveCooldown = 0;
         this.lockedOntoPlayer = false;
@@ -291,11 +349,12 @@ class Enemy extends Object {
             game.removeObject(this);
             game.alert(`Looted ${this.name}`, message);
         } else {
-            var damageTaken = game.getPlayer().strength;
+            var damageTaken = game.getPlayer().attack;
             this.takeDamage(damageTaken);
 
             if (this.isDead) {
-                game.alert(`Killed ${this.name}`, `Dealt ${damageTaken} damage and killed ${this.name}`);
+                game.alert(`Killed ${this.name}`, `Dealt ${damageTaken} damage and killed ${this.name} (gained ${this.combatXpGain} combat xp)`);
+                game.getPlayer().addSkillXp("combat", this.combatXpGain);
             } else {
                 game.alert(`Attacked ${this.name}`, `Dealt ${damageTaken} damage (${this.health} health left)`);
             }
@@ -423,7 +482,7 @@ class Spider extends Enemy {
      * @param {Boolean} dead - Controls whether the spider spawns dead or not
      */
     constructor(dead = false) {
-        super("Spider", dead ? 0 : 10, 10, 7, [new String(), new Bone(), new Bone()], 0.15);
+        super("Spider", dead ? 0 : 10, 10, 7, [new String(), new Bone(), new Bone()], 0.15, 7);
     }
 
     get aliveHtml() {
@@ -445,7 +504,7 @@ class Bear extends Enemy {
      * Create the bear
      */
     constructor() {
-        super("Bear", 40, 10, 10, [new Leather(), new Leather(), new Leather(), new RawMeat(), new RawMeat()], 0.05);
+        super("Bear", 40, 10, 10, [new Leather(), new Leather(), new Leather(), new RawMeat(), new RawMeat()], 0.05, 30);
     }
 
     get aliveHtml() {
