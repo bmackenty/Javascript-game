@@ -376,7 +376,7 @@ class Game {
            statsHTML+= `<br>`
         }
 
-        statsHTML += "<br><p><strong>achievements:</strong></p>";
+        statsHTML += "<br><p><strong>Achievements:</strong></p>";
         
         // Loop over all the achievements created and check if the condition to achieve them has been fulfilled.
         // Display only the achieved ones inside the html.
