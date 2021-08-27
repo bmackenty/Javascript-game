@@ -11,6 +11,27 @@
     <link href="http://fonts.cdnfonts.com/css/death-font" rel="stylesheet"> <!-- Death Message Font -->
 
         <meta charset="UTF-8">
+
+        <!-- Script for dragging and dropping equippment -->
+        <script>
+            function allowDrop(ev) {
+              ev.preventDefault();
+            }
+            
+            function drag(ev) {
+              ev.dataTransfer.setData("item", ev.target.getAttribute("data-item"));
+              ev.dataTransfer.setData("shoes", ev.target.getAttribute("shoes"));
+            }
+            
+            function dropShoes(e) {
+                e.preventDefault();
+                var itemName = e.dataTransfer.getData("item");
+
+                if (e.dataTransfer.getData("shoes") == "true") {
+                    e.target.setAttribute("equipped", itemName);
+                }
+            }
+        </script>
     </head>
     <body>
         <div class="game">
@@ -35,7 +56,10 @@
                     </div>
                 </div>
                 <div class="inventory-tab">
+                    <div id="shoes" ondrop="dropShoes(event)" ondragover="allowDrop(event)" style="height: 69px; background-color: blue;"></div>
 
+                    <div id="equipmentList">
+                    </div>
                 </div>
             </div>
         </div>

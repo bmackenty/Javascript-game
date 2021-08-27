@@ -25,6 +25,8 @@ class Game {
             // Update the map and statistics after finishing the turn
             this.drawMap();
             this.updateStats();
+            this.updateCrafting();
+            console.log(this.getPlayer().getItemSlot("shoes"));
         }
     }
 
@@ -290,6 +292,7 @@ class Game {
 
         this.drawMap(); // Draw the map after generating it
         this.updateStats(); // Display statistics
+        this.updateEquipment(); // Display equipment
     }
 
     /**
@@ -338,29 +341,41 @@ class Game {
         document.getElementById("map").innerHTML = mapHTML;
     }
 
+    updateEquipment() {
+        var equipmentHTML = "";
+
+        for (var item of this.getPlayer().inventory) {
+            if (item.shoesWearable) {
+                equipmentHTML += `<p class="inv-item" data-item="${item.id}" shoes="true" draggable="true" ondragstart="drag(event)">${item.name}</p>`
+            }
+        }
+
+        document.getElementById("equipmentList").innerHTML = equipmentHTML;
+    }
+
     /**
      * Updates the statistics tab
      */
     updateStats() {
         var statsHTML = "";
-    
-        /*
-        Add all the info to statsHTML
-        */
 
         statsHTML += `<p style="text-align: center"><strong>TURN </strong>${this.currentTurn}</p>`
         statsHTML += `<p><strong>Health: </strong>${this.getPlayer().health}</p>`;
         
-        statsHTML += this.getSkillsHTML(); // Display the player's skillSet
-        statsHTML += this.getInventoryHTML(); // Display the player's inventory
-        statsHTML += this.getAchievementsHTML();
+        statsHTML += this.getSkillsHTML(); // Display skillSet
+        statsHTML += this.getInventoryHTML(); // Display inventory
+        statsHTML += this.getAchievementsHTML(); // Display achievements
     
         // Display statsHTML onto the visible <div> element
         document.getElementById("stats").innerHTML = statsHTML;
 
         this.updateCrafting(); // Whenever the stats are updated the recipes will also need to be updated
     }
-    
+
+    /**
+     * Gets the achievementsHTML
+     * @returns {String} The HTML
+     */
     getAchievementsHTML() {
         var achievementsHTML = `<div class="stats-category">`;
         achievementsHTML += "<p><strong>Achievements:</strong></p>";
@@ -378,6 +393,10 @@ class Game {
         return achievementsHTML;
     }
 
+    /**
+     * Gets the inventoryHTML
+     * @returns {String} The HTML
+     */
     getInventoryHTML() {
         var inventoryHTML = `<div class="stats-category">`
 
@@ -392,6 +411,10 @@ class Game {
         return inventoryHTML;
     }
 
+    /**
+     * Gets the skillsHTMl
+     * @returns {String} The HTML
+     */
     getSkillsHTML() {
         var skillsHTML = `<div class="stats-category"><p"><strong>Skills:</strong></p>`;
 
@@ -404,6 +427,9 @@ class Game {
         return skillsHTML;
     }
 
+    /**
+     * Update crafting tab
+     */
     updateCrafting() {
         var recipes = document.getElementById("recipes-list")
         recipes.innerHTML = "";
@@ -475,6 +501,9 @@ class Game {
         document.getElementById(`msg-id-${msgId}`).scrollIntoView();
     }
 
+    /**
+     * Register listeners (only movement listener for now)
+     */
     registerListeners() {
         document.addEventListener('keyup', (event) => { // Add a key listener
             var key = event.key; // The key pressed
