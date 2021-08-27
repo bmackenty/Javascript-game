@@ -46,6 +46,7 @@ The coding tasks are broken down in 3 difficulty levels, X, XX, and XXX, with XX
 * Max health
 * Credits (don't forget to add https://game-icons.net/)
 * More stats for items (more than just defence)
+* Add item slot for weapons
 
 ### GD
 * More weapons
