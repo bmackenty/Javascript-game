@@ -28,12 +28,8 @@ The coding tasks are broken down in 3 difficulty levels, X, XX, and XXX, with XX
 ### XXX
 * Persistant data in cookies `CON`
 * Procedural Terrain Generation (with zoning) `POST`
-* Player render distance (sight)
-* Landing page `CON`
-* Credits (don't forget to add https://game-icons.net/)
-* Building (Placing walls and building fortifications) `POST`
-* Player clothing/armor equipping
 * Projectiles `POST`
+* Split characters and structures (allow spiders to walk into berry bushes)
 
 ### XX
 * Towns (buy / sell stores) `POST`
@@ -42,16 +38,21 @@ The coding tasks are broken down in 3 difficulty levels, X, XX, and XXX, with XX
 * Shortcuts and help screen
 * Random events (fires, zombie apocalypse?, spider infestation) `CON`
 * Joe's all you can eat buffet (i'm not gonna question when this was here, why this was here, or who put this here, just gonna leave it) `CON`
-* Consuming items and eating food
+* Building (Placing walls and building fortifications) `POST` `CON`
+* Player render distance (sight)
 
 ### X
-* Landing page
+* Implement landing page
+* Max health
+* Credits (don't forget to add https://game-icons.net/)
+* More stats for items (more than just defence)
 
 ### GD
 * More weapons
 * More crafting recipes
 * More objects
 * More enemies
+* Landing page
 
 ### GB
 * Spider and Bear HP/Strength/Drops/XpDrops balances
@@ -59,6 +60,7 @@ The coding tasks are broken down in 3 difficulty levels, X, XX, and XXX, with XX
 ### GM
 * Improved combat XP requirements
 * Improved combat skill bonus damage calculation
+* Create calculation for defence damage reduction multiplier
 
 ### WIP
 
@@ -75,6 +77,8 @@ The coding tasks are broken down in 3 difficulty levels, X, XX, and XXX, with XX
 * Achievements (@swissguy5)
 * Skills (@dladeira)
 * Randomized and realisic tree drops (@dladeira)
+* Player clothing/armor equipping (@dladeira)
+* Consuming items and eating food (@dladeira)
 
 ## Current maintainers
 
