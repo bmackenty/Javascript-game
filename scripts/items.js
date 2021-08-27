@@ -4,10 +4,23 @@ class Item {
      * Create a item
      * @param {String} name - The name of the item
      * @param {String} description - The description of the item
+     * @param {Object} wearable - Options for where the player can wear this item
      */
-    constructor(name, description) {
+    constructor(name, description, wearable, stats) {
         this.name = name;
         this.description = description;
+        this.id = Math.random(); // Used for item equipping
+
+        this.wearable = wearable
+        this.stats = stats;
+    }
+
+    get shoesWearable() {
+        return this.wearable.shoes
+    }
+
+    get hatWearable() {
+        return this.wearable.hat
     }
 }
 
@@ -23,6 +36,11 @@ class Recipe {
 		this.input = input;
 	}
 
+    /**
+     * Check if a list of items satisfies the requirements to craft the recipe
+     * @param {Array} inventory - Array of items to check for
+     * @returns {Boolean} Whether the items can craft the recepie
+     */
 	requirementsSatisfied(inventory) {
 		var itemsLeft = [...this.input];
 
@@ -97,7 +115,11 @@ class RawMeat extends Item {
 class LeatherBoots extends Item {
 
     constructor() {
-        super("Leather Boots", "Great for hiking, not so much for killing.");
+        super("Leather Boots", "Great for hiking, not so much for killing.", {
+            shoes: true
+        }, {
+            defence: 0.1
+        });
     }
 }
 
@@ -146,6 +168,10 @@ class MeshFilter extends Item {
 class JungleHat extends Item {
     
     constructor() {
-        super("Jungle Hat", "IUNGLE BOIIIIIIIIII. FLY LIKE A BIRD, FLY THROUGH THE TREEEEES, SPEAK VIETNAMEEESE (only with this hat)")
+        super("Jungle Hat", "IUNGLE BOIIIIIIIIII. FLY LIKE A BIRD, FLY THROUGH THE TREEEEES, SPEAK VIETNAMEEESE (only with this hat)", {
+            hat: true
+        }, {
+            defence: 0.3
+        })
     }
 }

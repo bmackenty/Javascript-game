@@ -81,7 +81,8 @@ class Player extends Object {
         this.hp = 100;
         this.strength = 5;
         this.inventory = [
-            new Apple()
+            new Apple(),
+            new LeatherBoots()
         ];
       
         this.achievements = [
@@ -114,6 +115,11 @@ class Player extends Object {
                 }
             }
         }
+
+        this.equipmentSlots = [
+            new EquipmentSlot("shoes"),
+            new EquipmentSlot("hat")
+        ]
     }
 
     get html() {
@@ -128,6 +134,48 @@ class Player extends Object {
     get attack() {
         var combatBonus = ((this.getSkillLevel("combat")*0.9)**1.4)
         return Math.round(this.strength + combatBonus);
+    }
+
+    /**
+     * Get the player's health
+     */
+     get health() {
+        // If the player is alive display his health
+        // Otherwise display the "DEAD" text
+        return this.isAlive ? this.hp : "DEAD";
+    }
+
+    /**
+     * Set the player's health
+     * @param {Number} newHealth - The new amount of health
+     */
+    set health(newHealth) {
+        if (this.isAlive) {
+            // If the player is alive set the health
+            this.hp = newHealth;
+
+            // Check if the health set kills the player
+            if (!this.isAlive) {
+                game.endGame(); // End the gmae (player dead)
+            }
+        }
+    }
+
+    /**
+     * Make the player take a certain amount of damage after all calculations
+     * @param {Number} damage - The amount of damage to take
+     * @returns {Number} The final damage the player takes
+     */
+     takeDamage(damage) {
+        this.defenceMultiplier = 1;
+        for (var wearingItem of this.getAllWearingItems()) {
+            if (wearingItem.stats) {
+                this.defenceMultiplier -= wearingItem.stats.defence
+            }
+        }
+        var finalDamage = damage*Math.max(0, this.defenceMultiplier)
+        this.health -= finalDamage;
+        return finalDamage;
     }
 
     /**
@@ -169,31 +217,6 @@ class Player extends Object {
     }
 
     /**
-     * Get the player's health
-     */
-    get health() {
-        // If the player is alive display his health
-        // Otherwise display the "DEAD" text
-        return this.isAlive ? this.hp : "DEAD";
-    }
-
-    /**
-     * Set the player's health
-     * @param {Number} newHealth - The new amount of health
-     */
-    set health(newHealth) {
-        if (this.isAlive) {
-            // If the player is alive set the health
-            this.hp = newHealth;
-
-            // Check if the health set kills the player
-            if (!this.isAlive) {
-                game.endGame(); // End the gmae (player dead)
-            }
-        }
-    }
-
-    /**
      * Check whether the player is alive
      * (We can do funny stuff with this later)
      */
@@ -214,6 +237,7 @@ class Player extends Object {
             }
             // Update the stats display after changing the player's inventory
             game.updateStats();
+            game.updateEquipment();
             return;
         }
 
@@ -226,7 +250,6 @@ class Player extends Object {
      * Removes a item from the player's inventory
      * @param {Object} item - The item object to remove from the inventory
      * @param {*} count - The amount of items to remove
-     * @returns 
      */
     removeItem(item, count = 1) {
         if (item instanceof Item) {
@@ -240,11 +263,12 @@ class Player extends Object {
 
             // Update the stats display after changing the player's inventory
             game.updateStats();
+            game.updateEquipment();
             return;
         }
 
         // The item isn't of the Item class, FATAL
-        console.log("FATAL: Attempting to add a non-item to a inventory! (item below)")
+        console.log("FATAL: Attempting to remove a non-item from a inventory! (item below)")
         console.log(item);
     }
 
@@ -255,12 +279,27 @@ class Player extends Object {
      */
      getItemCount(itemToFind) {
         let amount = 0;
-        for (let item of this.inventory) {
+        for (var item of this.inventory) {
             if (item instanceof itemToFind) {
                 amount++;
             }
         }
         return amount;
+    }
+
+    /**
+     * Get the item object associated with a item id
+     * @param {Number} id - The id to look for
+     * @returns {Object} The item object
+     */
+    getItem(id) {
+        for (var item of this.inventory) {
+            if (item.id == id) {
+                return item;
+            }
+        }
+        
+        return undefined;
     }
 
     /**
@@ -283,9 +322,61 @@ class Player extends Object {
 
                 this.addItem(recipe.output);
             } else {
-                console.log(`FATAL: Attempting to craft item (${recipe.output.name}) player doesn't hvae the items for`)
+                console.log(`FATAL: Attempting to craft item (${recipe.output.name}) player doesn't hvae the items for`);
             }
         }
+    }
+
+    /**
+     * Get the item in a equipment slot
+     * @param {String} slot - The name of the item slot
+     * @returns {Object} The item object in the slot
+     */
+    getItemSlot(slot) {
+        var itemSlot = document.getElementById(slot);
+        if (itemSlot) { // If the item slot is a valid slot
+            var itemId = itemSlot.getAttribute("equipped"); // Get the id from the attribute
+            if (!itemId || itemId == "undefined") // No item is equipped
+                return undefined;
+            var item = this.getItem(itemId); // Get the item
+
+            if (!item) { // The item doesn't exist (got used up in crafting or somewhere else)
+                console.log(`WARNING: Invalid item equipped, somewhere in the code we don't update the equipment! (${itemId})`)
+                game.updateEquipment(); // Update the equipment
+            }
+
+            return item;
+        }
+        console.log("item slot is undefined")
+    }
+
+    /**
+     * Check if the user is currently wearing a item on any item slot
+     * @param {Number} id - The id to check for
+     * @returns {Boolean} Whether the item is being currently worn
+     */
+    currentlyWearingItem(id) {
+        for (var element of document.getElementsByClassName("inv-slot")) {
+            if (element.getAttribute("equipped") == id) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Get all the items the player is currently wearing
+     * @returns {Array} The items
+     */
+    getAllWearingItems() {
+        var wearing = [];
+        for (var item of this.inventory) {
+            if (this.currentlyWearingItem(item.id)) {
+                wearing.push(item)
+            }
+        }
+
+        return wearing;
     }
 }
 
@@ -390,8 +481,7 @@ class Enemy extends Object {
      * @returns {Number} The amount of damage dealt to the player
      */
     attackPlayer() {
-        var damage = this.strength;
-        game.getPlayer().health -= damage;
+        var damage = game.getPlayer().takeDamage(this.strength);
         game.alert(`Attacked by ${this.name}`, `Recieved ${damage} damage (${game.getPlayer().health} heath left)`)
         return damage;
     }
@@ -621,7 +711,7 @@ class BerryBush extends Object {
             game.getPlayer().addItem(new Berry());
             game.getPlayer().addItem(new Leaf(), 2);
             game.alert("Looted berry bush", `Found 1 berry and ${leafDrop} leaf`);
-            this.turnsToRipe = 35;
+            this.turnsToRipe = 150;
         }
     }
 

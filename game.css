@@ -192,10 +192,32 @@ Messages
 /*
 Inventory
 */
+
 .inventory-tab {
     overflow-y: scroll;
 }
 
+.inv-item {
+    margin: 3px 0;
+
+    height: 30px;
+    width: 100%;
+
+    font-size: 1rem;
+}
+
+.inv-drop {
+    margin: 2px 0;
+    padding: 5px;
+
+    height: 1rem;
+
+    border: 1px solid black;
+}
+
+.inv-item:hover, .inv-drop:hover:not(:empty) {
+    cursor: pointer;
+}
 
 /*
 Utility classes
