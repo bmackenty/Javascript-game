@@ -26,7 +26,6 @@ class Game {
             this.drawMap();
             this.updateStats();
             this.updateCrafting();
-            console.log(this.getPlayer().getItemSlot("shoes"));
         }
     }
 
@@ -342,15 +341,22 @@ class Game {
     }
 
     updateEquipment() {
+        var slotsHTML = "";
         var equipmentHTML = "";
 
+        for (var slot of this.getPlayer().equipmentSlots) {
+            slotsHTML += slot.html;
+        }
+
+        document.getElementById("inventory-slots").innerHTML = slotsHTML;
+
         for (var item of this.getPlayer().inventory) {
-            if (item.shoesWearable) {
-                equipmentHTML += `<p class="inv-item" data-item="${item.id}" shoes="true" draggable="true" ondragstart="drag(event)">${item.name}</p>`
+            if (item.wearable && !this.getPlayer().currentlyWearingItem(item.id)) { // If the item is wearable and the player isn't currently wearing it
+                equipmentHTML += `<p class="inv-item" data-item="${item.id}" shoes="${item.shoesWearable}" hat="${item.hatWearable}" draggable="true" ondragstart="drag(event)">${item.name}</p>`;
             }
         }
 
-        document.getElementById("equipmentList").innerHTML = equipmentHTML;
+        document.getElementById("inventory-list").innerHTML = equipmentHTML;
     }
 
     /**
@@ -385,11 +391,11 @@ class Game {
         for (var achievement of this.getPlayer().achievements) {
             achievement.checkAchieved();
             if (achievement.isAchieved) {
-                achievementsHTML+= `<p class="list-item">${achievement.name} <i>"${achievement.description}"</i></p>`
+                achievementsHTML+= `<p class="list-item">${achievement.name} <i>"${achievement.description}"</i></p>`;
             }
         }
 
-        achievementsHTML += `</div>`
+        achievementsHTML += `</div>`;
         return achievementsHTML;
     }
 
@@ -398,16 +404,16 @@ class Game {
      * @returns {String} The HTML
      */
     getInventoryHTML() {
-        var inventoryHTML = `<div class="stats-category">`
+        var inventoryHTML = `<div class="stats-category">`;
 
         inventoryHTML += "<p><strong>Inventory:</strong></p>"; // Inventory title
 
         // Loop over the player's backpack
         for (var item of this.itemsToBackpack(this.getPlayer().inventory)) {
-           inventoryHTML+= `<p class="list-item">- ${item.name} (${item.count})</p>`
+           inventoryHTML+= `<p class="list-item">- ${item.name} (${item.count})</p>`;
         }
         
-        inventoryHTML += `</div>`
+        inventoryHTML += `</div>`;
         return inventoryHTML;
     }
 

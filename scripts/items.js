@@ -6,7 +6,7 @@ class Item {
      * @param {String} description - The description of the item
      * @param {Object} wearable - Options for where the player can wear this item
      */
-    constructor(name, description, wearable = {}) {
+    constructor(name, description, wearable) {
         this.name = name;
         this.description = description;
         this.id = Math.random(); // Used for item equipping
@@ -16,6 +16,10 @@ class Item {
 
     get shoesWearable() {
         return this.wearable.shoes
+    }
+
+    get hatWearable() {
+        return this.wearable.hat
     }
 }
 
@@ -156,6 +160,8 @@ class MeshFilter extends Item {
 class JungleHat extends Item {
     
     constructor() {
-        super("Jungle Hat", "IUNGLE BOIIIIIIIIII. FLY LIKE A BIRD, FLY THROUGH THE TREEEEES, SPEAK VIETNAMEEESE (only with this hat)")
+        super("Jungle Hat", "IUNGLE BOIIIIIIIIII. FLY LIKE A BIRD, FLY THROUGH THE TREEEEES, SPEAK VIETNAMEEESE (only with this hat)", {
+            hat: true
+        })
     }
 }

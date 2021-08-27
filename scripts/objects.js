@@ -115,6 +115,11 @@ class Player extends Object {
                 }
             }
         }
+
+        this.equipmentSlots = [
+            new EquipmentSlot("shoes"),
+            new EquipmentSlot("hat")
+        ]
     }
 
     get html() {
@@ -215,6 +220,7 @@ class Player extends Object {
             }
             // Update the stats display after changing the player's inventory
             game.updateStats();
+            game.updateEquipment();
             return;
         }
 
@@ -241,11 +247,12 @@ class Player extends Object {
 
             // Update the stats display after changing the player's inventory
             game.updateStats();
+            game.updateEquipment();
             return;
         }
 
         // The item isn't of the Item class, FATAL
-        console.log("FATAL: Attempting to add a non-item to a inventory! (item below)")
+        console.log("FATAL: Attempting to remove a non-item from a inventory! (item below)")
         console.log(item);
     }
 
@@ -303,15 +310,27 @@ class Player extends Object {
         var itemSlot = document.getElementById(slot);
         if (itemSlot) { // If the item slot is a valid slot
             var itemId = itemSlot.getAttribute("equipped"); // Get the id from the attribute
+            if (!itemId || itemId == "undefined") // No item is equipped
+                return undefined;
             var item = this.getItem(itemId); // Get the item
 
             if (!item) { // The item doesn't exist (got used up in crafting or somewhere else)
-                console.log("WARNING: Invalid item equipped, somewhere in the code we don't update the equipment!")
+                console.log(`WARNING: Invalid item equipped, somewhere in the code we don't update the equipment! (${itemId})`)
                 game.updateEquipment(); // Update the equipment
             }
 
             return item;
         }
+        console.log("item slot is undefined")
+    }
+
+    currentlyWearingItem(id) {
+        for (var element of document.getElementsByClassName("inv-slot")) {
+            if (element.getAttribute("equipped") == id) {
+                return true;
+            }
+        }
+        return false;
     }
 }
 
