@@ -222,7 +222,7 @@ class Game {
                 }
             }
             // Update not in backpack, add it
-            backpack.push({ name: item.name, count: 1 })
+            backpack.push({ name: item.name, count: 1, interact: item.interact, id: item.id })
         }
 
         return backpack;
@@ -413,7 +413,11 @@ class Game {
 
         // Loop over the player's backpack
         for (var item of this.itemsToBackpack(this.getPlayer().inventory)) {
-           inventoryHTML+= `<p class="list-item">- ${item.name} (${item.count})</p>`;
+           inventoryHTML += `<div style="width: 100%; display: flex; justify-content: space-between;"><p class="list-item" style="display: block;">- ${item.name} (${item.count})</p>`;
+            if (item.interact) {
+                inventoryHTML += `<button style="display: block;" onclick="game.getPlayer().getItem(${item.id}).interact()">Consume</button>`
+            }
+           inventoryHTML += `</div>`;
         }
         
         inventoryHTML += `</div>`;
