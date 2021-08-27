@@ -81,7 +81,8 @@ class Player extends Object {
         this.hp = 100;
         this.strength = 5;
         this.inventory = [
-            new Apple()
+            new Apple(),
+            new LeatherBoots()
         ];
       
         this.achievements = [
@@ -255,12 +256,22 @@ class Player extends Object {
      */
      getItemCount(itemToFind) {
         let amount = 0;
-        for (let item of this.inventory) {
+        for (var item of this.inventory) {
             if (item instanceof itemToFind) {
                 amount++;
             }
         }
         return amount;
+    }
+
+    getItem(id) {
+        for (var item of this.inventory) {
+            if (item.id == id) {
+                return item;
+            }
+        }
+        
+        return undefined;
     }
 
     /**
@@ -283,8 +294,23 @@ class Player extends Object {
 
                 this.addItem(recipe.output);
             } else {
-                console.log(`FATAL: Attempting to craft item (${recipe.output.name}) player doesn't hvae the items for`)
+                console.log(`FATAL: Attempting to craft item (${recipe.output.name}) player doesn't hvae the items for`);
             }
+        }
+    }
+
+    getItemSlot(slot) {
+        var itemSlot = document.getElementById(slot);
+        if (itemSlot) { // If the item slot is a valid slot
+            var itemId = itemSlot.getAttribute("equipped"); // Get the id from the attribute
+            var item = this.getItem(itemId); // Get the item
+
+            if (!item) { // The item doesn't exist (got used up in crafting or somewhere else)
+                console.log("WARNING: Invalid item equipped, somewhere in the code we don't update the equipment!")
+                game.updateEquipment(); // Update the equipment
+            }
+
+            return item;
         }
     }
 }

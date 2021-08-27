@@ -192,10 +192,19 @@ Messages
 /*
 Inventory
 */
+
 .inventory-tab {
     overflow-y: scroll;
 }
 
+.inv-item {
+    height: 30px;
+    width: 100%;
+}
+
+.inv-item:hover {
+    cursor: pointer;
+}
 
 /*
 Utility classes

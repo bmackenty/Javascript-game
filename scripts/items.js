@@ -4,10 +4,18 @@ class Item {
      * Create a item
      * @param {String} name - The name of the item
      * @param {String} description - The description of the item
+     * @param {Object} wearable - Options for where the player can wear this item
      */
-    constructor(name, description) {
+    constructor(name, description, wearable = {}) {
         this.name = name;
         this.description = description;
+        this.id = Math.random(); // Used for item equipping
+
+        this.wearable = wearable
+    }
+
+    get shoesWearable() {
+        return this.wearable.shoes
     }
 }
 
@@ -97,7 +105,9 @@ class RawMeat extends Item {
 class LeatherBoots extends Item {
 
     constructor() {
-        super("Leather Boots", "Great for hiking, not so much for killing.");
+        super("Leather Boots", "Great for hiking, not so much for killing.", {
+            shoes: true
+        });
     }
 }
 
