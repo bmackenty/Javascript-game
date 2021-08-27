@@ -352,25 +352,8 @@ class Game {
         statsHTML += `<p><strong>Health: </strong>${this.getPlayer().health}</p>`;
         
         statsHTML += this.getSkillsHTML(); // Display the player's skillSet
-
-        statsHTML += "<p><strong>Inventory:</strong></p>"; // Inventory title
-
-        // Loop over all the items in the player's inventory and display them
-        for (var item of this.itemsToBackpack(this.getPlayer().inventory)) {
-           statsHTML+= `- ${item.name} (${item.count})`
-           statsHTML+= `<br>`
-        }
-
-        statsHTML += "<br><p><strong>Achievements:</strong></p>";
-        
-        // Loop over all the achievements created and check if the condition to achieve them has been fulfilled.
-        // Display only the achieved ones inside the html.
-        for (var achievement of this.getPlayer().achievements) {
-            achievement.checkAchieved();
-            if (achievement.isAchieved) {
-                statsHTML+= `${achievement.name}<br> - "${achievement.description}"<br>`
-            }
-        }
+        statsHTML += this.getInventoryHTML(); // Display the player's inventory
+        statsHTML += this.getAchievementsHTML();
     
         // Display statsHTML onto the visible <div> element
         document.getElementById("stats").innerHTML = statsHTML;
@@ -378,15 +361,46 @@ class Game {
         this.updateCrafting(); // Whenever the stats are updated the recipes will also need to be updated
     }
     
-    getSkillsHTML() {
-        var skillsHTML = `<div style="margin: 10px 0;"><p"><strong>Skills:</strong></p>`;
+    getAchievementsHTML() {
+        var achievementsHTML = `<div class="stats-category">`;
+        achievementsHTML += "<p><strong>Achievements:</strong></p>";
+        
+        // Loop over all the achievements created and check if the condition to achieve them has been fulfilled.
+        // Display only the achieved ones inside the html.
+        for (var achievement of this.getPlayer().achievements) {
+            achievement.checkAchieved();
+            if (achievement.isAchieved) {
+                achievementsHTML+= `<p class="list-item">${achievement.name} <i>"${achievement.description}"</i></p>`
+            }
+        }
 
+        achievementsHTML += `</div>`
+        return achievementsHTML;
+    }
+
+    getInventoryHTML() {
+        var inventoryHTML = `<div class="stats-category">`
+
+        inventoryHTML += "<p><strong>Inventory:</strong></p>"; // Inventory title
+
+        // Loop over the player's backpack
+        for (var item of this.itemsToBackpack(this.getPlayer().inventory)) {
+           inventoryHTML+= `<p class="list-item">- ${item.name} (${item.count})</p>`
+        }
+        
+        inventoryHTML += `</div>`
+        return inventoryHTML;
+    }
+
+    getSkillsHTML() {
+        var skillsHTML = `<div class="stats-category"><p"><strong>Skills:</strong></p>`;
+
+        // Loop through all the player's skills
         for (var skill in this.getPlayer().skillSet) {
-            skillsHTML += `<p class="skill">${skill.charAt(0).toUpperCase() + skill.slice(1)} : ${this.getPlayer().getSkillLevel(skill)} (${this.getPlayer().getXpToNextLevel(skill)} xp to level up)</p>`
+            skillsHTML += `<p class="list-item">${skill.charAt(0).toUpperCase() + skill.slice(1)} : ${this.getPlayer().getSkillLevel(skill)} (${this.getPlayer().getXpToNextLevel(skill)} xp to level up)</p>`
         }
 
         skillsHTML += `</div>`
-
         return skillsHTML;
     }
 
@@ -413,7 +427,7 @@ class Game {
 
             // Loop through all the items required to make the recipe and display them
             for (var input of this.itemsToBackpack(recipe.input)) {
-                recipeHTML += `<li>- ${input.name} (${input.count})</li>`
+                recipeHTML += `<p class="list-item">- ${input.name} (${input.count})</p>`
             }
 
             // Create the recipeButton
