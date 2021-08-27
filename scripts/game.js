@@ -340,6 +340,9 @@ class Game {
         document.getElementById("map").innerHTML = mapHTML;
     }
 
+    /**
+     * Update the equipment tab
+     */
     updateEquipment() {
         var slotsHTML = "";
         var equipmentHTML = "";
