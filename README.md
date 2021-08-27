@@ -32,16 +32,16 @@ The coding tasks are broken down in 3 difficulty levels, X, XX, and XXX, with XX
 * Landing page `CON`
 * Credits (don't forget to add https://game-icons.net/)
 * Building (Placing walls and building fortifications) `POST`
-* Player clothing/armor equipping `CON`
+* Player clothing/armor equipping
 * Projectiles `POST`
 
 ### XX
 * Towns (buy / sell stores) `POST`
 * Quests
-* NPC's
+* NPC's `CON`
 * Shortcuts and help screen
-* Random events (fires, zombie apocalypse?, spider infestation)
-* Joe's all you can eat buffet (i'm not gonna question when this was here, why this was here, or who put this here, just gonna leave it)
+* Random events (fires, zombie apocalypse?, spider infestation) `CON`
+* Joe's all you can eat buffet (i'm not gonna question when this was here, why this was here, or who put this here, just gonna leave it) `CON`
 * Consuming items and eating food
 
 ### X
@@ -51,6 +51,7 @@ The coding tasks are broken down in 3 difficulty levels, X, XX, and XXX, with XX
 * More weapons
 * More crafting recipes
 * More objects
+* More enemies
 
 ### GB
 * Spider and Bear HP/Strength/Drops/XpDrops balances
