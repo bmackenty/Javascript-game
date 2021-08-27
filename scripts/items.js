@@ -128,6 +128,13 @@ class Berry extends Item {
     constructor() {
         super("Berry", "A ok food source.");
     }
+
+    interact() {
+        game.getPlayer().health += 10;
+        game.getPlayer().removeItem(this, 1);
+        game.alert("Ate an apple", "You regenerated 10 health")
+        return;
+    }
 }
 
 class Flint extends Item {

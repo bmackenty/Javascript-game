@@ -232,5 +232,8 @@ Utility classes
 }
 
 .list-item {
+    width: fit-content;
+    width: -moz-fit-content;
+
     text-indent: 10px;
 }
