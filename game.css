@@ -174,10 +174,29 @@ recipe > *:not(button) {
 }
 
 /*
+Achievements
+*/
+
+#achievements {
+    height: 300px;
+    overflow-y: scroll;
+}
+
+.achievement {
+    margin: 10px 0;
+}
+
+.achievement-title {
+    font-weight: 700;
+    text-align: center;
+}
+
+/*
 Messages
 */
 
 #messages {
+    height: 300px;
     overflow-y: scroll;
 }
 
