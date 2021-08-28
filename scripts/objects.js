@@ -82,8 +82,6 @@ class Player extends Object {
         this.strength = 5;
         this.inventory = [
             new Apple(),
-            new LeatherBoots(),
-            new Berry()
         ];
       
         this.achievements = [
