@@ -26,6 +26,7 @@ class Game {
             this.drawMap();
             this.updateStats();
             this.updateCrafting();
+            this.updateAchievements();
         }
     }
 
@@ -373,7 +374,6 @@ class Game {
         
         statsHTML += this.getSkillsHTML(); // Display skillSet
         statsHTML += this.getInventoryHTML(); // Display inventory
-        statsHTML += this.getAchievementsHTML(); // Display achievements
     
         // Display statsHTML onto the visible <div> element
         document.getElementById("stats").innerHTML = statsHTML;
@@ -382,19 +382,26 @@ class Game {
     }
 
     /**
+     * Updates the achievements tab
+     */
+    updateAchievements() {
+        document.getElementById("achievements").innerHTML = this.getAchievementsHTML();
+    }
+
+    /**
      * Gets the achievementsHTML
      * @returns {String} The HTML
      */
     getAchievementsHTML() {
-        var achievementsHTML = `<div class="stats-category">`;
-        achievementsHTML += "<p><strong>Achievements:</strong></p>";
+        var achievementsHTML = '';
+        achievementsHTML += "<p class='achievement-title'><strong>Achievements</strong></p>";
         
         // Loop over all the achievements created and check if the condition to achieve them has been fulfilled.
         // Display only the achieved ones inside the html.
         for (var achievement of this.getPlayer().achievements) {
             achievement.checkAchieved();
             if (achievement.isAchieved) {
-                achievementsHTML+= `<p class="list-item">${achievement.name} <i>"${achievement.description}"</i></p>`;
+                achievementsHTML+= `<p class="achievement"><strong>${achievement.name}</strong><br><i>"${achievement.description}"</i></p>`;
             }
         }
 
