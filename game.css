@@ -1,0 +1,258 @@
+/*
+Layout
+*/
+html, body {
+    height: 100%;
+    width: 100%;
+
+    margin: 0;
+    padding: 0;
+
+    font-family: 'Ubuntu', sans-serif;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.game {
+    flex-direction: column;
+
+    height: 650px;
+    width: 100%;
+    
+    padding: 20px 25px;
+
+    border: 1px solid black;
+
+    background-color: white;
+}
+
+.game-board {
+    display: flex;
+    flex-direction: row;
+
+    height: 610px;
+    width: 100%;
+}
+
+.game-board > * {
+    display: flex;
+    flex-direction: column;
+
+    /* Do not know why the height is this exact number, it just happens to work */
+    height: 608px;
+    width: 100%;
+
+    margin: -1px 0 0 -1px;
+    padding: 2px;
+
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+#map {
+    flex-direction: column-reverse;
+
+    border-width: 5px;
+
+    height: 600px;
+    width: 600px;
+}
+/*
+Map
+*/
+
+#map {
+    position: relative;
+}
+
+#map::before {
+    position: absolute;
+
+    height: 100%;
+    width: 100%;
+
+    padding: calc(50% - 4rem) 0;
+
+    font-size: 4rem;
+    font-family: 'DEATH FONT ver1.0', sans-serif;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0);
+    color: transparent;
+
+    content: "You dead";
+    box-sizing: border-box;
+    z-index: 2;
+
+    transition: color 4s linear;
+    transition: background-color 4s linear;
+}
+
+.map-ended::before {
+    background-color: rgba(0, 0, 0, 0.9) !important;
+    color: white !important;
+}
+
+.map-row {
+    display: flex;
+    flex-direction: row;
+
+    flex-grow: 1;
+    width: 100%;
+}
+
+.map-loc {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-grow: 1;
+
+    margin: 1px;
+
+    overflow: hidden;
+}
+
+/*
+Stats tab
+*/
+
+.stats-tab {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.stats-tab > * {
+    height: 50%;
+    width: 100%;
+}
+
+/*
+Stats and Skills
+*/
+
+#stats {
+    padding: 10px;
+
+    overflow-y: scroll;
+    box-sizing: border-box;
+}
+
+#stats p {
+    margin: 3px 0;
+}
+
+.stats-category {
+    margin: 10px 0;
+}
+
+/*
+Recipes
+*/
+
+.recipes {
+    padding: 10px;
+
+    overflow-y: scroll;
+    box-sizing: border-box;
+}
+
+recipe {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+recipe > *:not(button) {
+    margin: 2px 0;
+    width: 100%;
+}
+
+/*
+Achievements
+*/
+
+#achievements {
+    height: 300px;
+    overflow-y: scroll;
+}
+
+.achievement {
+    margin: 10px 0;
+}
+
+.achievement-title {
+    font-weight: 700;
+    text-align: center;
+}
+
+/*
+Messages
+*/
+
+#messages {
+    height: 300px;
+    overflow-y: scroll;
+}
+
+.message {
+    margin: 10px 0;
+}
+
+.message-title {
+    font-weight: 700;
+}
+
+/*
+Inventory
+*/
+
+.inventory-tab {
+    overflow-y: scroll;
+}
+
+.inv-item {
+    margin: 3px 0;
+
+    height: 30px;
+    width: 100%;
+
+    font-size: 1rem;
+}
+
+.inv-drop {
+    margin: 2px 0;
+    padding: 5px;
+
+    height: 1rem;
+
+    border: 1px solid black;
+}
+
+.inv-item:hover, .inv-drop:hover:not(:empty) {
+    cursor: pointer;
+}
+
+/*
+Utility classes
+*/
+
+.tab-header {
+    width: 100%;
+
+    font-weight: 700;
+    font-size: normal;
+    text-align: center;
+}
+
+.list-item {
+    width: fit-content;
+    width: -moz-fit-content;
+
+    text-indent: 10px;
+}

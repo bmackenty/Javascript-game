@@ -1,0 +1,59 @@
+<html>
+    <head>
+        <title>A Game!</title>
+        <link rel="stylesheet" href="game.css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+
+        <!-- Ubuntu font is the best change my mind -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap" rel="stylesheet"> 
+        <link href="http://fonts.cdnfonts.com/css/death-font" rel="stylesheet"> <!-- Death Message Font -->
+
+        <meta charset="UTF-8">
+    </head>
+    <body>
+        <div class="game">
+            <div class="game-board">
+                <div>
+                    <div id='achievements'>
+                        <p class="tab-header">Achievements</p>
+                    </div>
+
+                    <div id="messages">
+                        <p class="tab-header">Messages</p>
+                    </div>
+                </div>
+            
+                <div id="map">
+                    Loading map...
+                </div>
+
+                <div class="stats-tab">
+                    <div id="stats">
+                        Loading statistics...
+                    </div>
+                    <div class="recipes">
+                        <p class="tab-header">Recipes</p>
+                        <div id="recipes-list">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="inventory-tab">
+                    <div id="inventory-slots">
+                    </div>
+
+                    <div id="inventory-list">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="./scripts/equipment.js"></script>
+        <script src="./scripts/game.js"></script>
+        <script src="./scripts/achievements.js"></script>
+        <script src="./scripts/objects.js"></script>
+        <script src="./scripts/items.js"></script>
+        <script src="./scripts/start.js"></script>
+    </body>
+</html>
