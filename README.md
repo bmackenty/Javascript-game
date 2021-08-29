@@ -1,5 +1,5 @@
 # javascript-text-based-RPG
-This is a rework of a javascript implementation of a simple ascii art RPG game using classes and variables with names that make sense. There is a worse version of this online at [https://yeoldequiveringcommunistzombies.com/](yeoldequiveringcommunistzombies.com).
+This is a rework of a javascript implementation of a simple ascii art RPG game using classes and variables with names that make sense. There is a <strike>worse</strike> version of this online at [https://yeoldequiveringcommunistzombies.com/](yeoldequiveringcommunistzombies.com).
 
 # Tasks
 
