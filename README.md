@@ -90,5 +90,7 @@ The coding tasks are broken down in 3 difficulty levels, X, XX, and XXX, with XX
 
 ## Current maintainers
 
-- @dladeira (Daniel Ladeira) - XXX
-- @swissguy5 (Ethen Papp) - XX
+- @dladeira (Daniel Ladeira)
+- @swissguy5 (Ethen Papp)
+- @bmackenty (Mr. MacKenty)
+- All the students in the high school computer club
