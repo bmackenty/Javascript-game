@@ -11,7 +11,7 @@ May the code flow.
 # Tasks
 
 ## Difficulty
-The coding tasks are broken down in 3 difficulty levels, X, XX, and XXX, with XXX being the hardest. The game design tasks are broken down in 3 difficulties, GB, GD, and GM, both requiring different skillsets. This is the knowleadge required for each of the difficulties.
+The coding tasks are broken down in 3 difficulty levels, X, XX, and XXX, with XXX being the hardest. The game design tasks are broken down in 3 difficulties, GB, GD, and GM, both requiring different skillsets. This is the knowledge required for each of the difficulties.
 
 - X - Simple understanding of OOP (Objects/Inheritance/Classes) and ability to work with basic javascript operands and variables. Simple knowleadge of HTML and CSS.
 
