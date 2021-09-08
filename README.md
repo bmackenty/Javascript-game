@@ -92,7 +92,7 @@ The coding tasks are broken down in 3 difficulty levels, X, XX, and XXX, with XX
 ## Current maintainers
 
 - @dladeira (Daniel Ladeira)
-- @swissguy5 (Ethan Papp)
+- @swissguy5 (Ethen Papp)
 - @bmackenty (Mr. MacKenty)
 - Elena
 - Maxim
