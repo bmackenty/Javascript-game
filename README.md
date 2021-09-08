@@ -47,6 +47,7 @@ The coding tasks are broken down in 3 difficulty levels, X, XX, and XXX, with XX
 * Joe's all you can eat buffet (i'm not gonna question when this was here, why this was here, or who put this here, just gonna leave it) `CON`
 * Building (Placing walls and building fortifications) `POST` `CON`
 * Player render distance (sight)
+* Make achievement tab resizable
 
 ### X
 * Implement landing page
@@ -91,7 +92,7 @@ The coding tasks are broken down in 3 difficulty levels, X, XX, and XXX, with XX
 ## Current maintainers
 
 - @dladeira (Daniel Ladeira)
-- @swissguy5 (Ethan Papp)
+- @swissguy5 (Ethen Papp)
 - @bmackenty (Mr. MacKenty)
 - Elena
 - Maxim

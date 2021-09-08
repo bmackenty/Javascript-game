@@ -137,6 +137,9 @@ class Player extends Object {
 
     /**
      * Get the player's health
+     * @description This method is used to preform calculations on the players health.
+     * The player's HP variable should not be accessed directly, instead use this method
+     * (If you want to find out more about these coding practices read about getters and setters)
      */
      get health() {
         // If the player is alive display his health
