@@ -1,0 +1,57 @@
+* {
+    margin: 0px;
+    padding: 0px;
+    font-family: ubuntu;
+}
+
+nav {
+    background-color: rgb(32, 32, 32);
+    color: white;
+    height: 70px;
+    display: flex;
+    justify-content: center;
+    
+}
+
+.nav-button {
+    height: 70px;
+    width: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: rgb(49, 49, 49);
+    color: white;
+    text-decoration: none;
+}
+
+.nav-button:hover {
+
+    background-color: #cc0000;
+    color: #faf333;
+}
+
+.nav-text {
+    font-size: 30px;
+    text-align: center;
+}
+
+.welcome {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    flex-grow: 100%;
+}
+
+.welcome-item {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.welcome-text {
+    color: #cc0000;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    font-size: 2rem;
+}
