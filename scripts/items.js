@@ -158,6 +158,14 @@ class SewingKit extends Item {
     }
 }
 
+class TearOfDragon extends Item {
+
+    constructor() {
+        super("Tears of Dragon", "The part of legendary myth");
+    }
+}
+
+
 class FlintAxe extends Item {
 
     constructor() {
