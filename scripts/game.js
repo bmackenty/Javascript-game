@@ -376,8 +376,8 @@ class Game {
 
         statsHTML += `<p style="text-align: center"><strong>TURN </strong>${this.currentTurn}</p>`
         statsHTML += `<p><strong>Health: </strong>${this.getPlayer().health}</p>`;
-        statsHTML += `<p><strong>strength: </strong>${this.getPlayer().strength}</p>`;
-        statsHTML += `<p><strong>defence: </strong>${this.getPlayer().defence}</p>`;
+        statsHTML += `<p><strong>Strength: </strong>${this.getPlayer().strength}</p>`;
+        statsHTML += `<p><strong>Defence: </strong>${this.getPlayer().defence}</p>`;
         
         statsHTML += this.getSkillsHTML(); // Display skillSet
         statsHTML += this.getInventoryHTML(); // Display inventory
