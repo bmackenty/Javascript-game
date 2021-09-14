@@ -130,7 +130,9 @@ class Berry extends Item {
     }
 
     interact() {
-        game.getPlayer().health += 10;
+        if (game.getPlayer().health + 10 <= 100) {
+            game.getPlayer().health += 10;
+        }
         game.getPlayer().removeItem(this, 1);
         game.alert("Ate an apple", "You regenerated 10 health")
         return;
