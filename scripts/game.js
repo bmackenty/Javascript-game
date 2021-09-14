@@ -266,6 +266,11 @@ class Game {
                     continue;
                 }
 
+                if (randomNumber < 40.8) { // 0.1% chance we spawn a bear spider
+                    this.addObject(new Dragon().spawn(x, y));
+                    continue;
+                }
+
                 if (randomNumber < 41.7) { // 1% chance we spawn a berry bush
                     this.addObject(new BerryBush().spawn(x, y));
                     continue;

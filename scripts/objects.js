@@ -636,6 +636,32 @@ class Bear extends Enemy {
     }
 }
 
+class Dragon extends Enemy {
+    /**
+     * Create the bear
+     */
+    constructor() {
+        super("Dragon", 200, 30, 2, [new TearOfDragon()], 0,100);
+    }
+
+    get aliveHtml() {
+        return '<i class="fas fa-dragon" style="color:purple" title="A Dragon."></i>';
+    }
+
+    get deadHtml() {
+        return '<i class="fas fa-dragon" style="color:lightgray" title="A Dragon."></i>';
+    }
+
+    get type() {
+        return 'Dragon';
+    }
+}
+
+
+
+
+
+
 class Tree extends Object {
 
     /**
