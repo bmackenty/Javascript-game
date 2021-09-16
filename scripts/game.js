@@ -22,7 +22,7 @@ class Game {
                 object.doTurn();
             }
 
-            // Update the map and statistics after finishing the turn
+            // Update the map and statistics after finishing eachZ turn
             this.drawMap();
             this.updateStats();
             this.updateCrafting();
