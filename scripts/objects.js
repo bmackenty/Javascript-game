@@ -79,6 +79,7 @@ class Player extends Object {
         super({})
         this.name = name;
         this.hp = 100;
+        this.maxHp = 100;
         this.strength = 5;
         this.inventory = [
             new Apple(),
@@ -150,15 +151,25 @@ class Player extends Object {
     /**
      * Set the player's health
      * @param {Number} newHealth - The new amount of health
+     * @returns {Boolean} Whether the player has reached the health cap
      */
     set health(newHealth) {
+
         if (this.isAlive) {
-            // If the player is alive set the health
+            // Check for max health
+            if (newHealth > this.maxHp) {
+                this.health = this.maxHp
+                return true;
+            }
+
+            // Set the health
             this.hp = newHealth;
 
             // Check if the health set kills the player
             if (!this.isAlive) {
-                game.endGame(); // End the gmae (player dead)
+                game.endGame(); // End the game (player dead)
+
+            return false;
             }
         }
     }
