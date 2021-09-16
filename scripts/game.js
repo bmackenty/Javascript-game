@@ -552,6 +552,7 @@ class Game {
      * End the game
      */
     endGame() {
+        //piggy
         this.running = false;
 
         // After 200ms alert the player of their death and display the death screen
