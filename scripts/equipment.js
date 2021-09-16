@@ -9,6 +9,7 @@ class EquipmentSlot {
     }
 
     get html() {
+        // this is a test push
         var equipped;
         if (game && game.getPlayer().getItemSlot(this.slotName))
             equipped = game.getPlayer().getItemSlot(this.slotName)
