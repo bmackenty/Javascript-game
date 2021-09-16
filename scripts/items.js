@@ -20,6 +20,7 @@ class Item {
     }
 
     get hatWearable() {
+        // this is a test push
         return this.wearable.hat
     }
 }
