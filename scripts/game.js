@@ -261,12 +261,12 @@ class Game {
                     continue;
                 }
     
-                if (randomNumber < 40.7) { // 0.1% chance we spawn a bear spider
+                if (randomNumber < 40.7) { // 0.1% chance we spawn a bear
                     this.addObject(new Bear().spawn(x, y));
                     continue;
                 }
 
-                if (randomNumber < 40.8) { // 0.1% chance we spawn a bear spider
+                if (randomNumber < 40.8) { // 0.1% chance we spawn a Dragon
                     this.addObject(new Dragon().spawn(x, y));
                     continue;
                 }

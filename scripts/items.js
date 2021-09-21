@@ -133,7 +133,21 @@ class Berry extends Item {
     interact() {
         game.getPlayer().health += 10;
         game.getPlayer().removeItem(this, 1);
-        game.alert("Ate an apple", "You regenerated 10 health")
+        game.alert("Ate an berry", "You regenerated 10 health")
+        return;
+    }
+}
+
+class BerryStew extends Item {
+
+    constructor() {
+        super("Berry Stew", "nice food you cooked");
+    }
+
+    interact() {
+        game.getPlayer().health += 30;
+        game.getPlayer().removeItem(this, 1);
+        game.alert("Ate an Berry Stew", "You regenerated 30 health")
         return;
     }
 }
