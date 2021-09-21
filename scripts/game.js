@@ -360,8 +360,10 @@ class Game {
         document.getElementById("inventory-slots").innerHTML = slotsHTML;
 
         for (var item of this.getPlayer().inventory) {
-            if (item.wearable && !this.getPlayer().currentlyWearingItem(item.id)) { // If the item is wearable and the player isn't currently wearing it
-                equipmentHTML += `<p class="inv-item" data-item="${item.id}" shoes="${item.shoesWearable}" hat="${item.hatWearable}" draggable="true" ondragstart="drag(event)">${item.name}</p>`;
+            if ((item.smackable && !this.getPlayer().currentlyWearingItem(item.id)) || (item.wearable && !this.getPlayer().currentlyWearingItem(item.id))) { // If the item is wearable and the player isn't currently wearing it
+                if (!equipmentHTML.includes(item.name)){
+                    equipmentHTML += `<p class="inv-item" data-item="${item.id}" shoes="${item.shoesWearable}" smacky="${item.smackySmackable}" hat="${item.hatWearable}" draggable="true" ondragstart="drag(event)">${item.name}</p>`;
+                }
             }
         }
 
@@ -376,8 +378,6 @@ class Game {
 
         statsHTML += `<p style="text-align: center"><strong>TURN </strong>${this.currentTurn}</p>`
         statsHTML += `<p><strong>Health: </strong>${this.getPlayer().health}</p>`;
-        statsHTML += `<p><strong>Strength: </strong>${this.getPlayer().strength}</p>`;
-        statsHTML += `<p><strong>Defence: </strong>${this.getPlayer().defence}</p>`;
         
         statsHTML += this.getSkillsHTML(); // Display skillSet
         statsHTML += this.getInventoryHTML(); // Display inventory
@@ -557,6 +557,7 @@ class Game {
      * End the game
      */
     endGame() {
+        //piggy
         this.running = false;
 
         // After 200ms alert the player of their death and display the death screen

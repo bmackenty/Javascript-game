@@ -81,6 +81,7 @@ class Player extends Object {
         this.hp = 100;
         this.maxHp = 100;
         this.strength = 5;
+        // if weapon equiped(){strength = strength+weaponStrength}
         this.inventory = [
             new Apple(),
         ];
@@ -119,7 +120,8 @@ class Player extends Object {
 
         this.equipmentSlots = [
             new EquipmentSlot("shoes"),
-            new EquipmentSlot("hat")
+            new EquipmentSlot("hat"),
+            new EquipmentSlot("smacky")
         ]
     }
 
@@ -133,6 +135,17 @@ class Player extends Object {
 
     // Keep this method here for future items that do more damage
     get attack() {
+        if (game && game.getPlayer().getItemSlot('smacky')){
+            var equipped = game.getPlayer().getItemSlot('smacky');
+            console.log(this.strength);
+            if (equipped.name!="Raw Meat"){
+                this.strength += equipped.wearable.damage;
+            }else{
+                this.strength = 0;
+            }
+            console.log(this.strength);
+            console.log(equipped);
+        }
         var combatBonus = ((this.getSkillLevel("combat")*0.9)**1.4)
         return Math.round(this.strength + combatBonus);
     }
@@ -478,6 +491,19 @@ class Enemy extends Object {
             game.removeObject(this);
             game.alert(`Looted ${this.name}`, message);
         } else {
+            /**
+             * Meat Slappping
+             */
+                console.log(this.name);
+                if (this.name == "Bear"){
+                    if (game && game.getPlayer().getItemSlot('smacky')){
+                        var equipped = game.getPlayer().getItemSlot('smacky');
+                        console.log(this.strength);
+                        if (equipped.name=="Raw Meat"){
+                            game.alert("Ultimate Power", `You have slapped the bear with raw meat. 0 points for damage, 10 points for style.`);
+                        }
+                    }
+                }
             var damageTaken = game.getPlayer().attack;
             this.takeDamage(damageTaken);
 
@@ -485,7 +511,17 @@ class Enemy extends Object {
                 game.alert(`Killed ${this.name}`, `Dealt ${damageTaken} damage and killed ${this.name} (gained ${this.combatXpGain} combat xp)`);
                 game.getPlayer().addSkillXp("combat", this.combatXpGain);
             } else {
-                game.alert(`Attacked ${this.name}`, `Dealt ${damageTaken} damage (${this.health} health left)`);
+                if (this.name == "Bear"){
+                    if (game && game.getPlayer().getItemSlot('smacky')){
+                        var equipped = game.getPlayer().getItemSlot('smacky');
+                        console.log(this.strength);
+                        if (equipped.name!="Raw Meat"){
+                            game.alert(`Attacked ${this.name}`, `Dealt ${damageTaken} damage (${this.health} health left)`);
+                        }
+                    }
+                }else{
+                    game.alert(`Attacked ${this.name}`, `Dealt ${damageTaken} damage (${this.health} health left)`);
+                }
             }
         }
     }
@@ -648,32 +684,6 @@ class Bear extends Enemy {
     }
 }
 
-class Dragon extends Enemy {
-    /**
-     * Create the bear
-     */
-    constructor() {
-        super("Dragon", 200, 30, 2, [new TearOfDragon()], 0,100);
-    }
-
-    get aliveHtml() {
-        return '<i class="fas fa-dragon" style="color:purple" title="A Dragon."></i>';
-    }
-
-    get deadHtml() {
-        return '<i class="fas fa-dragon" style="color:lightgray" title="A Dragon."></i>';
-    }
-
-    get type() {
-        return 'Dragon';
-    }
-}
-
-
-
-
-
-
 class Tree extends Object {
 
     /**
@@ -726,6 +736,7 @@ class Tree extends Object {
         game.alert("Cut down tree", `You have cut down a tree for ${woodDrop} wood and ${stickDrop} stick`);
         game.removeObject(this)
     }
+
 }
 
 class BerryBush extends Object {
