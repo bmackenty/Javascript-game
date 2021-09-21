@@ -610,7 +610,7 @@ class Spider extends Enemy {
      * @param {Boolean} dead - Controls whether the spider spawns dead or not
      */
     constructor(dead = false) {
-        super("Spider", dead ? 0 : 10, 10, 7, [new String(), new Bone(), new Bone()], 0.15, 7);
+        super("Spider", dead ? 0 : 10, 5, 7, [new String(), new Bone(), new Bone()], 0.15, 7);
     }
 
     get aliveHtml() {
@@ -632,7 +632,7 @@ class Bear extends Enemy {
      * Create the bear
      */
     constructor() {
-        super("Bear", 40, 10, 10, [new Leather(), new Leather(), new Leather(), new RawMeat(), new RawMeat()], 0.05, 30);
+        super("Bear", 40, 15, 10, [new Leather(), new Leather(), new Leather(), new RawMeat(), new RawMeat()], 0.05, 30);
     }
 
     get aliveHtml() {
@@ -653,7 +653,7 @@ class Dragon extends Enemy {
      * Create the bear
      */
     constructor() {
-        super("Dragon", 200, 30, 2, [new TearOfDragon()], 0,100);
+        super("Dragon", 150, 30, 2, [new TearOfDragon()], 0,100);
     }
 
     get aliveHtml() {
