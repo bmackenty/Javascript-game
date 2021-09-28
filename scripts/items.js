@@ -5,12 +5,14 @@ class Item {
      * @param {String} name - The name of the item
      * @param {String} description - The description of the item
      * @param {Object} wearable - Options for where the player can wear this item
+     * @param {Object} smackable - Option if it is a weapon
      */
-    constructor(name, description, wearable, stats) {
+    constructor(name, description, smackable, wearable, stats) {
         this.name = name;
         this.description = description;
         this.id = Math.random(); // Used for item equipping
 
+        this.smackable = smackable;
         this.wearable = wearable
         this.stats = stats;
     }
@@ -21,6 +23,10 @@ class Item {
 
     get hatWearable() {
         return this.wearable.hat
+    }
+
+    get smackySmackable() {
+        return this.smackable.smacky
     }
 }
 
@@ -73,21 +79,33 @@ class Wood extends Item {
 class Stick extends Item {
 
     constructor() {
-        super("Stick", "Almight stick.");
+        super("Stick", "Almight stick.",{
+            smacky: true
+        }, {
+            damage: 1.25*(5/3)
+        })
     }
 }
 
 class SharpenedStick extends Item {
 
     constructor() {
-        super("Sharpened Stick", "It's a stick, AND IT'S SHARPENED.")
+        super("Sharpened Stick", "It's a stick, AND IT'S SHARPENED.",{
+            smacky: true
+        }, {
+            damage: 1.75*(5/3)
+        })
     }
 }
 
 class Bone extends Item {
 
     constructor() {
-        super("Bone", "Some being's bone.");
+        super("Bone", "Some being's bone.",{
+            smacky: true
+        }, {
+            damage: 1.5*(5/3)
+        })
     }
 }
 
@@ -104,11 +122,34 @@ class Leather extends Item {
         super("Leather", "Maybe you can make some clothes out of this...");
     }
 }
+class Fire extends Item{
+    constructor() {
+        super("Fire","first revolution of humankind")
+    }
+}
 
 class RawMeat extends Item {
 
     constructor() {
-        super("Raw Meat", "Not recommended to be eaten raw.");
+        super("Raw Meat", "Not recommended to be eaten raw.",{
+            smacky: true
+        }, {
+            damage: 1*(5/3)
+        })
+    }
+}
+
+class CookedMeat extends Item {
+
+    constructor() {
+        super("Cooked meat", "Best Food to eat");
+    }
+
+    interact() {
+        game.getPlayer().health += 45;
+        game.getPlayer().removeItem(this, 1);
+        game.alert("Ate cooked meat", "You regenerated 40 health")
+        return;
     }
 }
 
@@ -132,7 +173,21 @@ class Berry extends Item {
     interact() {
         game.getPlayer().health += 10;
         game.getPlayer().removeItem(this, 1);
-        game.alert("Ate an apple", "You regenerated 10 health")
+        game.alert("Ate an berry", "You regenerated 10 health")
+        return;
+    }
+}
+
+class BerryStew extends Item {
+
+    constructor() {
+        super("Berry Stew", "nice food you cooked");
+    }
+
+    interact() {
+        game.getPlayer().health += 25;
+        game.getPlayer().removeItem(this, 1);
+        game.alert("Ate an Berry Stew", "You regenerated 25 health")
         return;
     }
 }
@@ -161,7 +216,11 @@ class SewingKit extends Item {
 class FlintAxe extends Item {
 
     constructor() {
-        super("Flint axe", "It's not amazing, great, or good, but better than whatever you have.")
+        super("Flint axe", "It's not amazing, great, or good, but better than whatever you have.",{
+            smacky: true
+        }, {
+            damage: 3
+        })
     }
 }
 
@@ -182,3 +241,14 @@ class JungleHat extends Item {
         })
     }
 }
+
+
+/**
+ * List of weapons
+ * Fist - 1
+ * Stick - 1.25
+ * Bone - 1.5
+ * Sharpened Stick - 1.75
+ * Flint Ace - 2
+ * Meat - 1
+ */

@@ -261,8 +261,13 @@ class Game {
                     continue;
                 }
     
-                if (randomNumber < 40.7) { // 0.1% chance we spawn a bear spider
+                if (randomNumber < 40.7) { // 0.1% chance we spawn a bear
                     this.addObject(new Bear().spawn(x, y));
+                    continue;
+                }
+
+                if (randomNumber < 40.8) { // 0.1% chance we spawn a Dragon
+                    this.addObject(new Dragon().spawn(x, y));
                     continue;
                 }
 
@@ -355,8 +360,10 @@ class Game {
         document.getElementById("inventory-slots").innerHTML = slotsHTML;
 
         for (var item of this.getPlayer().inventory) {
-            if (item.wearable && !this.getPlayer().currentlyWearingItem(item.id)) { // If the item is wearable and the player isn't currently wearing it
-                equipmentHTML += `<p class="inv-item" data-item="${item.id}" shoes="${item.shoesWearable}" hat="${item.hatWearable}" draggable="true" ondragstart="drag(event)">${item.name}</p>`;
+            if ((item.smackable && !this.getPlayer().currentlyWearingItem(item.id)) || (item.wearable && !this.getPlayer().currentlyWearingItem(item.id))) { // If the item is wearable and the player isn't currently wearing it
+                if (!equipmentHTML.includes(item.name)){
+                    equipmentHTML += `<p class="inv-item" data-item="${item.id}" shoes="${item.shoesWearable}" smacky="${item.smackySmackable}" hat="${item.hatWearable}" draggable="true" ondragstart="drag(event)">${item.name}</p>`;
+                }
             }
         }
 
@@ -550,6 +557,7 @@ class Game {
      * End the game
      */
     endGame() {
+        //piggy
         this.running = false;
 
         // After 200ms alert the player of their death and display the death screen
