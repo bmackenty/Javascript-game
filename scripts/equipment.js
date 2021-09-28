@@ -9,7 +9,6 @@ class EquipmentSlot {
     }
 
     get html() {
-        // this is a test push
         var equipped;
         if (game && game.getPlayer().getItemSlot(this.slotName))
             equipped = game.getPlayer().getItemSlot(this.slotName)
@@ -37,6 +36,7 @@ function drag(ev) {
     ev.dataTransfer.setData("name", ev.target.innerHTML);
     ev.dataTransfer.setData("shoes", ev.target.getAttribute("shoes"));
     ev.dataTransfer.setData("hat", ev.target.getAttribute("hat"));
+    ev.dataTransfer.setData("smacky", ev.target.getAttribute("smacky"));
 }
 
 function equipItem(slotType, e) {

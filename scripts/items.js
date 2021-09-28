@@ -5,12 +5,14 @@ class Item {
      * @param {String} name - The name of the item
      * @param {String} description - The description of the item
      * @param {Object} wearable - Options for where the player can wear this item
+     * @param {Object} smackable - Option if it is a weapon
      */
-    constructor(name, description, wearable, stats) {
+    constructor(name, description, smackable, wearable, stats) {
         this.name = name;
         this.description = description;
         this.id = Math.random(); // Used for item equipping
 
+        this.smackable = smackable;
         this.wearable = wearable
         this.stats = stats;
     }
@@ -20,8 +22,11 @@ class Item {
     }
 
     get hatWearable() {
-        // this is a test push
         return this.wearable.hat
+    }
+
+    get smackySmackable() {
+        return this.smackable.smacky
     }
 }
 
@@ -74,21 +79,33 @@ class Wood extends Item {
 class Stick extends Item {
 
     constructor() {
-        super("Stick", "Almight stick.");
+        super("Stick", "Almight stick.",{
+            smacky: true
+        }, {
+            damage: 1.25*(5/3)
+        })
     }
 }
 
 class SharpenedStick extends Item {
 
     constructor() {
-        super("Sharpened Stick", "It's a stick, AND IT'S SHARPENED.")
+        super("Sharpened Stick", "It's a stick, AND IT'S SHARPENED.",{
+            smacky: true
+        }, {
+            damage: 1.75*(5/3)
+        })
     }
 }
 
 class Bone extends Item {
 
     constructor() {
-        super("Bone", "Some being's bone.");
+        super("Bone", "Some being's bone.",{
+            smacky: true
+        }, {
+            damage: 1.5*(5/3)
+        })
     }
 }
 
@@ -114,7 +131,11 @@ class Fire extends Item{
 class RawMeat extends Item {
 
     constructor() {
-        super("Raw Meat", "Not recommended to be eaten raw.");
+        super("Raw Meat", "Not recommended to be eaten raw.",{
+            smacky: true
+        }, {
+            damage: 1*(5/3)
+        })
     }
 }
 
@@ -192,18 +213,14 @@ class SewingKit extends Item {
     }
 }
 
-class TearOfDragon extends Item {
-
-    constructor() {
-        super("Tears of Dragon", "The part of legendary myth");
-    }
-}
-
-
 class FlintAxe extends Item {
 
     constructor() {
-        super("Flint axe", "It's not amazing, great, or good, but better than whatever you have.")
+        super("Flint axe", "It's not amazing, great, or good, but better than whatever you have.",{
+            smacky: true
+        }, {
+            damage: 3
+        })
     }
 }
 
@@ -224,3 +241,14 @@ class JungleHat extends Item {
         })
     }
 }
+
+
+/**
+ * List of weapons
+ * Fist - 1
+ * Stick - 1.25
+ * Bone - 1.5
+ * Sharpened Stick - 1.75
+ * Flint Ace - 2
+ * Meat - 1
+ */
