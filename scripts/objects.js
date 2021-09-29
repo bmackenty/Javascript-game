@@ -79,6 +79,7 @@ class Player extends Object {
         super({})
         this.name = name;
         this.hp = 100;
+        this.maxHp = 100;
         this.strength = 5;
         // if weapon equiped(){strength = strength+weaponStrength}
         this.inventory = [
@@ -95,6 +96,7 @@ class Player extends Object {
 
         this.recipeList = [
             new Recipe(new LeatherBoots(), [new Leather(), new Leather(), new String()]),
+            new Recipe(new BerryStew(), [new Berry(), new Berry()]),
             new Recipe(new SewingKit, [new String(), new String(), new String(), new SharpenedStick()]),
             new Recipe(new MeshFilter(), [new String(), new String(), new String(), new SewingKit()]),
             new Recipe(new SharpenedStick(), [new Wood(), new Stick(), new Stick(), new Flint()]),
@@ -133,19 +135,20 @@ class Player extends Object {
 
     // Keep this method here for future items that do more damage
     get attack() {
+        var damageEquiped = this.strength
         if (game && game.getPlayer().getItemSlot('smacky')){
             var equipped = game.getPlayer().getItemSlot('smacky');
             console.log(this.strength);
             if (equipped.name!="Raw Meat"){
-                this.strength += equipped.wearable.damage;
+                damageEquiped += equipped.wearable.damage;
             }else{
-                this.strength = 0;
+                damageEquiped = 0;
             }
             console.log(this.strength);
             console.log(equipped);
         }
         var combatBonus = ((this.getSkillLevel("combat")*0.9)**1.4)
-        return Math.round(this.strength + combatBonus);
+        return Math.round(damageEquiped + combatBonus);
     }
 
     /**
@@ -163,15 +166,25 @@ class Player extends Object {
     /**
      * Set the player's health
      * @param {Number} newHealth - The new amount of health
+     * @returns {Boolean} Whether the player has reached the health cap
      */
     set health(newHealth) {
+
         if (this.isAlive) {
-            // If the player is alive set the health
+            // Check for max health
+            if (newHealth > this.maxHp) {
+                this.health = this.maxHp
+                return true;
+            }
+
+            // Set the health
             this.hp = newHealth;
 
             // Check if the health set kills the player
             if (!this.isAlive) {
-                game.endGame(); // End the gmae (player dead)
+                game.endGame(); // End the game (player dead)
+
+            return false;
             }
         }
     }
@@ -671,7 +684,27 @@ class Bear extends Enemy {
         return 'bear';
     }
 }
+class Dragon extends Enemy {
 
+    /**
+     * Create the dragon
+     */
+    constructor() {
+        super("Dragon", 40, 10, 10, [new Leather(), new Leather(), new Leather(), new RawMeat(), new RawMeat()], 0.05, 90);
+    }
+
+    get aliveHtml() {
+        return '<i class="fas fa-solid fa-paw fa-fw" style="color:brown" title="A Dragon."></i>';
+    }
+
+    get deadHtml() {
+        return '<i class="fas fa-solid fa-paw fa-fw" style="color:lightgray" title="A Dragon."></i>';
+    }
+
+    get type() {
+        return 'dragon';
+    }
+}
 class Tree extends Object {
 
     /**
@@ -716,17 +749,26 @@ class Tree extends Object {
      * Cut down the tree
      */
     interact() {
-        var woodDrop = Math.floor((Math.random() * 2) + 1);
-        var stickDrop = Math.floor(Math.random() * 3)
-
+        if (game && game.getPlayer().getItemSlot('smacky')){
+            var equipped = game.getPlayer().getItemSlot('smacky');
+            if (equipped.name == "Flint axe"){
+                var woodDrop = Math.floor((Math.random() * 2.5) + 2);
+                var stickDrop = Math.floor((Math.random() * 3.5) + 1);
+            }else{
+                var woodDrop = Math.floor((Math.random() * 2) + 1);
+                var stickDrop = Math.floor(Math.random() * 3);
+            }
+        }else{
+            var woodDrop = Math.floor((Math.random() * 2) + 1);
+            var stickDrop = Math.floor(Math.random() * 3);           
+        }
         game.getPlayer().addItem(new Wood(), woodDrop);
         game.getPlayer().addItem(new Stick(), stickDrop);
         game.alert("Cut down tree", `You have cut down a tree for ${woodDrop} wood and ${stickDrop} stick`);
-        game.removeObject(this)
+        game.removeObject(this);
     }
 
 }
-
 class BerryBush extends Object {
 
     constructor() {
