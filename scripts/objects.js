@@ -96,6 +96,8 @@ class Player extends Object {
 
         this.recipeList = [
             new Recipe(new LeatherBoots(), [new Leather(), new Leather(), new String()]),
+            new Recipe(new Fire(), [new Wood(), new Stick(),new Stick()]),
+            new Recipe(new CookedMeat(), [new RawMeat(), new Fire()]),
             new Recipe(new BerryStew(), [new Berry(), new Berry()]),
             new Recipe(new SewingKit, [new String(), new String(), new String(), new SharpenedStick()]),
             new Recipe(new MeshFilter(), [new String(), new String(), new String(), new SewingKit()]),
@@ -647,7 +649,7 @@ class Spider extends Enemy {
      * @param {Boolean} dead - Controls whether the spider spawns dead or not
      */
     constructor(dead = false) {
-        super("Spider", dead ? 0 : 10, 10, 7, [new String(), new Bone(), new Bone()], 0.15, 7);
+        super("Spider", dead ? 0 : 10, 5, 7, [new String(), new Bone(), new Bone()], 0.15, 7);
     }
 
     get aliveHtml() {
@@ -669,7 +671,7 @@ class Bear extends Enemy {
      * Create the bear
      */
     constructor() {
-        super("Bear", 40, 10, 10, [new Leather(), new Leather(), new Leather(), new RawMeat(), new RawMeat()], 0.05, 30);
+        super("Bear", 40, 15, 10, [new Leather(), new Leather(), new Leather(), new RawMeat(), new RawMeat()], 0.05, 30);
     }
 
     get aliveHtml() {
@@ -701,10 +703,28 @@ class Dragon extends Enemy {
         return '<i class="fas fa-solid fa-paw fa-fw" style="color:lightgray" title="A Dragon."></i>';
     }
 
+class Dragon extends Enemy {
+    /**
+     * Create the bear
+     */
+    constructor() {
+        super("Dragon", 150, 30, 2, [new TearOfDragon()], 0,100);
+    }
+
+    get aliveHtml() {
+        return '<i class="fas fa-dragon" style="color:purple" title="A Dragon."></i>';
+    }
+
+    get deadHtml() {
+        return '<i class="fas fa-dragon" style="color:lightgray" title="A Dragon."></i>';
+    }
+
     get type() {
-        return 'dragon';
+        return 'Dragon';
     }
 }
+
+
 class Tree extends Object {
 
     /**

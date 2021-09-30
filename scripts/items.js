@@ -127,6 +127,11 @@ class Leather extends Item {
         super("Leather","<img alt=\"Leather\" style=\"vertical-align: middle\" src=\"images/leather.png\"  width=\"25\" height=\"25\">",  "Maybe you can make some clothes out of this...");
     }
 }
+class Fire extends Item{
+    constructor() {
+        super("Fire","first revolution of humankind")
+    }
+}
 
 class RawMeat extends Item {
 
@@ -136,6 +141,20 @@ class RawMeat extends Item {
         }, {
             damage: 1*(5/3)
         })
+    }
+}
+
+class CookedMeat extends Item {
+
+    constructor() {
+        super("Cooked meat", "Best Food to eat");
+    }
+
+    interact() {
+        game.getPlayer().health += 45;
+        game.getPlayer().removeItem(this, 1);
+        game.alert("Ate cooked meat", "You regenerated 40 health")
+        return;
     }
 }
 
@@ -159,7 +178,21 @@ class Berry extends Item {
     interact() {
         game.getPlayer().health += 10;
         game.getPlayer().removeItem(this, 1);
-        game.alert("Ate a beryy", "You regenerated 10 health")
+        game.alert("Ate an berry", "You regenerated 10 health")
+        return;
+    }
+}
+
+class BerryStew extends Item {
+
+    constructor() {
+        super("Berry Stew", "nice food you cooked");
+    }
+
+    interact() {
+        game.getPlayer().health += 25;
+        game.getPlayer().removeItem(this, 1);
+        game.alert("Ate an Berry Stew", "You regenerated 25 health")
         return;
     }
 }
