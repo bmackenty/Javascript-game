@@ -97,7 +97,7 @@ class Player extends Object {
             new Recipe(new LeatherBoots(), [new Leather(), new Leather(), new String()]),
             new Recipe(new Fire(), [new Wood(), new Stick(),new Stick()]),
             new Recipe(new CookedMeat(), [new RawMeat(), new Fire()]),
-            new Recipe(new BerryStew(), [new Berry(), new Berry()]),
+            new Recipe(new BerryStew(), [new Berry(), new Berry(), new Fire()]),
             new Recipe(new SewingKit, [new String(), new String(), new String(), new SharpenedStick()]),
             new Recipe(new MeshFilter(), [new String(), new String(), new String(), new SewingKit()]),
             new Recipe(new SharpenedStick(), [new Wood(), new Stick(), new Stick(), new Flint()]),
