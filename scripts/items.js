@@ -15,7 +15,7 @@ class Item {
         this.id = Math.random(); // Used for item equipping
 
         this.smackable = smackable;
-        this.wearable = wearable
+        this.wearable = wearable;
         this.stats = stats;
     }
 
