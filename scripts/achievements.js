@@ -107,5 +107,4 @@ class A_Potato extends Achievements {
             }
         }
     }
-
 }

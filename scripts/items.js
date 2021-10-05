@@ -161,6 +161,7 @@ class CookedMeat extends Item {
 class LeatherBoots extends Item {
 
     constructor() {
+
         super("Leather Boots","<img alt=\"Leather Boots\" style=\"vertical-align: middle\" src=\"images/leatherBoots.png\"  width=\"25\" height=\"25\">",  "Great for hiking, not so much for killing.", {
             shoes: true
         }, {
@@ -186,6 +187,7 @@ class Berry extends Item {
 class BerryStew extends Item {
 
     constructor() {
+
         super("Berry Stew", "nice food you cooked");
     }
 
@@ -194,19 +196,23 @@ class BerryStew extends Item {
         game.getPlayer().removeItem(this, 1);
         game.alert("Ate an Berry Stew", "You regenerated 25 health")
         return;
+
     }
 }
 
 class Flint extends Item {
 
     constructor() {
+
         super("Flint","<img alt=\"Flint\" style=\"vertical-align: middle\" src=\"images/flint.png\"  width=\"25\" height=\"25\">",  "A special type of sharp rock.");
+
     }
 }
 
 class Leaf extends Item {
 
     constructor() {
+
         super("Leaf","<img alt=\"Leaf\" style=\"vertical-align: middle\" src=\"images/leaf.png\"  width=\"25\" height=\"25\">",  "A green not spikey funny object.")
     }
 }
@@ -214,6 +220,7 @@ class Leaf extends Item {
 class SewingKit extends Item {
     
     constructor() {
+
         super("Sewing Kit","<img alt=\"Sewing Kit\" style=\"vertical-align: middle\" src=\"images/sewingKit.png\"  width=\"25\" height=\"25\">",  "A advanced item used in crafting for advanced clothing.")
     }
 }
