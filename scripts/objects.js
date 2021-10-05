@@ -686,6 +686,7 @@ class Bear extends Enemy {
         return 'bear';
     }
 }
+
 class Dragon extends Enemy {
 
     /**
@@ -702,7 +703,7 @@ class Dragon extends Enemy {
     get deadHtml() {
         return '<i class="fas fa-solid fa-paw fa-fw" style="color:lightgray" title="A Dragon."></i>';
     }
-}
+
 
 class Tree extends Object {
 
