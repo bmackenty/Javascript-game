@@ -223,7 +223,7 @@ class Game {
                 }
             }
             // Update not in backpack, add it
-            backpack.push({ name: item.name, count: 1, interact: item.interact, id: item.id })
+            backpack.push({ name: item.name, image: item.image, count: 1, interact: item.interact, id: item.id })
         }
 
         return backpack;
@@ -261,12 +261,12 @@ class Game {
                     continue;
                 }
     
-                if (randomNumber < 40.7) { // 0.1% chance we spawn a bear spider
+                if (randomNumber < 40.7) { // 0.1% chance we spawn a bear
                     this.addObject(new Bear().spawn(x, y));
                     continue;
                 }
 
-                if (randomNumber < 40.8) { // 0.1% chance we spawn a bear spider
+                if (randomNumber < 40.8) { // 0.1% chance we spawn a Dragon
                     this.addObject(new Dragon().spawn(x, y));
                     continue;
                 }
@@ -360,8 +360,10 @@ class Game {
         document.getElementById("inventory-slots").innerHTML = slotsHTML;
 
         for (var item of this.getPlayer().inventory) {
-            if (item.wearable && !this.getPlayer().currentlyWearingItem(item.id)) { // If the item is wearable and the player isn't currently wearing it
-                equipmentHTML += `<p class="inv-item" data-item="${item.id}" shoes="${item.shoesWearable}" hat="${item.hatWearable}" draggable="true" ondragstart="drag(event)">${item.name}</p>`;
+            if ((item.smackable && !this.getPlayer().currentlyWearingItem(item.id)) || (item.wearable && !this.getPlayer().currentlyWearingItem(item.id))) { // If the item is wearable and the player isn't currently wearing it
+                if (!equipmentHTML.includes(item.name)){
+                    equipmentHTML += `<p class="inv-item" data-item="${item.id}" shoes="${item.shoesWearable}" smacky="${item.smackySmackable}" hat="${item.hatWearable}" draggable="true" ondragstart="drag(event)">${item.name}</p>`;
+                }
             }
         }
 
@@ -375,9 +377,7 @@ class Game {
         var statsHTML = "";
 
         statsHTML += `<p style="text-align: center"><strong>TURN </strong>${this.currentTurn}</p>`
-        statsHTML += `<p><strong>Health: </strong>${this.getPlayer().health}</p>`;
-        statsHTML += `<p><strong>Strength: </strong>${this.getPlayer().strength}</p>`;
-        statsHTML += `<p><strong>Defence: </strong>${this.getPlayer().defence}</p>`;
+        statsHTML += `<strong style="vertical-align: middle"><p style="vertical-align: middle"><img alt="health" style="vertical-align: middle"  width="30" height="30" src="images/health.png"> : ${this.getPlayer().health}</p></strong>`;
         
         statsHTML += this.getSkillsHTML(); // Display skillSet
         statsHTML += this.getInventoryHTML(); // Display inventory
@@ -427,7 +427,7 @@ class Game {
 
         // Loop over the player's backpack
         for (var item of this.itemsToBackpack(this.getPlayer().inventory)) {
-           inventoryHTML += `<div style="width: 100%; display: flex; justify-content: space-between;"><p class="list-item" style="display: block;">- ${item.name} (${item.count})</p>`;
+           inventoryHTML += `<div style="width: 100%; display: flex; justify-content: space-between;"><p class="list-item" style="display: block;">- ${item.image} (${item.count})</p>`;
             if (item.interact) {
                 inventoryHTML += `<button style="display: block;" onclick="game.getPlayer().getItem(${item.id}).interact()">Consume</button>`
             }
@@ -447,7 +447,7 @@ class Game {
 
         // Loop through all the player's skills
         for (var skill in this.getPlayer().skillSet) {
-            skillsHTML += `<p class="list-item">${skill.charAt(0).toUpperCase() + skill.slice(1)} : ${this.getPlayer().getSkillLevel(skill)} (${this.getPlayer().getXpToNextLevel(skill)} xp to level up)</p>`
+            skillsHTML += `<p class="list-item"><img alt="combat" style="vertical-align: middle"  width="34" height="34" src="images/${skill.charAt(0).toLowerCase() + skill.slice(1)}.png"> : ${this.getPlayer().getSkillLevel(skill)} (${this.getPlayer().getXpToNextLevel(skill)} xp to level up)</p>`
         }
 
         skillsHTML += `</div>`
@@ -557,6 +557,7 @@ class Game {
      * End the game
      */
     endGame() {
+        //piggy
         this.running = false;
 
         // After 200ms alert the player of their death and display the death screen

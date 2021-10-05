@@ -16,7 +16,7 @@ class Achievements {
 class A_Played extends Achievements {
     
     constructor() {
-        super('Played', 'You played the game.')
+        super('Terrible Mistake', 'You played the game.')
     }
 
     checkAchieved() {
@@ -92,4 +92,20 @@ class A_Deforestation extends Achievements {
             }
         }
     }
+}
+
+class A_Potato extends Achievements {
+
+    constructor() {
+        super('Potato', 'You have more health then you started with')
+    }
+
+    checkAchieved() {
+        if (game) {
+            if (game.getPlayer().health > 100) {
+                this.isAchieved = true;
+            }
+        }
+    }
+
 }

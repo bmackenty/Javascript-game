@@ -707,7 +707,7 @@ class Dragon extends Enemy {
 class Tree extends Object {
 
     /**
-     * Create a tree
+     * Create tree
      * @param {Number} type - The type of tree to create (see switch statment in get html())
      */
     constructor(type) {

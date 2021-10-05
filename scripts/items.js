@@ -161,7 +161,7 @@ class CookedMeat extends Item {
 class LeatherBoots extends Item {
 
     constructor() {
-        super("Leather Boots","<img alt=\"Leather Boots\" style=\"vertical-align: middle\" src=\"images/leatherBoots.png\"  width=\"25\" height=\"25\">",  "Great for hiking, not so much for killing.", {
+        super("Leather Boots", "<img alt=\"Leather Boots\" style=\"vertical-align: middle\" src=\"images/leatherBoots.png\"  width=\"25\" height=\"25\">", "Great for hiking, not so much for killing.", {
             shoes: true
         }, {
             defence: 0.1
