@@ -64,6 +64,13 @@ class Apple extends Item {
     }
 }
 
+class Banana extends Item {
+
+    constructor() {
+        super("Banana", "every monkey like this");
+    }
+}
+
 class Wood extends Item {
 
     constructor() {
