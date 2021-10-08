@@ -335,7 +335,7 @@ class Game {
                 }
     
                 var object = this.objectAt(x, y)
-                if (Math.sqrt((x - this.getPlayer().x) ** 2 + (y - this.getPlayer().y) ** 2) <= 8 && object) { // If there is a object at those coordinates, and it's within 8 blocks
+                if (Math.sqrt((x - this.getPlayer().x) ** 2 + (y - this.getPlayer().y) ** 2) <= 8 && object) { // If there is a object at those coordinates, and it's within 8 blocks - Render Distance
                     // Display the object
                     mapHTML += `<div class="map-loc">${object.html}</div>`
                 } else { // No object here or more then 8 blocks away
