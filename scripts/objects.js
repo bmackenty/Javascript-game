@@ -705,6 +705,35 @@ class Dragon extends Enemy {
     }
 
 }
+class BearTrap extends Object {
+    /**
+     * Create BearTrap
+     * @param {Number} type - The type of tree to create (see switch statment in get html())
+     */
+     constructor(type) {
+        super({ passable: true });
+        this.treeType = type;
+    }
+
+    get type() {
+        return 'Bear Trap';
+    }
+
+    get html() {
+        return '<i><img viewBox="0 0 407 512" class="svg-inline--fa fa-raspberry-pi fa-w-13" style="opacity: 1;height: 16; width: 100%; color: red;" focusable="false" data-prefix="fab" src="images/bearTrap.png" alt="BearTrap"></i>'
+    }
+    /**
+     * Take Damage
+     */
+    interact() {
+        game.getPlayer().addItem(new Flint());
+        game.alert("You ran into a bear Trap!", `You ran into a bear Trap! You lost 20 life but at least got some flint?`);
+        game.removeObject(this);
+        game.getPlayer().health -= 20;
+        // console.log(game.getPlayer().x, game.getPlayer().y);
+    }
+
+}
 class Tree extends Object {
 
     /**

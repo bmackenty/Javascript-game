@@ -280,6 +280,11 @@ class Game {
                     this.addObject(new FlintBlock().spawn(x, y));
                     continue;
                 }
+
+                if (randomNumber < 42.6) { // .6% chance we spawn a Dragon
+                    this.addObject(new BearTrap().spawn(x, y));
+                    continue;
+                }
             }
         }
 
@@ -311,12 +316,12 @@ class Game {
         this.updateViewport();
     
         // Loop over all the rows in the viewport
+        console.log(this.getPlayer(x));
         for (var y = this.viewportSize[1][0]; y < this.viewportSize[1][1]; y++) {
             mapHTML+='<div class="map-row">' // Open row element
     
             // Loop over all the tiles in the row
             for (var x = this.viewportSize[0][0]; x < this.viewportSize[0][1]; x++) {
-    
                 // If the tile is outside the map display a mountain
                 if ((x > gridSize[0] || x < 0) || (y > gridSize[1] || y < 0)) {
                     mapHTML+= '<div class="map-loc"><i class=\"fas fa-mountain fa-fw\" style=\"color:grey\"  title=\"A mountain\"></i></div>';
@@ -330,13 +335,12 @@ class Game {
                 }
     
                 var object = this.objectAt(x, y)
-    
-                if (object) { // If there is a object at those coordinates
+                if (Math.sqrt((x - this.getPlayer().x) ** 2 + (y - this.getPlayer().y) ** 2) <= 8 && object) { // If there is a object at those coordinates, and it's within 8 blocks
                     // Display the object
                     mapHTML += `<div class="map-loc">${object.html}</div>`
-                } else { // No object here
+                } else { // No object here or more then 8 blocks away
                     // Display the three dots
-                    mapHTML+='<div class="map-loc"><i class=\"fas fa-ellipsis-h fa-fw\" style=\"color:#D2B48C\"></i></div>';
+                    mapHTML += '<div class="map-loc"><i class=\"fas fa-ellipsis-h fa-fw\" style=\"color:#D2B48C\"></i></div>';
                 }
             }
             mapHTML+='</div>' // Close row element
