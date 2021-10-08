@@ -5,13 +5,14 @@ class EquipmentSlot {
     }
 
     get formattedSlotName() {
-        return this.slotName.charAt(0).toUpperCase() + this.slotName.slice(1)
+        return this.slotName.charAt(0).toUpperCase() + this.slotName.slice(1);
     }
 
     get html() {
         var equipped;
-        if (game && game.getPlayer().getItemSlot(this.slotName))
-            equipped = game.getPlayer().getItemSlot(this.slotName)
+        if (game && game.getPlayer().getItemSlot(this.slotName)) {
+            equipped = game.getPlayer().getItemSlot(this.slotName);
+        }
 
         var slotHTML = "";
         slotHTML +=  `<div id="${this.slotName}" class="inv-slot" ondrop="equipItem('${this.slotName}', event)" onclick="unequipItem('${this.slotName}', event)" ondragover="allowDrop(event)" equipped="${equipped ? equipped.id : "undefined"}">`;
