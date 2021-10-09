@@ -20,18 +20,20 @@ class Item {
     }
 
     get html() {
-        
+	    // Something should go here?
+	    return;
     }
+
     get shoesWearable() {
-        return this.wearable.shoes
+        return this.wearable.shoes;
     }
 
     get hatWearable() {
-        return this.wearable.hat
+        return this.wearable.hat;
     }
 
     get smackySmackable() {
-        return this.smackable.smacky
+        return this.smackable.smacky;
     }
 }
 
@@ -58,7 +60,7 @@ class Recipe {
 		for (var iIndex in inventory) {
 			for (var rIndex in itemsLeft) {
 				if (inventory[iIndex].name == itemsLeft[rIndex].name) {
-					itemsLeft.splice(rIndex, 1)
+					itemsLeft.splice(rIndex, 1);
 				}
 			}
 		}
@@ -88,7 +90,7 @@ class Stick extends Item {
             smacky: true
         }, {
             damage: 1.25*(5/3)
-        })
+        });
     }
 }
 
@@ -99,7 +101,7 @@ class SharpenedStick extends Item {
             smacky: true
         }, {
             damage: 1.75*(5/3)
-        })
+        });
     }
 }
 
@@ -110,7 +112,7 @@ class Bone extends Item {
             smacky: true
         }, {
             damage: 1.5*(5/3)
-        })
+        });
     }
 }
 
@@ -129,7 +131,7 @@ class Leather extends Item {
 }
 class Fire extends Item{
     constructor() {
-        super("Fire","first revolution of humankind")
+        super("Fire","first revolution of humankind");
     }
 }
 
@@ -140,7 +142,7 @@ class RawMeat extends Item {
             smacky: true
         }, {
             damage: 1*(5/3)
-        })
+        });
     }
 }
 
@@ -153,7 +155,7 @@ class CookedMeat extends Item {
     interact() {
         game.getPlayer().health += 45;
         game.getPlayer().removeItem(this, 1);
-        game.alert("Ate cooked meat", "You regenerated 40 health")
+        game.alert("Ate cooked meat", "You regenerated 40 health");
         return;
     }
 }
@@ -179,7 +181,7 @@ class Berry extends Item {
     interact() {
         game.getPlayer().health += 10;
         game.getPlayer().removeItem(this, 1);
-        game.alert("Ate an berry", "You regenerated 10 health")
+        game.alert("Ate an berry", "You regenerated 10 health");
         return;
     }
 }
@@ -187,14 +189,13 @@ class Berry extends Item {
 class BerryStew extends Item {
 
     constructor() {
-
         super("Berry Stew", "nice food you cooked");
     }
 
     interact() {
         game.getPlayer().health += 25;
         game.getPlayer().removeItem(this, 1);
-        game.alert("Ate an Berry Stew", "You regenerated 25 health")
+        game.alert("Ate an Berry Stew", "You regenerated 25 health");
         return;
 
     }
@@ -203,25 +204,21 @@ class BerryStew extends Item {
 class Flint extends Item {
 
     constructor() {
-
         super("Flint","<img alt=\"Flint\" style=\"vertical-align: middle\" src=\"images/flint.png\"  width=\"25\" height=\"25\">",  "A special type of sharp rock.");
-
     }
 }
 
 class Leaf extends Item {
 
     constructor() {
-
-        super("Leaf","<img alt=\"Leaf\" style=\"vertical-align: middle\" src=\"images/leaf.png\"  width=\"25\" height=\"25\">",  "A green not spikey funny object.")
+        super("Leaf","<img alt=\"Leaf\" style=\"vertical-align: middle\" src=\"images/leaf.png\"  width=\"25\" height=\"25\">",  "A green not spikey funny object.");
     }
 }
 
 class SewingKit extends Item {
     
     constructor() {
-
-        super("Sewing Kit","<img alt=\"Sewing Kit\" style=\"vertical-align: middle\" src=\"images/sewingKit.png\"  width=\"25\" height=\"25\">",  "A advanced item used in crafting for advanced clothing.")
+        super("Sewing Kit","<img alt=\"Sewing Kit\" style=\"vertical-align: middle\" src=\"images/sewingKit.png\"  width=\"25\" height=\"25\">",  "A advanced item used in crafting for advanced clothing.");
     }
 }
 
@@ -232,14 +229,14 @@ class FlintAxe extends Item {
             smacky: true
         }, {
             damage: 3
-        })
+        });
     }
 }
 
 class MeshFilter extends Item {
 
     constructor() {
-        super("Mesh filter", "Stops the flies from comming in")
+        super("Mesh filter", "Stops the flies from comming in");
     }
 }
 
@@ -250,7 +247,7 @@ class JungleHat extends Item {
             hat: true
         }, {
             defence: 0.3
-        })
+        });
     }
 }
 class BerryStew extends Item {
@@ -262,7 +259,7 @@ class BerryStew extends Item {
     interact() {
         game.getPlayer().health += 25;
         game.getPlayer().removeItem(this, 1);
-        game.alert("Ate berry stew", "You regenerated 25 health")
+        game.alert("Ate berry stew", "You regenerated 25 health");
         return;
     }
 }
