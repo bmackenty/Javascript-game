@@ -159,7 +159,7 @@ class RawMeat extends Item {
 class CookedMeat extends Item {
 
     constructor() {
-        super("Cooked Meat", "<img alt=\"Cooked Meat\" style=\"vertical-align: middle\" src=\"images/coockedMeat.png\"  width=\"25\" height=\"25\">",  "Some nice steak I see. Perfect well done.");
+        super("Cooked Meat", "<img alt=\"Cooked Meat\" style=\"vertical-align: middle\" src=\"images/steak.png\"  width=\"25\" height=\"25\">",  "Some nice steak I see. Perfect well done.");
     }
 
     interact() {
