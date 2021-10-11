@@ -333,14 +333,23 @@ class Game {
                     mapHTML+=`<div class="map-loc">${this.getPlayer().html}</div>`
                     continue;
                 }
-    
-                var object = this.objectAt(x, y)
-                if (Math.sqrt((x - this.getPlayer().x) ** 2 + (y - this.getPlayer().y) ** 2) <= 8 && object) { // If there is a object at those coordinates, and it's within 8 blocks - Render Distance
+
+                var object = this.objectAt(x, y) 
+                for (var skill in this.getPlayer().skillSet) {
+                    var borderStart = (1.75 * 2 ** (this.getPlayer().getSkillLevel(skill) / 6)) + .25 // sets render distance based on skill level
+                }
+                var blackEnd = borderStart + 2 // makes the black border 3 blocks away from render distance
+
+                if (Math.floor(Math.sqrt((x - this.getPlayer().x) ** 2 + (y - this.getPlayer().y) ** 2)) <= borderStart && object) { // If there is a object at those coordinates, and it's within 'render distance' blocks - Render Distance
                     // Display the object
                     mapHTML += `<div class="map-loc">${object.html}</div>`
-                } else { // No object here or more then 8 blocks away
+                } else if (Math.floor(Math.sqrt((x - this.getPlayer().x) ** 2 + (y - this.getPlayer().y) ** 2)) > borderStart && Math.floor(Math.sqrt((x - this.getPlayer().x) ** 2 + (y - this.getPlayer().y) ** 2)) < blackEnd) { // No object here or more then 8 blocks away
                     // Display the three dots
-                    mapHTML += '<div class="map-loc"><i class=\"fas fa-ellipsis-h fa-fw\" style=\"color:#D2B48C\"></i></div>';
+                    mapHTML += '<div class="map-loc"><i class=\"fas fa-ellipsis-h fa-fw\" style=\"color:black\"></i></div>';
+                } else if (Math.floor(Math.sqrt((x - this.getPlayer().x) ** 2 + (y - this.getPlayer().y) ** 2)) >= blackEnd){
+                    mapHTML += '<div class="map-loc"><i class=\"fas fa-ellipsis-h fa-fw\" style=\"color:#957243\"></i></div>';
+                }else {
+                    mapHTML += '<div class="map-loc"><i class=\"fas fa-ellipsis-h fa-fw\" style=\"color:#e0bb8a\"></i></div>';
                 }
             }
             mapHTML+='</div>' // Close row element

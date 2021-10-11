@@ -73,7 +73,19 @@ class Apple extends Item {
         super("Apple","<img alt=\"Apple\" style=\"vertical-align: middle\" src=\"images/apple.png\"  width=\"25\" height=\"25\">", "An apple a day keeps MrMackenty away");
     }
 }
+class StarWarsBiscuit extends Item {
 
+    constructor() {
+        super("Star Wars Biscuit","<img alt=\"Star Wars Biscuit\" style=\"vertical-align: middle\" src=\"images/starWarsBiscuit.png\"  width=\"35\" height=\"35\">", "10/10 Would reccommend");
+    }
+
+    interact() {
+        game.alert("You've found life's purpose within the Wookie cookie ", `You regenerated 60% of your health, ${Math.round(((100 - game.getPlayer().health) / 10) * 6)} to be exact`)
+        game.getPlayer().health += Math.round(((100 - game.getPlayer().health) / 10) * 6);
+        game.getPlayer().removeItem(this, 1);
+        return;
+    }
+}
 class Wood extends Item {
 
     constructor() {
@@ -129,7 +141,7 @@ class Leather extends Item {
 }
 class Fire extends Item{
     constructor() {
-        super("Fire","first revolution of humankind")
+        super("Fire","<img alt=\"Fire\" style=\"vertical-align: middle\" src=\"images/flame.png\"  width=\"25\" height=\"25\">",  "first revolution of humankind")
     }
 }
 
@@ -147,7 +159,7 @@ class RawMeat extends Item {
 class CookedMeat extends Item {
 
     constructor() {
-        super("Cooked meat", "Best Food to eat");
+        super("Cooked Meat", "<img alt=\"Cooked Meat\" style=\"vertical-align: middle\" src=\"images/coockedMeat.png\"  width=\"25\" height=\"25\">",  "Some nice steak I see. Perfect well done.");
     }
 
     interact() {

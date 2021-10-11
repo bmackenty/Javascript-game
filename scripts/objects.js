@@ -720,14 +720,15 @@ class BearTrap extends Object {
     }
 
     get html() {
-        return '<i><img viewBox="0 0 407 512" class="svg-inline--fa fa-raspberry-pi fa-w-13" style="opacity: 1;height: 16; width: 100%; color: red;" focusable="false" data-prefix="fab" src="images/bearTrap.png" alt="BearTrap"></i>'
+        return '<i><img viewBox="0 0 407 512" class="svg-inline--fa fa-raspberry-pi fa-w-13" style="opacity: 1;height: 16; max-width: 50; color: red;" focusable="false" data-prefix="fab" src="images/bearTrap.png" alt="BearTrap"></i>'
     }
     /**
      * Take Damage
      */
     interact() {
         game.getPlayer().addItem(new Flint());
-        game.alert("You ran into a bear Trap!", `You ran into a bear Trap! You lost 20 life but at least got some flint?`);
+        game.getPlayer().addItem(new StarWarsBiscuit());
+        game.alert("You ran into a Trap!", `You lost 20 life but wait... what is that that you found inside?`);
         game.removeObject(this);
         game.getPlayer().health -= 20;
         // console.log(game.getPlayer().x, game.getPlayer().y);
