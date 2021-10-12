@@ -140,14 +140,14 @@ class Player extends Object {
         var damageEquiped = this.strength
         if (game && game.getPlayer().getItemSlot('smacky')){
             var equipped = game.getPlayer().getItemSlot('smacky');
-            console.log(this.strength);
+            // console.log(this.strength);
             if (equipped.name!="Raw Meat"){
                 damageEquiped += equipped.wearable.damage;
             }else{
                 damageEquiped = 0;
             }
-            console.log(this.strength);
-            console.log(equipped);
+            // console.log(this.strength);
+            // console.log(equipped);
         }
         var combatBonus = ((this.getSkillLevel("combat")*0.9)**1.4)
         return Math.round(damageEquiped + combatBonus);
@@ -497,11 +497,11 @@ class Enemy extends Object {
             /**
              * Meat Slappping
              */
-                console.log(this.name);
+                // console.log(this.name);
                 if (this.name == "Bear"){
                     if (game && game.getPlayer().getItemSlot('smacky')){
                         var equipped = game.getPlayer().getItemSlot('smacky');
-                        console.log(this.strength);
+                        // console.log(this.strength);
                         if (equipped.name=="Raw Meat"){
                             game.alert("Ultimate Power", `You have slapped the bear with raw meat. 0 points for damage, 10 points for style.`);
                         }
@@ -517,7 +517,7 @@ class Enemy extends Object {
                 if (this.name == "Bear"){
                     if (game && game.getPlayer().getItemSlot('smacky')){
                         var equipped = game.getPlayer().getItemSlot('smacky');
-                        console.log(this.strength);
+                        // console.log(this.strength);
                         if (equipped.name!="Raw Meat"){
                             game.alert(`Attacked ${this.name}`, `Dealt ${damageTaken} damage (${this.health} health left)`);
                         }
@@ -728,10 +728,16 @@ class BearTrap extends Object {
     interact() {
         game.getPlayer().addItem(new Flint());
         game.getPlayer().addItem(new StarWarsBiscuit());
-        game.alert("You ran into a Trap!", `You lost 20 life but wait... what is that that you found inside?`);
         game.removeObject(this);
-        game.getPlayer().health -= 20;
-        // console.log(game.getPlayer().x, game.getPlayer().y);
+        if (Math.round(((game.getPlayer().health) / 100) * 35) > 15) {
+            game.getPlayer().health -= Math.round(((game.getPlayer().health) / 100) * 35);
+            game.alert("You ran into a Trap!", `You lost 35% of your (${Math.round(((game.getPlayer().health) / 100) * 35)}) life, but wait... what is that that you found inside?`);
+
+        } else {
+            game.getPlayer().health -= 15;
+            game.alert("You ran into a Trap!", `You lost 15 life, but wait... what is that that you found inside?`);
+        }
+        // console.log(Math.round(((game.getPlayer().health) / 100) * 35));
     }
 
 }

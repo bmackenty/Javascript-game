@@ -316,7 +316,7 @@ class Game {
         this.updateViewport();
     
         // Loop over all the rows in the viewport
-        console.log(this.getPlayer(x));
+        // console.log(this.getPlayer(x));
         for (var y = this.viewportSize[1][0]; y < this.viewportSize[1][1]; y++) {
             mapHTML+='<div class="map-row">' // Open row element
     
