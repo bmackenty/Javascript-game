@@ -14,6 +14,10 @@ class Game {
      */
     doTurn() {
         if (this.running) {
+            for (var skill in this.getPlayer().skillSet) {
+                console.log(`Render Distance`, 1.75 * 2 ** (this.getPlayer().getSkillLevel(skill) / 6) + .25);
+                console.log(`Skill: `,this.getPlayer().getSkillLevel(skill))
+            }
             this.currentTurn++; // Update the turn number
 
             // Loop over all the objects in the game and 
@@ -323,11 +327,14 @@ class Game {
             // Loop over all the tiles in the row
             for (var x = this.viewportSize[0][0]; x < this.viewportSize[0][1]; x++) {
                 // If the tile is outside the map display a mountain
-                if ((x > gridSize[0] || x < 0) || (y > gridSize[1] || y < 0)) {
+                if ((x > gridSize[0] || x < 0)) {
                     mapHTML+= '<div class="map-loc"><i class=\"fas fa-mountain fa-fw\" style=\"color:grey\"  title=\"A mountain\"></i></div>';
                     continue;
                 }
-
+                if ((y > gridSize[1] || y < 0)) {
+                    mapHTML+= '<div class="map-loc"><i class=\"fas fa-mountain fa-fw\" style=\"color:grey\"  title=\"A mountain\"></i></div>';
+                    continue;
+                }
                 // If the player is at that location, display him
                 if (this.getPlayer().x == x && this.getPlayer().y == y) {
                     mapHTML+=`<div class="map-loc">${this.getPlayer().html}</div>`
