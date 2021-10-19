@@ -184,22 +184,6 @@ class Berry extends Item {
     }
 }
 
-class BerryStew extends Item {
-
-    constructor() {
-
-        super("Berry Stew", "nice food you cooked");
-    }
-
-    interact() {
-        game.getPlayer().health += 25;
-        game.getPlayer().removeItem(this, 1);
-        game.alert("Ate an Berry Stew", "You regenerated 25 health")
-        return;
-
-    }
-}
-
 class Flint extends Item {
 
     constructor() {
