@@ -1,11 +1,12 @@
 class Game {
+
     constructor() {
         this.objectArray = [] // Array of all the objects in the game
         this.viewportSize = [[0, 33], [0, 33]];
         this.currentTurn = 0;
         this.running = true;
 
-        this.generateMap();
+        this.treeCount = this.generateMap();
         this.registerListeners();
     }
 
@@ -15,8 +16,8 @@ class Game {
     doTurn() {
         if (this.running) {
             for (var skill in this.getPlayer().skillSet) {
-                console.log(`Render Distance`, 1.75 * 2 ** (this.getPlayer().getSkillLevel(skill) / 6) + .25);
-                console.log(`Skill: `,this.getPlayer().getSkillLevel(skill))
+                // console.log(`Render Distance`, 1.75 * 2 ** (this.getPlayer().getSkillLevel(skill) / 6) + .25);
+                // console.log(`Skill: `,this.getPlayer().getSkillLevel(skill))
             }
             this.currentTurn++; // Update the turn number
 
@@ -237,6 +238,8 @@ class Game {
      * Generates the map terrain
      */
     generateMap() {
+        let treeCount = 0;
+
         // Loop over all the X and Y coordinates of the map
         for (var x = 0; x <= gridSize[0]; x++) {
             for (var y = 0; y <= gridSize[1]; y++) {
@@ -247,11 +250,11 @@ class Game {
                 MrMackenty does it first I have no reason
                 to implement it
                 */
-    
                 var randomNumber = (Math.random() * 100) + 1 // Get a random number from 1-100 (with decimals)
                 if (randomNumber < 40) { // 40% chance we spawn a tree
                     var treeType = Math.floor(Math.random() * 9); // Pick a random tree type from 1 - 8
-                    this.addObject(new Tree(treeType).spawn(x, y)); 
+                    this.addObject(new Tree(treeType).spawn(x, y));
+                    treeCount += 1;
                     continue;
                 }
     
@@ -307,6 +310,8 @@ class Game {
         this.drawMap(); // Draw the map after generating it
         this.updateStats(); // Display statistics
         this.updateEquipment(); // Display equipment
+        console.log(treeCount);
+        return treeCount
     }
 
     /**

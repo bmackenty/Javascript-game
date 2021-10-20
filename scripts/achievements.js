@@ -29,6 +29,22 @@ class A_Played extends Achievements {
 
 }
 
+class A_Deforestation extends Achievements {
+    
+    constructor() {
+        super('Deforestation', 'You\'ve cut down all the trees. All of them. You monster.')
+    }
+
+    checkAchieved() {
+        if (game) {
+            if (game.treeCount == 0) {
+                this.isAchieved = true;
+            }
+        }
+    }
+
+}
+
 class A_Survivor extends Achievements {
 
     constructor() {
@@ -79,10 +95,10 @@ class A_BeastSlayer extends Achievements {
 
 }
 
-class A_Deforestation extends Achievements {
+class A_Lumberjack extends Achievements {
     
     constructor() {
-        super('Deforestation', 'You monster!')
+        super('Lumberjack', 'You monster!')
     }
 
     checkAchieved() {

@@ -92,6 +92,7 @@ class Player extends Object {
             new A_SpiderHunter(),
             new A_BeastSlayer(),
             new A_Deforestation(),
+            new A_Lumberjack(),
         ];
 
         this.recipeList = [
@@ -785,6 +786,8 @@ class Tree extends Object {
      * Cut down the tree
      */
     interact() {
+        game.treeCount -= 1;
+        console.log(game.treeCount);
         if (game && game.getPlayer().getItemSlot('smacky')){
             var equipped = game.getPlayer().getItemSlot('smacky');
             if (equipped.name == "Flint axe"){
