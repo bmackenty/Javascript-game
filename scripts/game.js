@@ -42,7 +42,7 @@ class Game {
         }
 
         // This should never happen! (The player is not removed anywhere in the code)
-        console.log("FATAL: PLAYER NOT IN OBJECT LIST")
+        console.log("FATAL: PLAYER NOT IN OBJECT LIST");
         return undefined;
     }
 
@@ -60,7 +60,7 @@ class Game {
 
             // Interact with object at new location and
             // check if it's passable
-            var objectAtLocation = game.objectAt(newX, newY)
+            var objectAtLocation = game.objectAt(newX, newY);
             if (objectAtLocation) {
                 if (objectAtLocation.passable == false) {
                     objectAtLocation.interact(newX, newY);
@@ -71,10 +71,12 @@ class Game {
             }
 
             // If the player wants to move outside the map don't let him
-            if (newX < 0 || gridSize[0] < newX)
+            if (newX < 0 || gridSize[0] < newX) {
                 return false;
-            if (newY < 0 || gridSize[1] < newY)
+            }
+            if (newY < 0 || gridSize[1] < newY) {
                 return false;
+            }
 
 
             // After all the checks update the player's location
@@ -127,8 +129,9 @@ class Game {
         the player is closer than 3 tiles to the border that the viewport is still the same
         (A situation where this happens is if the player spawns close to the border)
         */
-        if (modifiedViewport)
+        if (modifiedViewport) {
             this.updateViewport();
+        }
     }
 
     /**
@@ -141,7 +144,7 @@ class Game {
         if (this.objectAt(object.x, object.y)) {
             return false;
         }
-        this.objectArray.push(object)
+        this.objectArray.push(object);
         return true;
     }
 
@@ -172,14 +175,17 @@ class Game {
         var newY = object.y + yChange;
 
         // Check if there already is a object at the new location
-        if (game.objectAt(newX, newY))
-            return false;
+        if (game.objectAt(newX, newY)) {
+            return false;   
+        }
 
         // If the object wants to move outside the map don't let them
-        if (newX < 0 || gridSize[0] < newX)
+        if (newX < 0 || gridSize[0] < newX) {
             return false;
-        if (newY < 0 || gridSize[1] < newY)
+        }
+        if (newY < 0 || gridSize[1] < newY) {
             return false;
+        }
         
         // After all the checks update the object's location
         object.x = newX;
@@ -202,7 +208,7 @@ class Game {
      * @returns {Number} The distance needed to travel
      */
     distance(object1, object2) {
-        return (Math.max(object1.x, object2.x) - Math.min(object1.x, object2.x)) + (Math.max(object1.y, object2.y) - Math.min(object1.y, object2.y))
+        return (Math.max(object1.x, object2.x) - Math.min(object1.x, object2.x)) + (Math.max(object1.y, object2.y) - Math.min(object1.y, object2.y));
     }
 
     /**
@@ -223,7 +229,7 @@ class Game {
                 }
             }
             // Update not in backpack, add it
-            backpack.push({ name: item.name, image: item.image, count: 1, interact: item.interact, id: item.id })
+            backpack.push({ name: item.name, image: item.image, count: 1, interact: item.interact, id: item.id });
         }
 
         return backpack;
@@ -244,7 +250,7 @@ class Game {
                 to implement it
                 */
     
-                var randomNumber = (Math.random() * 100) + 1 // Get a random number from 1-100 (with decimals)
+                var randomNumber = (Math.random() * 100) + 1; // Get a random number from 1-100 (with decimals)
                 if (randomNumber < 40) { // 40% chance we spawn a tree
                     var treeType = Math.floor(Math.random() * 9); // Pick a random tree type from 1 - 8
                     this.addObject(new Tree(treeType).spawn(x, y)); 
@@ -286,8 +292,8 @@ class Game {
         // Find a random empty tile
         while (true) {
             // Generate a random x and y value
-            var x = Math.floor(Math.random() * gridSize[0])
-            var y = Math.floor(Math.random() * gridSize[1])
+            var x = Math.floor(Math.random() * gridSize[0]);
+            var y = Math.floor(Math.random() * gridSize[1]);
 
             if (!this.objectAt(x, y)) { // If there is no object at those coordinates
                 this.addObject(new Player("").spawn(x, y)); // Spawn the player
@@ -312,34 +318,34 @@ class Game {
     
         // Loop over all the rows in the viewport
         for (var y = this.viewportSize[1][0]; y < this.viewportSize[1][1]; y++) {
-            mapHTML+='<div class="map-row">' // Open row element
+            mapHTML += '<div class="map-row">'; // Open row element
     
             // Loop over all the tiles in the row
             for (var x = this.viewportSize[0][0]; x < this.viewportSize[0][1]; x++) {
     
                 // If the tile is outside the map display a mountain
                 if ((x > gridSize[0] || x < 0) || (y > gridSize[1] || y < 0)) {
-                    mapHTML+= '<div class="map-loc"><i class=\"fas fa-mountain fa-fw\" style=\"color:grey\"  title=\"A mountain\"></i></div>';
+                    mapHTML += '<div class="map-loc"><i class=\"fas fa-mountain fa-fw\" style=\"color:grey\"  title=\"A mountain\"></i></div>';
                     continue;
                 }
 
                 // If the player is at that location, display him
                 if (this.getPlayer().x == x && this.getPlayer().y == y) {
-                    mapHTML+=`<div class="map-loc">${this.getPlayer().html}</div>`
+                    mapHTML+=`<div class="map-loc">${this.getPlayer().html}</div>`;
                     continue;
                 }
     
-                var object = this.objectAt(x, y)
+                var object = this.objectAt(x, y);
     
                 if (object) { // If there is a object at those coordinates
                     // Display the object
-                    mapHTML += `<div class="map-loc">${object.html}</div>`
+                    mapHTML += `<div class="map-loc">${object.html}</div>`;
                 } else { // No object here
                     // Display the three dots
                     mapHTML+='<div class="map-loc"><i class=\"fas fa-ellipsis-h fa-fw\" style=\"color:#D2B48C\"></i></div>';
                 }
             }
-            mapHTML+='</div>' // Close row element
+            mapHTML+='</div>'; // Close row element
         }
     
         // Display mapHTML onto the visible <div> element
@@ -361,7 +367,7 @@ class Game {
 
         for (var item of this.getPlayer().inventory) {
             if ((item.smackable && !this.getPlayer().currentlyWearingItem(item.id)) || (item.wearable && !this.getPlayer().currentlyWearingItem(item.id))) { // If the item is wearable and the player isn't currently wearing it
-                if (!equipmentHTML.includes(item.name)){
+                if (!equipmentHTML.includes(item.name)) {
                     equipmentHTML += `<p class="inv-item" data-item="${item.id}" shoes="${item.shoesWearable}" smacky="${item.smackySmackable}" hat="${item.hatWearable}" draggable="true" ondragstart="drag(event)">${item.name}</p>`;
                 }
             }
@@ -376,7 +382,7 @@ class Game {
     updateStats() {
         var statsHTML = "";
 
-        statsHTML += `<p style="text-align: center"><strong>TURN </strong>${this.currentTurn}</p>`
+        statsHTML += `<p style="text-align: center"><strong>TURN </strong>${this.currentTurn}</p>`;
         statsHTML += `<strong style="vertical-align: middle"><p style="vertical-align: middle"><img alt="health" style="vertical-align: middle"  width="30" height="30" src="images/health.png"> : ${this.getPlayer().health}</p></strong>`;
         
         statsHTML += this.getSkillsHTML(); // Display skillSet
@@ -429,7 +435,7 @@ class Game {
         for (var item of this.itemsToBackpack(this.getPlayer().inventory)) {
            inventoryHTML += `<div style="width: 100%; display: flex; justify-content: space-between;"><p class="list-item" style="display: block;">- ${item.image} (${item.count})</p>`;
             if (item.interact) {
-                inventoryHTML += `<button style="display: block;" onclick="game.getPlayer().getItem(${item.id}).interact()">Consume</button>`
+                inventoryHTML += `<button style="display: block;" onclick="game.getPlayer().getItem(${item.id}).interact()">Consume</button>`;
             }
            inventoryHTML += `</div>`;
         }
@@ -447,10 +453,10 @@ class Game {
 
         // Loop through all the player's skills
         for (var skill in this.getPlayer().skillSet) {
-            skillsHTML += `<p class="list-item"><img alt="combat" style="vertical-align: middle"  width="34" height="34" src="images/${skill.charAt(0).toLowerCase() + skill.slice(1)}.png"> : ${this.getPlayer().getSkillLevel(skill)} (${this.getPlayer().getXpToNextLevel(skill)} xp to level up)</p>`
+            skillsHTML += `<p class="list-item"><img alt="combat" style="vertical-align: middle"  width="34" height="34" src="images/${skill.charAt(0).toLowerCase() + skill.slice(1)}.png"> : ${this.getPlayer().getSkillLevel(skill)} (${this.getPlayer().getXpToNextLevel(skill)} xp to level up)</p>`;
         }
 
-        skillsHTML += `</div>`
+        skillsHTML += `</div>`;
         return skillsHTML;
     }
 
@@ -458,25 +464,26 @@ class Game {
      * Update crafting tab
      */
     updateCrafting() {
-        var recipes = document.getElementById("recipes-list")
+        var recipes = document.getElementById("recipes-list");
         recipes.innerHTML = "";
 
         for (var rIndex in this.getPlayer().recipeList) {
             var recipe = this.getPlayer().recipeList[rIndex]; // Get the recipe using the recipe index
 
             // If the player doesn't have the items required for the recipe skip it
-            if (!recipe.requirementsSatisfied(this.getPlayer().inventory))
+            if (!recipe.requirementsSatisfied(this.getPlayer().inventory)) {
                 continue;
+            }
             
             // Create custom recipe element
-            var recipeElement = document.createElement("recipe")
+            var recipeElement = document.createElement("recipe");
             var recipeHTML = "";
 
             // Assign recipe a random id so we can assign a click handler to it
             var recipeId = Math.floor(Math.random() * 1000000000);
 
-            recipeHTML += `<p><strong>Crafts:</strong> ${recipe.output.name}</p>` // Display the recipe output
-            recipeHTML += `<p><strong>Requires: </strong></p>` // Display recipe requires text
+            recipeHTML += `<p><strong>Crafts:</strong> ${recipe.output.name}</p>`; // Display the recipe output
+            recipeHTML += `<p><strong>Requires: </strong></p>`; // Display recipe requires text
 
             // Loop through all the items required to make the recipe and display them
             for (var input of this.itemsToBackpack(recipe.input)) {
@@ -488,7 +495,7 @@ class Game {
             recipeButton.id = recipeId;
             recipeButton.style.margin = "0 auto";
             recipeButton.innerHTML = "Craft";
-            recipeButton.setAttribute("data-recipe", rIndex) // Set the index of the recipe to "data-recipe"
+            recipeButton.setAttribute("data-recipe", rIndex); // Set the index of the recipe to "data-recipe"
 
             // When the recipe button is clicked craft the item
             recipeButton.onclick = e => {
@@ -514,12 +521,12 @@ class Game {
     
         // Assign message a random id so later on in the code we 
         // can refrence msgId and scroll the message into the view
-        var msgId = Math.floor(Math.random() * 1000000000)
+        var msgId = Math.floor(Math.random() * 1000000000);
     
-        messageHTML += `<div class="message" id="msg-id-${msgId}">` // Open the message <div>
-        messageHTML += `<div class="message-title">${title}</div>` // Display the message title
-        messageHTML += `<div class="message-description">${description}</div>` // Display the message description
-        messageHTML += '</div>' // Close the message <div>
+        messageHTML += `<div class="message" id="msg-id-${msgId}">`; // Open the message <div>
+        messageHTML += `<div class="message-title">${title}</div>`; // Display the message title
+        messageHTML += `<div class="message-description">${description}</div>`; // Display the message description
+        messageHTML += '</div>'; // Close the message <div>
     
         // Display messageHTML onto the visible <div> element
         document.getElementById("messages").innerHTML += messageHTML;
@@ -563,8 +570,8 @@ class Game {
         // After 200ms alert the player of their death and display the death screen
         // (the reason we do this is to have the death alert to be the last one)
         setTimeout(() => {
-            this.alert("Death!", `You survived ${this.currentTurn} turns`)
-            document.getElementById("map").classList.add("map-ended")
-        }, 200)
+            this.alert("Death!", `You survived ${this.currentTurn} turns`);
+            document.getElementById("map").classList.add("map-ended");
+        }, 200);
     }
 }
