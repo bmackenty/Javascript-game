@@ -251,17 +251,17 @@ class Game {
                     continue;
                 }
     
-                if (randomNumber < 40.5) { // 0.5% chance we spawn a spider
+                if (randomNumber < 40.4) { // 0.4% chance we spawn a spider
                     this.addObject(new Spider(false).spawn(x, y));
                     continue;
                 }
     
-                if (randomNumber < 40.6) { // 0.1% chance we spawn a dead spider
+                if (randomNumber < 40.5) { // 0.1% chance we spawn a dead spider
                     this.addObject(new Spider(true).spawn(x, y));
                     continue;
                 }
     
-                if (randomNumber < 40.7) { // 0.1% chance we spawn a bear
+                if (randomNumber < 40.7) { // 0.2% chance we spawn a bear
                     this.addObject(new Bear().spawn(x, y));
                     continue;
                 }
@@ -276,7 +276,7 @@ class Game {
                     continue;
                 }
 
-                if (randomNumber < 42) { // 0.3% chance we spawn a flint block
+                if (randomNumber < 42.2) { // 0.5% chance we spawn a flint block
                     this.addObject(new FlintBlock().spawn(x, y));
                     continue;
                 }
