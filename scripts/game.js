@@ -475,7 +475,7 @@ class Game {
             // Assign recipe a random id so we can assign a click handler to it
             var recipeId = Math.floor(Math.random() * 1000000000);
 
-            recipeHTML += `<p><strong>Crafts:</strong> ${recipe.output.name}</p>` // Display the recipe output
+            recipeHTML += `<p><strong>Crafts:</strong> ${recipe.output.name} ${recipe.output.image}</p>` // Display the recipe output
             recipeHTML += `<p><strong>Requires: </strong></p>` // Display recipe requires text
 
             // Loop through all the items required to make the recipe and display them
