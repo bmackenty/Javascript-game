@@ -108,3 +108,19 @@ class A_Potato extends Achievements {
         }
     }
 }
+
+class Home extends Achievements {
+
+    constructor() {
+        super('Home sweet home', 'Now you can sleep well')
+    }
+
+    checkAchieved() {
+        if (game) {
+            if (game.getPlayer().getItemCount(Tent) >= 1) {
+                this.isAchieved = true;
+            }
+        }
+    }
+
+}

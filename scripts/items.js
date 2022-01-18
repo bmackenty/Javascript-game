@@ -74,6 +74,13 @@ class Apple extends Item {
     }
 }
 
+class Tent extends Item {
+
+    constructor() {
+        super("Tent", "<img alt=\"Tent\" style=\"vertical-align: middle\" src=\"images/tent.png\"  width=\"25\" height=\"25\">", "You finally can get rest a while");
+    }
+}
+
 class Wood extends Item {
 
     constructor() {
