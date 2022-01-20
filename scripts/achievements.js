@@ -16,7 +16,7 @@ class Achievements {
 class A_Played extends Achievements {
     
     constructor() {
-        super('Terrible Mistake', 'You played the game.')
+        super('Terrible Mistake', 'You played the game.');
     }
 
     checkAchieved() {
@@ -32,7 +32,7 @@ class A_Played extends Achievements {
 class A_Survivor extends Achievements {
 
     constructor() {
-        super('Survivor', 'You survived until turn 25.')
+        super('Survivor', 'You survived until turn 25.');
     }
 
     checkAchieved() {
@@ -48,7 +48,7 @@ class A_Survivor extends Achievements {
 class A_SpiderHunter extends Achievements {
 
     constructor() {
-        super('Spider Hunter', 'Obtain 5 string.')
+        super('Spider Hunter', 'Obtain 5 string.');
     }
 
     checkAchieved() {
@@ -64,7 +64,7 @@ class A_SpiderHunter extends Achievements {
 class A_BeastSlayer extends Achievements {
 
     constructor() {
-        super('Beast Slayer', 'You killed a bear.')
+        super('Beast Slayer', 'You killed a bear.');
     }
 
     checkAchieved() {
@@ -82,7 +82,7 @@ class A_BeastSlayer extends Achievements {
 class A_Deforestation extends Achievements {
     
     constructor() {
-        super('Deforestation', 'You monster!')
+        super('Deforestation', 'You monster!');
     }
 
     checkAchieved() {
@@ -97,7 +97,7 @@ class A_Deforestation extends Achievements {
 class A_Potato extends Achievements {
 
     constructor() {
-        super('Potato', 'You have more health then you started with')
+        super('Potato', 'You have more health then you started with');
     }
 
     checkAchieved() {
