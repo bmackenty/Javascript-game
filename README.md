@@ -1,5 +1,5 @@
 # Javascript Game
-This is a rework of a javascript implementation of a simple ascii art RPG game using classes and variables with names that make sense. There is a <strike>worse</strike> version of this online at [https://yeoldequiveringcommunistzombies.com/](yeoldequiveringcommunistzombies.com).
+This is a rework of a javascript implementation of a simple ascii art RPG game using classes and variables with names that make sense. 
 
 This game is used to facilitate an after-school computer club for high school students (ages 15 to 18). 
 
