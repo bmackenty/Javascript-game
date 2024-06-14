@@ -77,7 +77,7 @@ class Apple extends Item {
 class Banana extends Item {
 
     constructor() {
-        super("Banana", "every monkey like this");
+        super("Banana","<img alt=\"banana\" style=\"vertical-align: middle\" src=\"images/banana.png\"  width=\"25\" height=\"25\">", "every monkey like this");
     }
 }
 
@@ -134,9 +134,10 @@ class Leather extends Item {
         super("Leather","<img alt=\"Leather\" style=\"vertical-align: middle\" src=\"images/leather.png\"  width=\"25\" height=\"25\">",  "Maybe you can make some clothes out of this...");
     }
 }
+
 class Fire extends Item{
     constructor() {
-        super("Fire","first revolution of humankind")
+        super("Fire","<img alt=\"fire\" style=\"vertical-align: middle\" src=\"images/fire.png\"  width=\"25\" height=\"25\">", "first revolution of humankind")
     }
 }
 
@@ -154,7 +155,7 @@ class RawMeat extends Item {
 class CookedMeat extends Item {
 
     constructor() {
-        super("Cooked meat", "Best Food to eat");
+        super("Cooked meat","<img alt=\"Cooked Meat\" style=\"vertical-align: middle\" src=\"images/cookedMeat.png\"  width=\"25\" height=\"25\">", "Best Food to eat");
     }
 
     interact() {
@@ -230,7 +231,7 @@ class FlintAxe extends Item {
 class MeshFilter extends Item {
 
     constructor() {
-        super("Mesh filter", "Stops the flies from comming in")
+        super("Mesh filter","<img alt=\"Mesh filter\" style=\"vertical-align: middle\" src=\"images/meshFilter.png\"  width=\"25\" height=\"25\">", "Stops the flies from comming in")
     }
 }
 
